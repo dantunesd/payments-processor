@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+    
+    run-unit-test:
+        image: golang:1.13.5-alpine3.10
+        working_dir: /code
+        volumes: 
+            - .:/code
+        command: go test
