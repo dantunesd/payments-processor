@@ -22,7 +22,7 @@ func paymentCieloHandler() http.HandlerFunc {
 			return
 		}
 
-		if vErr := payment.Validate(); vErr != nil {
+		if vErr := payment.IsValid(); vErr != nil {
 			responseWriter(w, http.StatusBadRequest, &ErrorResponse{vErr.Error()})
 			return
 		}
