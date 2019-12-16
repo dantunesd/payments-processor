@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
+	"payments-processor/payment-processor"
 
 	"github.com/go-chi/chi"
 )
@@ -14,7 +16,10 @@ func createServerHandler() http.Handler {
 
 func paymentCieloHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add("content-type", "application/json")
-		w.WriteHeader(200)
+		payment := &payment.Payment{}
+		if err := json.NewDecoder(r.Body).Decode(payment); err != nil {
+			panic(err)
+		}
+		responseWriter(w, http.StatusOK, payment)
 	}
 }
