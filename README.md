@@ -10,20 +10,39 @@ This application is a simplified payments processor.
 
 `Docker-compose version 1.24+`
 
+`Golang 1.13+`
+
 --- 
 
 
-## BUILD
+## Build
+
+Run the command bellow to generate the executable:
 
 ```bash
-docker build -t payments-processor .
+make run-build
 ```
 
 ---
 
-## RUN
+## Run
+
+Run the command bellow to start the application:
 
 ```bash
-docker run -p 3000:3000 payments-processor
+make run-app
 ```
+
+*NOTE* : you must first build the app.
+
+---
+
+## Tests
+
+Run the command bellow to run all unit tests 
+
+```bash
+make run-unit-tests
+```
+
 ---
