@@ -13,4 +13,17 @@ This application is a simplified payments processor.
 --- 
 
 
+## BUILD
 
+```bash
+docker build -t payments-processor .
+```
+
+---
+
+## RUN
+
+```bash
+docker run -p 3000:3000 payments-processor
+```
+---
