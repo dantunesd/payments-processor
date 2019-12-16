@@ -4,7 +4,7 @@ WORKDIR /go/src/app
 
 COPY . .
 
-RUN go build -o api
+RUN go build -o ./bin/api ./api
 
 FROM alpine:3.10 as runner
 
@@ -12,7 +12,7 @@ WORKDIR /usr/bin
 
 RUN apk update && apk add --no-cache ca-certificates
 
-COPY --from=builder /go/src/app/api .
+COPY --from=builder /go/src/app/bin/api .
 
 CMD [ "./api" ]
 
