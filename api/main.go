@@ -1,8 +1,12 @@
 package main
 
 import (
-	"go.uber.org/zap"
+	"fmt"
 	"log"
+	"net/http"
+
+	"github.com/facebookgo/grace/gracehttp"
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -17,5 +21,12 @@ func main() {
 	}
 	defer logger.Sync()
 
-	log.Println(config)
+	handler := createServerHandler()
+
+	gracehttp.Serve(&http.Server{
+		Addr:         fmt.Sprintf(":%d", config.AppPort),
+		Handler:      handler,
+		ReadTimeout:  config.AppReadTimeout,
+		WriteTimeout: config.AppWriteTimeout,
+	})
 }
