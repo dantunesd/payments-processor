@@ -4,7 +4,9 @@ WORKDIR /go/src/app
 
 COPY . .
 
-RUN go build -o ./bin/api ./api
+RUN apk update && apk add --no-cache make
+
+RUN make run-build
 
 FROM alpine:3.10 as runner
 
