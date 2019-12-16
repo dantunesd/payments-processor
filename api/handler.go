@@ -17,9 +17,16 @@ func createServerHandler() http.Handler {
 func paymentCieloHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		payment := &payment.Payment{}
-		if err := json.NewDecoder(r.Body).Decode(payment); err != nil {
-			panic(err)
+		if dErr := json.NewDecoder(r.Body).Decode(payment); dErr != nil {
+			responseWriter(w, http.StatusBadRequest, &ErrorResponse{dErr.Error()})
+			return
 		}
+
+		if vErr := payment.Validate(); vErr != nil {
+			responseWriter(w, http.StatusBadRequest, &ErrorResponse{vErr.Error()})
+			return
+		}
+
 		responseWriter(w, http.StatusOK, payment)
 	}
 }

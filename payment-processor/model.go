@@ -2,7 +2,7 @@ package payment
 
 // Payment represents a incoming payment from client
 type Payment struct {
-	Customer      Customer      `json:"customer"`
+	Customer      Customer      `json:"customer" validate:"required"`
 	Card          Card          `json:"card"`
 	Sale          Sale          `json:"sale"`
 	Establishment Establishment `json:"establishment"`
@@ -32,4 +32,9 @@ type Establishment struct {
 	Identifier string `json:"identifier"`
 	Address    string `json:"address"`
 	PostalCode string `json:"postalCode"`
+}
+
+// Validate validates payment data
+func (p *Payment) Validate() error {
+	return nil
 }

@@ -5,6 +5,11 @@ import (
 	"net/http"
 )
 
+// ErrorResponse represents a response with error
+type ErrorResponse struct {
+	ErrorMessage string `json:"error"`
+}
+
 func responseWriter(w http.ResponseWriter, code int, content interface{}) {
 	w.Header().Add("content-type", "application/json")
 	w.WriteHeader(code)
