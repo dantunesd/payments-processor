@@ -14,5 +14,4 @@ services:
         working_dir: /code
         volumes: 
             - .:/code
-        command: echo $GOPATH
         command: go run main.go
