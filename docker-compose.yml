@@ -7,4 +7,12 @@ services:
         working_dir: /code
         volumes: 
             - .:/code
-        command: go test
+        command: go test ./...
+
+    run-app:
+        image: golang:1.13.5-alpine3.10
+        working_dir: /code
+        volumes: 
+            - .:/code
+        command: echo $GOPATH
+        command: go run main.go
