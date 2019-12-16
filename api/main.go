@@ -23,6 +23,10 @@ func main() {
 
 	handler := createServerHandler()
 
+	logger.Info(
+		fmt.Sprintf("starting application at port: %d", config.AppPort),
+	)
+
 	gracehttp.Serve(&http.Server{
 		Addr:         fmt.Sprintf(":%d", config.AppPort),
 		Handler:      handler,
