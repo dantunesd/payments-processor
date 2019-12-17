@@ -3,7 +3,6 @@ package payment
 import (
 	"context"
 	"database/sql"
-	"errors"
 )
 
 // ISourceRepository is a interface for Source repository
@@ -30,7 +29,7 @@ func (s *SourcesRepository) GetByID(ctx context.Context, ID string) (Source, err
 		&src.SourceID, &src.CardNumber, &src.CVV,
 	)
 	if err == sql.ErrNoRows {
-		return src, errors.New("Invalid source_id")
+		return src, NewInvalidContentError("Invalid source_id")
 	}
-	return src, err
+	return src, NewInternalServerError(err.Error())
 }

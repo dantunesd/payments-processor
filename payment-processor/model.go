@@ -14,7 +14,10 @@ type Payment struct {
 // IsValid validates payment data
 func (p *Payment) IsValid() error {
 	v := validator.New()
-	return v.Struct(p)
+	if err := v.Struct(p); err != nil {
+		return NewInvalidContentError(err.Error())
+	}
+	return nil
 }
 
 // Customer represents a payment's customer
