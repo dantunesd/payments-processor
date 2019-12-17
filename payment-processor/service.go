@@ -2,8 +2,6 @@ package payment
 
 import "context"
 
-import "fmt"
-
 // IService interface for service
 type IService interface {
 	ProcessPayment(ctx context.Context, p Payment) error
@@ -24,7 +22,10 @@ func NewService(r ISourceRepository) *Service {
 // ProcessPayment process a payment
 func (s Service) ProcessPayment(ctx context.Context, p Payment) error {
 
-	src, err := s.r.GetByID(ctx, p.Details.Card.SourceID)
-	fmt.Println(src)
-	return err
+	_, gErr := s.r.GetByID(ctx, p.Details.Card.SourceID)
+	if gErr != nil {
+		return gErr
+	}
+
+	return nil
 }

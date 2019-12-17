@@ -21,7 +21,9 @@ func createServerHandler(s payment.IService) http.Handler {
 
 func paymentCieloHandler(s payment.IService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+
 		payment := &payment.Payment{}
+
 		if dErr := json.NewDecoder(r.Body).Decode(payment); dErr != nil {
 			responseWriter(w, http.StatusBadRequest, &ErrorResponse{"Invalid body content", dErr.Error()})
 			return
