@@ -26,9 +26,9 @@ type Card struct {
 
 // Sale represents a payment's sale
 type Sale struct {
-	Amount       int      `json:"amount" validate:"required"`
-	Installments int      `json:"installments" validate:"required"`
-	Itens        []string `json:"itens" validate:"required"`
+	Amount       int      `json:"amount" validate:"min=100,required"`
+	Installments int      `json:"installments" validate:"min=1,required"`
+	Itens        []string `json:"itens" validate:"gte=1,required"`
 }
 
 // Establishment represents a payment's establishment

@@ -18,12 +18,12 @@ func paymentCieloHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		payment := &payment.Payment{}
 		if dErr := json.NewDecoder(r.Body).Decode(payment); dErr != nil {
-			responseWriter(w, http.StatusBadRequest, &ErrorResponse{dErr.Error()})
+			responseWriter(w, http.StatusBadRequest, &ErrorResponse{"Invalid body content"})
 			return
 		}
 
 		if vErr := payment.IsValid(); vErr != nil {
-			responseWriter(w, http.StatusBadRequest, &ErrorResponse{vErr.Error()})
+			responseWriter(w, http.StatusBadRequest, &ErrorResponse{"There are invalid values or missing required fields. Please, see the documentation"})
 			return
 		}
 
