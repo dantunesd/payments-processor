@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -32,10 +31,9 @@ func main() {
 	}
 
 	r := payment.NewSourcesRepository(db)
+	s := payment.NewService(r)
 
-	fmt.Println(r.GetByID(context.Background(), "token-1"))
-
-	handler := createServerHandler()
+	handler := createServerHandler(s)
 
 	logger.Info(
 		fmt.Sprintf("starting application at port: %d", config.AppPort),

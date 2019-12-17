@@ -9,17 +9,17 @@ import (
 	"github.com/go-chi/chi/middleware"
 )
 
-func createServerHandler() http.Handler {
+func createServerHandler(s payment.IService) http.Handler {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.RequestID)
-	r.Post("/payment/cielo", paymentCieloHandler())
+	r.Post("/payment/cielo", paymentCieloHandler(s))
 	return r
 }
 
-func paymentCieloHandler() http.HandlerFunc {
+func paymentCieloHandler(s payment.IService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		payment := &payment.Payment{}
 		if dErr := json.NewDecoder(r.Body).Decode(payment); dErr != nil {
@@ -29,6 +29,11 @@ func paymentCieloHandler() http.HandlerFunc {
 
 		if vErr := payment.IsValid(); vErr != nil {
 			responseWriter(w, http.StatusBadRequest, &ErrorResponse{"There are invalid values or missing required fields. Please, see the documentation", vErr.Error()})
+			return
+		}
+
+		if pErr := s.ProcessPayment(*payment); pErr != nil {
+			responseWriter(w, http.StatusBadRequest, &ErrorResponse{"Failed to proccess payment", pErr.Error()})
 			return
 		}
 
