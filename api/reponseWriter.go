@@ -8,6 +8,7 @@ import (
 // ErrorResponse represents a response with error
 type ErrorResponse struct {
 	ErrorMessage string `json:"error"`
+	Details      string `json:"details"`
 }
 
 func responseWriter(w http.ResponseWriter, code int, content interface{}) {

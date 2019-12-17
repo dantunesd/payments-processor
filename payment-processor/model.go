@@ -7,8 +7,7 @@ import (
 // Payment represents a incoming payment from client
 type Payment struct {
 	Customer      Customer      `json:"customer" validate:"required"`
-	Card          Card          `json:"card" validate:"required"`
-	Sale          Sale          `json:"sale" validate:"required"`
+	Details       Details       `json:"details" validate:"required"`
 	Establishment Establishment `json:"establishment" validate:"required"`
 }
 
@@ -17,25 +16,28 @@ type Customer struct {
 	Name string `json:"name" validate:"required"`
 }
 
-// Card represents a payment's card
-type Card struct {
-	Token      string `json:"token" validate:"required"`
-	Brand      string `json:"brand" validate:"required"`
-	Expiration string `json:"expiration" validate:"required"`
-}
-
-// Sale represents a payment's sale
-type Sale struct {
+// Details represents a payment's Details
+type Details struct {
+	Source       Source   `json:"source" validate:"required"`
 	Amount       int      `json:"amount" validate:"min=100,required"`
+	PaymentType  string   `json:"payment_type" validate:"required"`
 	Installments int      `json:"installments" validate:"min=1,required"`
 	Itens        []string `json:"itens" validate:"gte=1,required"`
+}
+
+// Source represents a payment's Source
+type Source struct {
+	ID              string `json:"source_id" validate:"required"`
+	Brand           string `json:"brand" validate:"required"`
+	ExpirationYear  int    `json:"expiration_year" validate:"required"`
+	ExpirationMonth int    `json:"expiration_month" validate:"required"`
 }
 
 // Establishment represents a payment's establishment
 type Establishment struct {
 	Identifier string `json:"identifier" validate:"required"`
 	Address    string `json:"address" validate:"required"`
-	PostalCode int    `json:"postalCode" validate:"required"`
+	PostalCode int    `json:"postal_code" validate:"required"`
 }
 
 // IsValid validates payment data

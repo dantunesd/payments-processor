@@ -5,8 +5,7 @@ import "testing"
 func TestPayment_IsValid(t *testing.T) {
 	type fields struct {
 		Customer      Customer
-		Card          Card
-		Sale          Sale
+		Details       Details
 		Establishment Establishment
 	}
 	tests := []struct {
@@ -18,8 +17,13 @@ func TestPayment_IsValid(t *testing.T) {
 			"With all fields",
 			fields{
 				Customer{"test"},
-				Card{"test", "test", "test"},
-				Sale{100, 1, []string{"test"}},
+				Details{
+					Source{"test", "test", 2020, 12},
+					100,
+					"credit",
+					1,
+					[]string{"test"},
+				},
 				Establishment{"test", "test", 12345678},
 			},
 			false,
@@ -28,8 +32,13 @@ func TestPayment_IsValid(t *testing.T) {
 			"With invalid amount",
 			fields{
 				Customer{"test"},
-				Card{"test", "test", "test"},
-				Sale{0, 1, []string{"test"}},
+				Details{
+					Source{"test", "test", 2020, 12},
+					99,
+					"credit",
+					1,
+					[]string{"test"},
+				},
 				Establishment{"test", "test", 12345678},
 			},
 			true,
@@ -38,8 +47,13 @@ func TestPayment_IsValid(t *testing.T) {
 			"With invalid installments",
 			fields{
 				Customer{"test"},
-				Card{"test", "test", "test"},
-				Sale{100, 0, []string{"test"}},
+				Details{
+					Source{"test", "test", 2020, 12},
+					100,
+					"credit",
+					0,
+					[]string{"test"},
+				},
 				Establishment{"test", "test", 12345678},
 			},
 			true,
@@ -48,8 +62,13 @@ func TestPayment_IsValid(t *testing.T) {
 			"With invalid itens",
 			fields{
 				Customer{"test"},
-				Card{"test", "test", "test"},
-				Sale{100, 1, []string{}},
+				Details{
+					Source{"test", "test", 2020, 12},
+					100,
+					"credit",
+					1,
+					[]string{},
+				},
 				Establishment{"test", "test", 12345678},
 			},
 			true,
@@ -73,8 +92,7 @@ func TestPayment_IsValid(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			p := &Payment{
 				Customer:      tt.fields.Customer,
-				Card:          tt.fields.Card,
-				Sale:          tt.fields.Sale,
+				Details:       tt.fields.Details,
 				Establishment: tt.fields.Establishment,
 			}
 			if err := p.IsValid(); (err != nil) != tt.wantErr {
