@@ -25,12 +25,12 @@ func paymentCieloHandler(s payment.IService) http.HandlerFunc {
 		payment := &payment.Payment{}
 
 		if dErr := json.NewDecoder(r.Body).Decode(payment); dErr != nil {
-			responseWriter(w, http.StatusBadRequest, &ErrorResponse{"Invalid body content", dErr.Error()})
+			responseWriter(w, getHTTPCode(dErr), &ErrorResponse{"Invalid body content", dErr.Error()})
 			return
 		}
 
 		if pErr := s.ProcessPayment(r.Context(), *payment); pErr != nil {
-			responseWriter(w, http.StatusBadRequest, &ErrorResponse{"Failed to proccess payment", pErr.Error()})
+			responseWriter(w, getHTTPCode(pErr), &ErrorResponse{"Failed to proccess payment", pErr.Error()})
 			return
 		}
 

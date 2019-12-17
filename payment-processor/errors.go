@@ -25,11 +25,6 @@ func NewInvalidContentError(message string) *Error {
 	return NewError(message, InvalidContent)
 }
 
-// NewInternalServerError constructor of internal server error.
-func NewInternalServerError(message string) *Error {
-	return NewError(message, InternalServerError)
-}
-
 // Error returns error message
 func (e *Error) Error() string {
 	return e.ErrorMessage

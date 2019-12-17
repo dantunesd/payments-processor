@@ -95,32 +95,3 @@ func TestError_Error(t *testing.T) {
 		})
 	}
 }
-
-func TestNewInternalServerError(t *testing.T) {
-	type args struct {
-		message string
-	}
-	tests := []struct {
-		name string
-		args args
-		want *Error
-	}{
-		{
-			"return a error",
-			args{
-				message: "error",
-			},
-			&Error{
-				ErrorMessage: "error",
-				ErrorType:    InternalServerError,
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := NewInternalServerError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewInternalServerError() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}

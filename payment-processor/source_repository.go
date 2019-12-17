@@ -31,5 +31,5 @@ func (s *SourcesRepository) GetByID(ctx context.Context, ID string) (Source, err
 	if err == sql.ErrNoRows {
 		return src, NewInvalidContentError("Invalid source_id")
 	}
-	return src, NewInternalServerError(err.Error())
+	return src, err
 }
