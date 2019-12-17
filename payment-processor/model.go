@@ -18,16 +18,16 @@ type Customer struct {
 
 // Details represents a payment's Details
 type Details struct {
-	Source       Source   `json:"source" validate:"required"`
+	Card         Card     `json:"card" validate:"required"`
 	Amount       int      `json:"amount" validate:"min=100,required"`
 	PaymentType  string   `json:"payment_type" validate:"required"`
 	Installments int      `json:"installments" validate:"min=1,required"`
 	Itens        []string `json:"itens" validate:"gte=1,required"`
 }
 
-// Source represents a payment's Source
-type Source struct {
-	ID              string `json:"source_id" validate:"required"`
+// Card represents a payment's Card
+type Card struct {
+	SourceID        string `json:"source_id" validate:"required"`
 	Brand           string `json:"brand" validate:"required"`
 	ExpirationYear  int    `json:"expiration_year" validate:"required"`
 	ExpirationMonth int    `json:"expiration_month" validate:"required"`

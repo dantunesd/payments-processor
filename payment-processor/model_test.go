@@ -18,7 +18,7 @@ func TestPayment_IsValid(t *testing.T) {
 			fields{
 				Customer{"test"},
 				Details{
-					Source{"test", "test", 2020, 12},
+					Card{"test", "test", 2020, 12},
 					100,
 					"credit",
 					1,
@@ -33,7 +33,7 @@ func TestPayment_IsValid(t *testing.T) {
 			fields{
 				Customer{"test"},
 				Details{
-					Source{"test", "test", 2020, 12},
+					Card{"test", "test", 2020, 12},
 					99,
 					"credit",
 					1,
@@ -48,7 +48,7 @@ func TestPayment_IsValid(t *testing.T) {
 			fields{
 				Customer{"test"},
 				Details{
-					Source{"test", "test", 2020, 12},
+					Card{"test", "test", 2020, 12},
 					100,
 					"credit",
 					0,
@@ -63,7 +63,7 @@ func TestPayment_IsValid(t *testing.T) {
 			fields{
 				Customer{"test"},
 				Details{
-					Source{"test", "test", 2020, 12},
+					Card{"test", "test", 2020, 12},
 					100,
 					"credit",
 					1,
