@@ -45,3 +45,10 @@ func (p *Payment) IsValid() error {
 	v := validator.New()
 	return v.Struct(p)
 }
+
+// Source represents a open source
+type Source struct {
+	SourceID   string `json:"source_id"`
+	CardNumber string `json:"card_number"`
+	CVV        string `json:"cvv"`
+}

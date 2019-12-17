@@ -1,11 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
+	"payments-processor/payment-processor"
 
 	"database/sql"
+
 	"github.com/facebookgo/grace/gracehttp"
 	_ "github.com/go-sql-driver/mysql"
 	"go.uber.org/zap"
@@ -28,7 +31,9 @@ func main() {
 		log.Fatal(lErr)
 	}
 
-	fmt.Println(db.Ping())
+	r := payment.NewSourcesRepository(db)
+
+	fmt.Println(r.GetByID(context.Background(), "token-1"))
 
 	handler := createServerHandler()
 
