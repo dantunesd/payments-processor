@@ -6,12 +6,17 @@ import (
 	"payments-processor/payment-processor"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 func createServerHandler() http.Handler {
-	router := chi.NewRouter()
-	router.Post("/payment/cielo", paymentCieloHandler())
-	return router
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Use(middleware.RealIP)
+	r.Use(middleware.Recoverer)
+	r.Use(middleware.RequestID)
+	r.Post("/payment/cielo", paymentCieloHandler())
+	return r
 }
 
 func paymentCieloHandler() http.HandlerFunc {
