@@ -13,7 +13,7 @@ type Config struct {
 	AppReadTimeout     time.Duration `envconfig:"APP_READ_TIMEOUT" default:"3s"`
 	AppWriteTimeout    time.Duration `envconfig:"APP_WRITE_TIMEOUT" default:"3s"`
 	DBDriver           string        `envconfig:"DB_DRIVER" default:"mysql"`
-	DBConnectionString string        `envconfig:"DB_CONNECTION_STRING" default:"root:root@/cards"`
+	DBConnectionString string        `envconfig:"DB_CONNECTION_STRING" default:"root:root@/source"`
 }
 
 // NewConfig Config constructor.
