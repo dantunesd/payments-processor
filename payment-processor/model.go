@@ -35,7 +35,7 @@ type Sale struct {
 type Establishment struct {
 	Identifier string `json:"identifier" validate:"required"`
 	Address    string `json:"address" validate:"required"`
-	PostalCode string `json:"postalCode" validate:"required"`
+	PostalCode int    `json:"postalCode" validate:"required"`
 }
 
 // IsValid validates payment data
