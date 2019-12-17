@@ -5,7 +5,9 @@ import (
 	"log"
 	"net/http"
 
+	"database/sql"
 	"github.com/facebookgo/grace/gracehttp"
+	_ "github.com/go-sql-driver/mysql"
 	"go.uber.org/zap"
 )
 
@@ -20,6 +22,13 @@ func main() {
 		log.Fatal(lErr)
 	}
 	defer logger.Sync()
+
+	db, oErr := sql.Open(config.DBDriver, config.DBConnectionString)
+	if oErr != nil {
+		log.Fatal(lErr)
+	}
+
+	fmt.Println(db.Ping())
 
 	handler := createServerHandler()
 

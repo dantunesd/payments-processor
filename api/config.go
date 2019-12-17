@@ -8,10 +8,12 @@ import (
 
 // Config is a representation for env variables
 type Config struct {
-	AppName         string        `envconfig:"APP_NAME" default:"Payments-Processor"`
-	AppPort         int           `envconfig:"APP_PORT" default:"3000"`
-	AppReadTimeout  time.Duration `envconfig:"APP_READ_TIMEOUT" default:"3s"`
-	AppWriteTimeout time.Duration `envconfig:"APP_WRITE_TIMEOUT" default:"3s"`
+	AppName            string        `envconfig:"APP_NAME" default:"Payments-Processor"`
+	AppPort            int           `envconfig:"APP_PORT" default:"3000"`
+	AppReadTimeout     time.Duration `envconfig:"APP_READ_TIMEOUT" default:"3s"`
+	AppWriteTimeout    time.Duration `envconfig:"APP_WRITE_TIMEOUT" default:"3s"`
+	DBDriver           string        `envconfig:"DB_DRIVER" default:"mysql"`
+	DBConnectionString string        `envconfig:"DB_CONNECTION_STRING" default:"root:root@/cards"`
 }
 
 // NewConfig Config constructor.
