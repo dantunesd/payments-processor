@@ -46,6 +46,21 @@ func TestService_ProcessPayment(t *testing.T) {
 			false,
 		},
 		{
+			"invalid payment",
+			fields{
+				r: &SourceRepositoryMock{
+					getByID: func(ctx context.Context, ID string) (Source, error) {
+						return Source{}, errors.New("Invalid source_id")
+					},
+				},
+			},
+			args{
+				context.Background(),
+				Payment{},
+			},
+			true,
+		},
+		{
 			"invalid source",
 			fields{
 				r: &SourceRepositoryMock{
