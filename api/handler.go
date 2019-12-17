@@ -32,7 +32,7 @@ func paymentCieloHandler(s payment.IService) http.HandlerFunc {
 			return
 		}
 
-		if pErr := s.ProcessPayment(*payment); pErr != nil {
+		if pErr := s.ProcessPayment(r.Context(), *payment); pErr != nil {
 			responseWriter(w, http.StatusBadRequest, &ErrorResponse{"Failed to proccess payment", pErr.Error()})
 			return
 		}

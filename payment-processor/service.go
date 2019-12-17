@@ -1,11 +1,15 @@
 package payment
 
+import "context"
+
+import "fmt"
+
 // IService interface for service
 type IService interface {
-	ProcessPayment(p Payment) error
+	ProcessPayment(ctx context.Context, p Payment) error
 }
 
-// Service implements the payment proccess
+// Service implements the payment process
 type Service struct {
 	r ISourceRepository
 }
@@ -17,7 +21,10 @@ func NewService(r ISourceRepository) *Service {
 	}
 }
 
-// ProcessPayment proccess a payment
-func (s Service) ProcessPayment(p Payment) error {
-	return nil
+// ProcessPayment process a payment
+func (s Service) ProcessPayment(ctx context.Context, p Payment) error {
+
+	src, err := s.r.GetByID(ctx, p.Details.Card.SourceID)
+	fmt.Println(src)
+	return err
 }

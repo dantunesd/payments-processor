@@ -2,6 +2,8 @@ package payment
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 )
 
 // ISourceRepository is a interface for Source repository
@@ -27,5 +29,8 @@ func (s *SourcesRepository) GetByID(ctx context.Context, ID string) (Source, err
 	err := s.db.QueryRowContext(ctx, "SELECT source_id, card_number, cvv FROM sources WHERE source_id = ?", ID).Scan(
 		&src.SourceID, &src.CardNumber, &src.CVV,
 	)
+	if err == sql.ErrNoRows {
+		return src, errors.New("Invalid source_id")
+	}
 	return src, err
 }
