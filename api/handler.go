@@ -29,11 +29,6 @@ func paymentCieloHandler(s payment.IService) http.HandlerFunc {
 			return
 		}
 
-		if vErr := payment.IsValid(); vErr != nil {
-			responseWriter(w, http.StatusBadRequest, &ErrorResponse{"There are invalid values or missing required fields. Please, see the documentation", vErr.Error()})
-			return
-		}
-
 		if pErr := s.ProcessPayment(r.Context(), *payment); pErr != nil {
 			responseWriter(w, http.StatusBadRequest, &ErrorResponse{"Failed to proccess payment", pErr.Error()})
 			return

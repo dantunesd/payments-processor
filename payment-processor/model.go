@@ -11,6 +11,12 @@ type Payment struct {
 	Establishment Establishment `json:"establishment" validate:"required"`
 }
 
+// IsValid validates payment data
+func (p *Payment) IsValid() error {
+	v := validator.New()
+	return v.Struct(p)
+}
+
 // Customer represents a payment's customer
 type Customer struct {
 	Name string `json:"name" validate:"required"`
@@ -38,12 +44,6 @@ type Establishment struct {
 	Identifier string `json:"identifier" validate:"required"`
 	Address    string `json:"address" validate:"required"`
 	PostalCode int    `json:"postal_code" validate:"required"`
-}
-
-// IsValid validates payment data
-func (p *Payment) IsValid() error {
-	v := validator.New()
-	return v.Struct(p)
 }
 
 // Source represents a open source

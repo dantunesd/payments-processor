@@ -22,6 +22,10 @@ func NewService(r ISourceRepository) *Service {
 // ProcessPayment process a payment
 func (s Service) ProcessPayment(ctx context.Context, p Payment) error {
 
+	if vErr := p.IsValid(); vErr != nil {
+		return vErr
+	}
+
 	_, gErr := s.r.GetByID(ctx, p.Details.Card.SourceID)
 	if gErr != nil {
 		return gErr
