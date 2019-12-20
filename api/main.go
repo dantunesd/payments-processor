@@ -31,7 +31,8 @@ func main() {
 	}
 
 	r := payment.NewSourcesRepository(&payment.DBWrapper{DB: db})
-	s := payment.NewService(r)
+	a := payment.NewAcquirerProvider(payment.BuildAcquirers())
+	s := payment.NewService(r, a)
 
 	handler := createServerHandler(s)
 

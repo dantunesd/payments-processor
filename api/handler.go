@@ -22,18 +22,18 @@ func createServerHandler(s payment.IService) http.Handler {
 func paymentCieloHandler(s payment.IService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		payment := &payment.Payment{}
+		p := &payment.Payment{}
 
-		if dErr := json.NewDecoder(r.Body).Decode(payment); dErr != nil {
+		if dErr := json.NewDecoder(r.Body).Decode(p); dErr != nil {
 			responseWriter(w, getHTTPCode(dErr), &ErrorResponse{"Invalid body content", dErr.Error()})
 			return
 		}
 
-		if pErr := s.ProcessPayment(r.Context(), *payment); pErr != nil {
+		if pErr := s.ProcessPayment(r.Context(), *p, payment.Cielo); pErr != nil {
 			responseWriter(w, getHTTPCode(pErr), &ErrorResponse{"Failed to proccess payment", pErr.Error()})
 			return
 		}
 
-		responseWriter(w, http.StatusOK, payment)
+		responseWriter(w, http.StatusOK, p)
 	}
 }

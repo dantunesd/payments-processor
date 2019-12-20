@@ -9,10 +9,12 @@ import (
 func TestService_ProcessPayment(t *testing.T) {
 	type fields struct {
 		r ISourceRepository
+		a IAcquirerProvider
 	}
 	type args struct {
 		ctx context.Context
 		p   Payment
+		a   AcquirerStrategy
 	}
 	tests := []struct {
 		name    string
@@ -26,6 +28,15 @@ func TestService_ProcessPayment(t *testing.T) {
 				r: &SourceRepositoryMock{
 					getByID: func(ctx context.Context, ID string) (Source, error) {
 						return Source{}, nil
+					},
+				},
+				a: &AcquirerProviderMock{
+					getAcquirer: func(ac AcquirerStrategy) IAcquirerStrategy {
+						return &AcquirerStrategyMock{
+							process: func(p Payment) error {
+								return nil
+							},
+						}
 					},
 				},
 			},
@@ -42,6 +53,7 @@ func TestService_ProcessPayment(t *testing.T) {
 					},
 					Establishment{"test", "test", 12345678},
 				},
+				Cielo,
 			},
 			false,
 		},
@@ -57,6 +69,7 @@ func TestService_ProcessPayment(t *testing.T) {
 			args{
 				context.Background(),
 				Payment{},
+				Cielo,
 			},
 			true,
 		},
@@ -82,15 +95,51 @@ func TestService_ProcessPayment(t *testing.T) {
 					},
 					Establishment{"test", "test", 12345678},
 				},
+				Cielo,
+			},
+			true,
+		},
+		{
+			"fail to process",
+			fields{
+				r: &SourceRepositoryMock{
+					getByID: func(ctx context.Context, ID string) (Source, error) {
+						return Source{}, nil
+					},
+				},
+				a: &AcquirerProviderMock{
+					getAcquirer: func(ac AcquirerStrategy) IAcquirerStrategy {
+						return &AcquirerStrategyMock{
+							process: func(p Payment) error {
+								return errors.New("Failed to process")
+							},
+						}
+					},
+				},
+			},
+			args{
+				context.Background(),
+				Payment{
+					Customer{"test"},
+					Details{
+						Card{"test", "test", 2020, 12},
+						100,
+						"credit",
+						1,
+						[]string{"test"},
+					},
+					Establishment{"test", "test", 12345678},
+				},
+				Cielo,
 			},
 			true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := NewService(tt.fields.r)
+			s := NewService(tt.fields.r, tt.fields.a)
 
-			if err := s.ProcessPayment(tt.args.ctx, tt.args.p); (err != nil) != tt.wantErr {
+			if err := s.ProcessPayment(tt.args.ctx, tt.args.p, tt.args.a); (err != nil) != tt.wantErr {
 				t.Errorf("Service.ProcessPayment() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -103,4 +152,20 @@ type SourceRepositoryMock struct {
 
 func (s *SourceRepositoryMock) GetByID(ctx context.Context, ID string) (Source, error) {
 	return s.getByID(ctx, ID)
+}
+
+type AcquirerProviderMock struct {
+	getAcquirer func(AcquirerStrategy) IAcquirerStrategy
+}
+
+func (a *AcquirerProviderMock) GetAcquirer(ac AcquirerStrategy) IAcquirerStrategy {
+	return a.getAcquirer(ac)
+}
+
+type AcquirerStrategyMock struct {
+	process func(Payment) error
+}
+
+func (a *AcquirerStrategyMock) Process(p Payment) error {
+	return a.process(p)
 }
