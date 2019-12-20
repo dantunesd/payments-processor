@@ -28,12 +28,12 @@ func (s Service) ProcessPayment(ctx context.Context, p Payment, acquirer Acquire
 		return vErr
 	}
 
-	_, gErr := s.r.GetByID(ctx, p.Details.Card.SourceID)
+	src, gErr := s.r.GetByID(ctx, p.Details.Card.SourceID)
 	if gErr != nil {
 		return gErr
 	}
 
-	if pErr := s.a.GetAcquirer(acquirer).Process(p); pErr != nil {
+	if pErr := s.a.GetAcquirer(acquirer).Process(p, src); pErr != nil {
 		return pErr
 	}
 

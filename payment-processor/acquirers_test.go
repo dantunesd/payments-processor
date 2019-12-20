@@ -58,6 +58,7 @@ func TestAcquirerProvider_GetAcquirer(t *testing.T) {
 func TestCieloStrategy_Process(t *testing.T) {
 	type args struct {
 		p Payment
+		s Source
 	}
 	tests := []struct {
 		name    string
@@ -68,6 +69,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 			"process with success",
 			args{
 				Payment{},
+				Source{},
 			},
 			false,
 		},
@@ -75,7 +77,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := NewCieloStrategy()
-			if err := c.Process(tt.args.p); (err != nil) != tt.wantErr {
+			if err := c.Process(tt.args.p, tt.args.s); (err != nil) != tt.wantErr {
 				t.Errorf("CieloStrategy.Process() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -85,6 +87,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 func TestRedeStrategy_Process(t *testing.T) {
 	type args struct {
 		p Payment
+		s Source
 	}
 	tests := []struct {
 		name    string
@@ -95,6 +98,7 @@ func TestRedeStrategy_Process(t *testing.T) {
 			"process with success",
 			args{
 				Payment{},
+				Source{},
 			},
 			false,
 		},
@@ -102,7 +106,7 @@ func TestRedeStrategy_Process(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := NewRedeStrategy()
-			if err := c.Process(tt.args.p); (err != nil) != tt.wantErr {
+			if err := c.Process(tt.args.p, tt.args.s); (err != nil) != tt.wantErr {
 				t.Errorf("RedeStrategy.Process() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

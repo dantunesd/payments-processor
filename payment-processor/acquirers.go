@@ -13,7 +13,7 @@ type AcquirerStrategy string
 
 // IAcquirerStrategy interface for a AcquirerStrategy
 type IAcquirerStrategy interface {
-	Process(Payment) error
+	Process(Payment, Source) error
 }
 
 // IAcquirerProvider interface for a AcquirerProvider
@@ -56,7 +56,7 @@ func NewCieloStrategy() CieloStrategy {
 }
 
 // Process .
-func (c CieloStrategy) Process(p Payment) error {
+func (c CieloStrategy) Process(p Payment, s Source) error {
 	fmt.Println("Processing cielo")
 	return nil
 }
@@ -70,7 +70,7 @@ func NewRedeStrategy() RedeStrategy {
 }
 
 // Process .
-func (c RedeStrategy) Process(p Payment) error {
+func (c RedeStrategy) Process(p Payment, s Source) error {
 	fmt.Println("Processing Rede")
 	return nil
 }
