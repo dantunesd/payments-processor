@@ -30,7 +30,7 @@ func main() {
 		log.Fatal(lErr)
 	}
 
-	r := payment.NewSourcesRepository(db)
+	r := payment.NewSourcesRepository(&payment.DBWrapper{DB: db})
 	s := payment.NewService(r)
 
 	handler := createServerHandler(s)
