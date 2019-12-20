@@ -2,10 +2,14 @@ package payment
 
 import (
 	"context"
-	"database/sql"
 )
+
+// IScanner interface for scanner
+type IScanner interface {
+	Scan(dest ...interface{}) error
+}
 
 // IQuerier interface for db queries
 type IQuerier interface {
-	QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row
+	QueryRowContext(ctx context.Context, query string, args ...interface{}) IScanner
 }
