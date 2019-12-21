@@ -42,13 +42,13 @@ Run the command bellow to start the application:
 make start-app
 ```
 
-*NOTE* : you must run `build` and `dependencies` before .
+*NOTE* : you must run `build` and `dependencies` before.
 
 ---
 
 ## Tests
 
-Run the command bellow to run all unit tests 
+Run the command bellow to run all unit tests:
 
 ```bash
 make unit-test
