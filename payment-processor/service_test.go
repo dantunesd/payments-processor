@@ -14,7 +14,7 @@ func TestService_ProcessPayment(t *testing.T) {
 	type args struct {
 		ctx context.Context
 		p   Payment
-		a   AcquirerStrategy
+		a   Acquirer
 	}
 	tests := []struct {
 		name    string
@@ -31,7 +31,7 @@ func TestService_ProcessPayment(t *testing.T) {
 					},
 				},
 				a: &AcquirerProviderMock{
-					getAcquirer: func(ac AcquirerStrategy) IAcquirerStrategy {
+					getAcquirerStrategy: func(ac Acquirer) IAcquirerStrategy {
 						return &AcquirerStrategyMock{
 							process: func(p Payment, s Source) error {
 								return nil
@@ -108,7 +108,7 @@ func TestService_ProcessPayment(t *testing.T) {
 					},
 				},
 				a: &AcquirerProviderMock{
-					getAcquirer: func(ac AcquirerStrategy) IAcquirerStrategy {
+					getAcquirerStrategy: func(ac Acquirer) IAcquirerStrategy {
 						return &AcquirerStrategyMock{
 							process: func(p Payment, s Source) error {
 								return errors.New("Failed to process")
@@ -155,11 +155,11 @@ func (s *SourceRepositoryMock) GetByID(ctx context.Context, ID string) (Source, 
 }
 
 type AcquirerProviderMock struct {
-	getAcquirer func(AcquirerStrategy) IAcquirerStrategy
+	getAcquirerStrategy func(Acquirer) IAcquirerStrategy
 }
 
-func (a *AcquirerProviderMock) GetAcquirer(ac AcquirerStrategy) IAcquirerStrategy {
-	return a.getAcquirer(ac)
+func (a *AcquirerProviderMock) GetAcquirerStrategy(ac Acquirer) IAcquirerStrategy {
+	return a.getAcquirerStrategy(ac)
 }
 
 type AcquirerStrategyMock struct {

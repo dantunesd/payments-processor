@@ -4,7 +4,7 @@ import "context"
 
 // IService interface for service
 type IService interface {
-	ProcessPayment(ctx context.Context, p Payment, acquirer AcquirerStrategy) error
+	ProcessPayment(ctx context.Context, p Payment, a Acquirer) error
 }
 
 // Service implements the payment process
@@ -22,7 +22,7 @@ func NewService(r ISourceRepository, a IAcquirerProvider) *Service {
 }
 
 // ProcessPayment process a payment
-func (s Service) ProcessPayment(ctx context.Context, p Payment, acquirer AcquirerStrategy) error {
+func (s Service) ProcessPayment(ctx context.Context, p Payment, ac Acquirer) error {
 
 	if vErr := p.IsValid(); vErr != nil {
 		return vErr
@@ -33,7 +33,7 @@ func (s Service) ProcessPayment(ctx context.Context, p Payment, acquirer Acquire
 		return gErr
 	}
 
-	if pErr := s.a.GetAcquirer(acquirer).Process(p, src); pErr != nil {
+	if pErr := s.a.GetAcquirerStrategy(ac).Process(p, src); pErr != nil {
 		return pErr
 	}
 

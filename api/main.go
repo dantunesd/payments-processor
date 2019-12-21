@@ -30,16 +30,16 @@ func main() {
 		log.Fatal(lErr)
 	}
 
-	cs := payment.CieloStrategyBuilder(
+	cs := payment.NewCieloStrategy(
 		config.CieloURI,
 		config.CieloMerchantID,
 		config.CieloMerchantKey,
 		config.GeneralReqTimeout,
 	)
-	re := payment.RedeStrategyBuilder()
+	re := payment.NewRedeStrategy()
 
 	a := payment.NewAcquirerProvider(
-		payment.Acquirers{
+		payment.AcquirersStrategy{
 			payment.Cielo: cs,
 			payment.Rede:  re,
 		},
