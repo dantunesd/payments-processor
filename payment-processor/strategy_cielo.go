@@ -33,7 +33,7 @@ func (c CieloStrategy) Process(p Payment, s Source) error {
 		Customer: Customer{
 			Name: p.Customer.Name,
 		},
-		Payment: CieloPayment{
+		Payment: CieloRequestPayment{
 			Type:         "CreditCard",
 			Amount:       p.Details.Amount,
 			Installments: p.Details.Installments,

@@ -56,21 +56,15 @@ type Source struct {
 	CVV        int    `json:"cvv"`
 }
 
-// CieloRequestConfig configuration
-type CieloRequestConfig struct {
-	URI     string
-	Headers map[string]string
-}
-
 // CieloRequestBody request body
 type CieloRequestBody struct {
-	MerchantOrderID string       `json:"MerchantOrderId"`
-	Customer        Customer     `json:"Customer"`
-	Payment         CieloPayment `json:"Payment"`
+	MerchantOrderID string              `json:"MerchantOrderId"`
+	Customer        Customer            `json:"Customer"`
+	Payment         CieloRequestPayment `json:"Payment"`
 }
 
-// CieloPayment payment node
-type CieloPayment struct {
+// CieloRequestPayment payment node
+type CieloRequestPayment struct {
 	Type         string          `json:"Type"`
 	Amount       int             `json:"Amount"`
 	Installments int             `json:"Installments"`
