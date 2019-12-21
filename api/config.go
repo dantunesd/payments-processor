@@ -14,6 +14,10 @@ type Config struct {
 	AppWriteTimeout    time.Duration `envconfig:"APP_WRITE_TIMEOUT" default:"3s"`
 	DBDriver           string        `envconfig:"DB_DRIVER" default:"mysql"`
 	DBConnectionString string        `envconfig:"DB_CONNECTION_STRING" default:"root:root@/source"`
+	CieloURI           string        `envconfig:"CIELO_URI" default:"https://apisandbox.cieloecommerce.cielo.com.br"`
+	CieloMerchantID    string        `envconfig:"CIELO_MERCHANT_ID" default:"f85ca5cc-335a-4dff-9ed1-4d500cd21bbd"`
+	CieloMerchantKey   string        `envconfig:"CIELO_MERCHANT_KEY" default:"AUZGAZLATBVIEMEFFCJVWVDPGWZBSXDYREUESDYJ"`
+	GeneralReqTimeout  time.Duration `envconfig:"GENERAL_REQ_TIMEOUT" default:"3s"`
 }
 
 // NewConfig Config constructor.

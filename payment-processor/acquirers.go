@@ -25,9 +25,9 @@ type IAcquirerProvider interface {
 type Acquirers map[AcquirerStrategy]IAcquirerStrategy
 
 // BuildAcquirers return active acquirers
-func BuildAcquirers() Acquirers {
+func BuildAcquirers(cr ICieloRepository) Acquirers {
 	return Acquirers{
-		Cielo: NewCieloStrategy(),
+		Cielo: NewCieloStrategy(cr),
 		Rede:  NewRedeStrategy(),
 	}
 }
@@ -48,17 +48,42 @@ func (ap *AcquirerProvider) GetAcquirer(as AcquirerStrategy) IAcquirerStrategy {
 }
 
 // CieloStrategy .
-type CieloStrategy struct{}
+type CieloStrategy struct {
+	r ICieloRepository
+}
 
 // NewCieloStrategy .
-func NewCieloStrategy() CieloStrategy {
-	return CieloStrategy{}
+func NewCieloStrategy(r ICieloRepository) CieloStrategy {
+	return CieloStrategy{
+		r: r,
+	}
 }
 
 // Process .
 func (c CieloStrategy) Process(p Payment, s Source) error {
-	fmt.Println("Processing cielo")
-	return nil
+	crb := CieloRequestBody{
+		MerchantOrderID: "newOrder",
+		Customer: Customer{
+			Name: p.Customer.Name,
+		},
+		Payment: CieloPayment{
+			Type:         "CreditCard",
+			Amount:       p.Details.Amount,
+			Installments: p.Details.Installments,
+			CreditCard: CieloCreditCard{
+				CardNumber:     s.CardNumber,
+				SecurityCode:   s.CVV,
+				Holder:         p.Customer.Name,
+				ExpirationDate: fmt.Sprintf("%d/%d", p.Details.Card.ExpirationMonth, p.Details.Card.ExpirationYear),
+				Brand:          p.Details.Card.Brand,
+			},
+		},
+	}
+	res, err := c.r.Sale(crb)
+
+	fmt.Println("Processing Cielo", res)
+
+	return err
 }
 
 // RedeStrategy .

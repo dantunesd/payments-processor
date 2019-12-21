@@ -53,5 +53,46 @@ type Establishment struct {
 type Source struct {
 	SourceID   string `json:"source_id"`
 	CardNumber string `json:"card_number"`
-	CVV        string `json:"cvv"`
+	CVV        int    `json:"cvv"`
+}
+
+// CieloRequestConfig configuration
+type CieloRequestConfig struct {
+	URI     string
+	Headers map[string]string
+}
+
+// CieloRequestBody request body
+type CieloRequestBody struct {
+	MerchantOrderID string       `json:"MerchantOrderId"`
+	Customer        Customer     `json:"Customer"`
+	Payment         CieloPayment `json:"Payment"`
+}
+
+// CieloPayment payment node
+type CieloPayment struct {
+	Type         string          `json:"Type"`
+	Amount       int             `json:"Amount"`
+	Installments int             `json:"Installments"`
+	CreditCard   CieloCreditCard `json:"CreditCard"`
+}
+
+// CieloCreditCard credit card node
+type CieloCreditCard struct {
+	CardNumber     string `json:"CardNumber"`
+	Holder         string `json:"Holder"`
+	ExpirationDate string `json:"ExpirationDate"`
+	SecurityCode   int    `json:"SecurityCode"`
+	Brand          string `json:"Brand"`
+}
+
+// CieloResponseBody response body
+type CieloResponseBody struct {
+	Payment CieloPaymentResponse `json:"Payment"`
+}
+
+// CieloPaymentResponse response payment node
+type CieloPaymentResponse struct {
+	ReturnMessage string `json:"ReturnMessage"`
+	ReturnCode    string `json:"ReturnCode"`
 }

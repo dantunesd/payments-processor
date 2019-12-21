@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS sources(
     cvv int(4) unsigned not null 
 );
 
-INSERT INTO sources (source_id, card_number, cvv) values ("token-1", 1111222233334444, 123);
-INSERT INTO sources (source_id, card_number, cvv) values ("token-2", 5555666677778888, 456);
+INSERT INTO sources (source_id, card_number, cvv) values ("auth", 0000000000000001, 123);
+INSERT INTO sources (source_id, card_number, cvv) values ("nonauth", 0000000000000002, 123);
+INSERT INTO sources (source_id, card_number, cvv) values ("exp", 0000000000000003, 123);

@@ -30,8 +30,19 @@ func main() {
 		log.Fatal(lErr)
 	}
 
+	chr := payment.NewHTTPRequester(
+		config.CieloURI,
+		map[string]string{
+			"merchantid":  config.CieloMerchantID,
+			"merchantkey": config.CieloMerchantKey,
+		},
+		config.GeneralReqTimeout,
+	)
+
+	cr := payment.NewCieloRepository(chr)
+
+	a := payment.NewAcquirerProvider(payment.BuildAcquirers(cr))
 	r := payment.NewSourcesRepository(&payment.DBWrapper{DB: db})
-	a := payment.NewAcquirerProvider(payment.BuildAcquirers())
 	s := payment.NewService(r, a)
 
 	handler := createServerHandler(s)
