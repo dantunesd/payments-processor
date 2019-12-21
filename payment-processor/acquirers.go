@@ -2,6 +2,8 @@ package payment
 
 import "fmt"
 
+import "time"
+
 // Consts for acquirer strategies
 const (
 	Cielo AcquirerStrategy = "Cielo"
@@ -24,14 +26,6 @@ type IAcquirerProvider interface {
 // Acquirers represents a list of acquirers
 type Acquirers map[AcquirerStrategy]IAcquirerStrategy
 
-// BuildAcquirers return active acquirers
-func BuildAcquirers(cr ICieloRepository) Acquirers {
-	return Acquirers{
-		Cielo: NewCieloStrategy(cr),
-		Rede:  NewRedeStrategy(),
-	}
-}
-
 // AcquirerProvider is a acquirer provider
 type AcquirerProvider struct {
 	Acquirers Acquirers
@@ -45,6 +39,22 @@ func NewAcquirerProvider(acquirers Acquirers) *AcquirerProvider {
 // GetAcquirer returns a acquirer strategy
 func (ap *AcquirerProvider) GetAcquirer(as AcquirerStrategy) IAcquirerStrategy {
 	return ap.Acquirers[as]
+}
+
+// CieloStrategyBuilder ...
+func CieloStrategyBuilder(baseURI, merchantID, merchantKey string, timeout time.Duration) CieloStrategy {
+	return NewCieloStrategy(
+		NewCieloRepository(
+			NewHTTPRequester(
+				baseURI,
+				headers{
+					"merchantid":  merchantID,
+					"merchantkey": merchantKey,
+				},
+				timeout,
+			),
+		),
+	)
 }
 
 // CieloStrategy .
@@ -84,6 +94,11 @@ func (c CieloStrategy) Process(p Payment, s Source) error {
 	fmt.Println("Processing Cielo", res)
 
 	return err
+}
+
+// RedeStrategyBuilder ...
+func RedeStrategyBuilder() RedeStrategy {
+	return NewRedeStrategy()
 }
 
 // RedeStrategy .

@@ -24,7 +24,7 @@ type HTTPRequester struct {
 }
 
 // NewHTTPRequester constructor.
-func NewHTTPRequester(baseURL string, headers headers, timeout time.Duration) *HTTPRequester {
+func NewHTTPRequester(baseURL string, headers headers, timeout time.Duration) IHTTPRequester {
 	return &HTTPRequester{
 		BaseURL: baseURL,
 		Headers: headers,
