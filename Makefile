@@ -1,11 +1,16 @@
-.PHONY: run-build run-app run-unit-tests
+.PHONY: build start-app unit-test start-dep
 
-run-build:
-	go build -o ./bin/api ./api
+APP=api
+BIN=./bin/$(APP)
 
-run-app: 
-	./bin/api
+build:
+	go build -o $(BIN) ./$(APP)
 
-run-unit-tests:
+start-app:
+	$(BIN)
+
+unit-test:
 	go test ./...
 
+start-dep:
+	docker-compose up -d

@@ -14,13 +14,22 @@ This application is a simplified payments processor.
 
 --- 
 
-
 ## Build
 
 Run the command bellow to generate the executable:
 
 ```bash
-make run-build
+make build
+```
+
+---
+
+## Dependencies
+
+Run the command bellow to start the dependencies:
+
+```bash
+make start-dep
 ```
 
 ---
@@ -30,10 +39,10 @@ make run-build
 Run the command bellow to start the application:
 
 ```bash
-make run-app
+make start-app
 ```
 
-*NOTE* : you must first build the app.
+*NOTE* : you must run `build` and `dependencies` before .
 
 ---
 
@@ -42,7 +51,7 @@ make run-app
 Run the command bellow to run all unit tests 
 
 ```bash
-make run-unit-tests
+make unit-test
 ```
 
 ---
