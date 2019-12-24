@@ -2,17 +2,19 @@ package payment
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
-	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 // IHTTPRequester interface for http requests
 type IHTTPRequester interface {
-	Post(path string, body, output interface{}) error
+	Post(ctx context.Context, path string, body, output interface{}) error
 }
 
 type headers map[string]string
@@ -36,7 +38,7 @@ func NewHTTPRequester(l *zap.Logger, baseURL string, headers headers, timeout ti
 }
 
 // Post perform a post request
-func (r *HTTPRequester) Post(path string, body, output interface{}) error {
+func (r *HTTPRequester) Post(ctx context.Context, path string, body, output interface{}) error {
 	return r.do("POST", path, body, output)
 }
 

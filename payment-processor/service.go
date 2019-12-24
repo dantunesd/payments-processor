@@ -33,7 +33,7 @@ func (s Service) ProcessPayment(ctx context.Context, p Payment, ac Acquirer) err
 		return gErr
 	}
 
-	if pErr := s.a.GetAcquirerStrategy(ac).Process(p, src); pErr != nil {
+	if pErr := s.a.GetAcquirerStrategy(ac).Process(ctx, p, src); pErr != nil {
 		return pErr
 	}
 

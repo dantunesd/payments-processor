@@ -1,5 +1,7 @@
 package payment
 
+import "context"
+
 // Acquirer type for acquirers
 type Acquirer string
 
@@ -14,7 +16,7 @@ type AcquirersStrategy map[Acquirer]IAcquirerStrategy
 
 // IAcquirerStrategy interface for a AcquirerStrategy
 type IAcquirerStrategy interface {
-	Process(Payment, Source) error
+	Process(context.Context, Payment, Source) error
 }
 
 // IAcquirerProvider interface for a AcquirerProvider

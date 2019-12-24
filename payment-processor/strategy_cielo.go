@@ -1,6 +1,7 @@
 package payment
 
 import (
+	"context"
 	"fmt"
 )
 
@@ -23,7 +24,7 @@ type CieloStrategy struct {
 }
 
 // Process .
-func (c CieloStrategy) Process(p Payment, s Source) error {
+func (c CieloStrategy) Process(ctx context.Context, p Payment, s Source) error {
 	crb := CieloRequestBody{
 		MerchantOrderID: p.OrderID,
 		Customer: Customer{
@@ -42,7 +43,7 @@ func (c CieloStrategy) Process(p Payment, s Source) error {
 			},
 		},
 	}
-	res, err := c.r.Sale(crb)
+	res, err := c.r.Sale(ctx, crb)
 
 	if err != nil {
 		return NewInternalServerError("failed to comunicate with Cielo")

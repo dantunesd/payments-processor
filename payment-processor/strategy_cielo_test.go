@@ -1,6 +1,7 @@
 package payment
 
 import (
+	"context"
 	"errors"
 	"testing"
 )
@@ -10,8 +11,9 @@ func TestCieloStrategy_Process(t *testing.T) {
 		r ICieloRepository
 	}
 	type args struct {
-		p Payment
-		s Source
+		ctx context.Context
+		p   Payment
+		s   Source
 	}
 	tests := []struct {
 		name    string
@@ -23,7 +25,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 			"process with success",
 			fields{
 				r: repositoryMock{
-					func(CieloRequestBody) (*CieloResponseBody, error) {
+					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
 						return &CieloResponseBody{
 							CieloPaymentResponse{
 								Status: 1,
@@ -33,6 +35,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 				},
 			},
 			args{
+				context.Background(),
 				Payment{},
 				Source{},
 			},
@@ -42,7 +45,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 			"process with success 2",
 			fields{
 				r: repositoryMock{
-					func(CieloRequestBody) (*CieloResponseBody, error) {
+					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
 						return &CieloResponseBody{
 							CieloPaymentResponse{
 								Status: 2,
@@ -52,6 +55,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 				},
 			},
 			args{
+				context.Background(),
 				Payment{},
 				Source{},
 			},
@@ -61,12 +65,13 @@ func TestCieloStrategy_Process(t *testing.T) {
 			"invalid data",
 			fields{
 				r: repositoryMock{
-					func(CieloRequestBody) (*CieloResponseBody, error) {
+					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
 						return &CieloResponseBody{}, errors.New("failed to request")
 					},
 				},
 			},
 			args{
+				context.Background(),
 				Payment{},
 				Source{},
 			},
@@ -76,7 +81,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 			"not authorized",
 			fields{
 				r: repositoryMock{
-					func(CieloRequestBody) (*CieloResponseBody, error) {
+					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
 						return &CieloResponseBody{
 							CieloPaymentResponse{
 								Status: 3,
@@ -86,6 +91,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 				},
 			},
 			args{
+				context.Background(),
 				Payment{},
 				Source{},
 			},
@@ -95,7 +101,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := CieloStrategy{r: tt.fields.r}
-			if err := c.Process(tt.args.p, tt.args.s); (err != nil) != tt.wantErr {
+			if err := c.Process(tt.args.ctx, tt.args.p, tt.args.s); (err != nil) != tt.wantErr {
 				t.Errorf("CieloStrategy.Process() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -103,9 +109,9 @@ func TestCieloStrategy_Process(t *testing.T) {
 }
 
 type repositoryMock struct {
-	sale func(CieloRequestBody) (*CieloResponseBody, error)
+	sale func(context.Context, CieloRequestBody) (*CieloResponseBody, error)
 }
 
-func (r repositoryMock) Sale(c CieloRequestBody) (*CieloResponseBody, error) {
-	return r.sale(c)
+func (r repositoryMock) Sale(ctx context.Context, c CieloRequestBody) (*CieloResponseBody, error) {
+	return r.sale(ctx, c)
 }

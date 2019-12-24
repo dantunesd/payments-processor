@@ -1,11 +1,15 @@
 package payment
 
-import "testing"
+import (
+	"context"
+	"testing"
+)
 
 func TestRedeStrategy_Process(t *testing.T) {
 	type args struct {
-		p Payment
-		s Source
+		ctx context.Context
+		p   Payment
+		s   Source
 	}
 	tests := []struct {
 		name    string
@@ -15,6 +19,7 @@ func TestRedeStrategy_Process(t *testing.T) {
 		{
 			"process with success",
 			args{
+				context.Background(),
 				Payment{},
 				Source{},
 			},
@@ -24,7 +29,7 @@ func TestRedeStrategy_Process(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := NewRedeStrategy()
-			if err := c.Process(tt.args.p, tt.args.s); (err != nil) != tt.wantErr {
+			if err := c.Process(tt.args.ctx, tt.args.p, tt.args.s); (err != nil) != tt.wantErr {
 				t.Errorf("RedeStrategy.Process() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

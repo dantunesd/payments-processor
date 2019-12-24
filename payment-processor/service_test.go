@@ -33,7 +33,7 @@ func TestService_ProcessPayment(t *testing.T) {
 				a: &AcquirerProviderMock{
 					getAcquirerStrategy: func(ac Acquirer) IAcquirerStrategy {
 						return &AcquirerStrategyMock{
-							process: func(p Payment, s Source) error {
+							process: func(ctx context.Context, p Payment, s Source) error {
 								return nil
 							},
 						}
@@ -112,7 +112,7 @@ func TestService_ProcessPayment(t *testing.T) {
 				a: &AcquirerProviderMock{
 					getAcquirerStrategy: func(ac Acquirer) IAcquirerStrategy {
 						return &AcquirerStrategyMock{
-							process: func(p Payment, s Source) error {
+							process: func(ctx context.Context, p Payment, s Source) error {
 								return errors.New("Failed to process")
 							},
 						}
@@ -166,9 +166,9 @@ func (a *AcquirerProviderMock) GetAcquirerStrategy(ac Acquirer) IAcquirerStrateg
 }
 
 type AcquirerStrategyMock struct {
-	process func(Payment, Source) error
+	process func(context.Context, Payment, Source) error
 }
 
-func (a *AcquirerStrategyMock) Process(p Payment, s Source) error {
-	return a.process(p, s)
+func (a *AcquirerStrategyMock) Process(ctx context.Context, p Payment, s Source) error {
+	return a.process(ctx, p, s)
 }
