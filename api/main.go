@@ -30,12 +30,19 @@ func main() {
 		log.Fatal(lErr)
 	}
 
-	cs := payment.NewCieloStrategy(
-		config.CieloURI,
-		config.CieloMerchantID,
-		config.CieloMerchantKey,
-		config.GeneralReqTimeout,
+	cr := payment.NewCieloRepository(
+		payment.NewHTTPRequester(
+			logger,
+			config.CieloURI,
+			map[string]string{
+				"merchantid":  config.CieloMerchantID,
+				"merchantkey": config.CieloMerchantKey,
+			},
+			config.GeneralReqTimeout,
+		),
 	)
+
+	cs := payment.NewCieloStrategy(cr)
 	re := payment.NewRedeStrategy()
 
 	a := payment.NewAcquirerProvider(
@@ -44,7 +51,7 @@ func main() {
 			payment.Rede:  re,
 		},
 	)
-	r := payment.NewSourcesRepository(&payment.DBWrapper{DB: db})
+	r := payment.NewSourcesRepository(&payment.LoggableDBWrapper{DB: db, Logger: logger})
 	s := payment.NewService(r, a)
 
 	handler := createServerHandler(s)

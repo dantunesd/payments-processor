@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -18,14 +19,16 @@ type headers map[string]string
 
 // HTTPRequester wrapper for client http
 type HTTPRequester struct {
+	Logger  *zap.Logger
 	BaseURL string
 	Headers headers
 	Timeout time.Duration
 }
 
 // NewHTTPRequester constructor.
-func NewHTTPRequester(baseURL string, headers headers, timeout time.Duration) IHTTPRequester {
+func NewHTTPRequester(l *zap.Logger, baseURL string, headers headers, timeout time.Duration) IHTTPRequester {
 	return &HTTPRequester{
+		Logger:  l,
 		BaseURL: baseURL,
 		Headers: headers,
 		Timeout: timeout,
@@ -59,6 +62,13 @@ func (r *HTTPRequester) do(method, path string, body, output interface{}) error 
 	}
 	req.Header.Add("content-type", "application/json")
 
+	r.Logger.Info(
+		"logging request",
+		zap.String("path", path),
+		zap.String("method", method),
+		zap.String("body", bodyEncoded.String()),
+	)
+
 	res, dErr := c.Do(req)
 	if dErr != nil {
 		return dErr
@@ -68,6 +78,14 @@ func (r *HTTPRequester) do(method, path string, body, output interface{}) error 
 	if rErr != nil {
 		return rErr
 	}
+
+	r.Logger.Info(
+		"logging response",
+		zap.String("path", path),
+		zap.String("method", method),
+		zap.Int("statusCode", res.StatusCode),
+		zap.String("response", string(resBody)),
+	)
 
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusMultipleChoices {
 		return errors.New(string(resBody))

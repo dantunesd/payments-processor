@@ -2,7 +2,6 @@ package payment
 
 import (
 	"fmt"
-	"time"
 )
 
 // Payment succeeded
@@ -12,18 +11,9 @@ const (
 )
 
 // NewCieloStrategy strategy constructor
-func NewCieloStrategy(baseURI, merchantID, merchantKey string, timeout time.Duration) CieloStrategy {
+func NewCieloStrategy(r ICieloRepository) CieloStrategy {
 	return CieloStrategy{
-		r: NewCieloRepository(
-			NewHTTPRequester(
-				baseURI,
-				headers{
-					"merchantid":  merchantID,
-					"merchantkey": merchantKey,
-				},
-				timeout,
-			),
-		),
+		r: r,
 	}
 }
 

@@ -3,6 +3,7 @@ package payment
 import (
 	"context"
 	"database/sql"
+	"go.uber.org/zap"
 )
 
 // IScanner interface for db scanner
@@ -15,12 +16,20 @@ type IQuerier interface {
 	QueryRowContext(ctx context.Context, query string, args ...interface{}) IScanner
 }
 
-// DBWrapper wrapper for DB
-type DBWrapper struct {
-	DB *sql.DB
+// LoggableDBWrapper wrapper for DB
+type LoggableDBWrapper struct {
+	DB     *sql.DB
+	Logger *zap.Logger
 }
 
 // QueryRowContext wrapper for QueryRowContext
-func (q *DBWrapper) QueryRowContext(ctx context.Context, query string, args ...interface{}) IScanner {
+func (q *LoggableDBWrapper) QueryRowContext(ctx context.Context, query string, args ...interface{}) IScanner {
+
+	q.Logger.Info(
+		"logging queryrow",
+		zap.String("query", query),
+		zap.Any("args", args),
+	)
+
 	return q.DB.QueryRowContext(ctx, query, args...)
 }
