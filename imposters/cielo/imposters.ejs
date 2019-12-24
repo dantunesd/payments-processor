@@ -41,6 +41,26 @@
 {
   "responses": [
     {
+      "inject": "<%- stringify(filename, 'cielo/responses/invalid.ejs') %>"
+    }
+  ],
+	"predicates": [
+		{
+			"matches": {
+				"body": "invalid-card"
+			}
+		},
+    {
+			"equals": {
+				"path": "/1/sales",
+				"method": "POST"
+      }
+    }
+  ]
+},
+{
+  "responses": [
+    {
       "inject": "<%- stringify(filename, 'cielo/responses/default.ejs') %>"
     }
   ],
