@@ -33,7 +33,7 @@ func (s *SourcesRepository) GetByID(ctx context.Context, ID string) (Source, err
 		if err == sql.ErrNoRows {
 			return src, NewInvalidContentError("source_id not found")
 		}
-		return src, NewInternalServerError(err.Error())
+		return src, NewInternalServerError("failed to query source")
 	}
 
 	return src, nil
