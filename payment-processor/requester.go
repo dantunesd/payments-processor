@@ -66,6 +66,7 @@ func (r *HTTPRequester) do(method, path string, body, output interface{}) error 
 
 	r.Logger.Info(
 		"logging http request",
+		zap.String("baseUrl", r.BaseURL),
 		zap.String("path", path),
 		zap.String("method", method),
 		zap.String("body", bodyEncoded.String()),
@@ -86,10 +87,11 @@ func (r *HTTPRequester) do(method, path string, body, output interface{}) error 
 
 	r.Logger.Info(
 		"logging http response",
+		zap.String("baseUrl", r.BaseURL),
 		zap.String("path", path),
 		zap.String("method", method),
+		zap.String("body", resBody.String()),
 		zap.Int("statusCode", res.StatusCode),
-		zap.String("response", resBody.String()),
 	)
 
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusMultipleChoices {
