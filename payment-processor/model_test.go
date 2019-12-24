@@ -4,6 +4,7 @@ import "testing"
 
 func TestPayment_IsValid(t *testing.T) {
 	type fields struct {
+		OrderID       string
 		Customer      Customer
 		Details       Details
 		Establishment Establishment
@@ -16,6 +17,7 @@ func TestPayment_IsValid(t *testing.T) {
 		{
 			"With all fields",
 			fields{
+				"o123456789",
 				Customer{"test"},
 				Details{
 					Card{"test", "test", 2020, 12},
@@ -31,6 +33,7 @@ func TestPayment_IsValid(t *testing.T) {
 		{
 			"With invalid amount",
 			fields{
+				"o123456789",
 				Customer{"test"},
 				Details{
 					Card{"test", "test", 2020, 12},
@@ -46,6 +49,7 @@ func TestPayment_IsValid(t *testing.T) {
 		{
 			"With invalid installments",
 			fields{
+				"o123456789",
 				Customer{"test"},
 				Details{
 					Card{"test", "test", 2020, 12},
@@ -61,6 +65,7 @@ func TestPayment_IsValid(t *testing.T) {
 		{
 			"With invalid itens",
 			fields{
+				"o123456789",
 				Customer{"test"},
 				Details{
 					Card{"test", "test", 2020, 12},
@@ -91,6 +96,7 @@ func TestPayment_IsValid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := &Payment{
+				OrderID:       tt.fields.OrderID,
 				Customer:      tt.fields.Customer,
 				Details:       tt.fields.Details,
 				Establishment: tt.fields.Establishment,

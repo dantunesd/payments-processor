@@ -6,6 +6,7 @@ import (
 
 // Payment represents a incoming payment from client
 type Payment struct {
+	OrderID       string        `json:"order_id" validate:"required"`
 	Customer      Customer      `json:"customer" validate:"required"`
 	Details       Details       `json:"details" validate:"required"`
 	Establishment Establishment `json:"establishment" validate:"required"`

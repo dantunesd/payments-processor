@@ -35,7 +35,7 @@ type CieloStrategy struct {
 // Process .
 func (c CieloStrategy) Process(p Payment, s Source) error {
 	crb := CieloRequestBody{
-		MerchantOrderID: "newOrder",
+		MerchantOrderID: p.OrderID,
 		Customer: Customer{
 			Name: p.Customer.Name,
 		},

@@ -43,6 +43,7 @@ func TestService_ProcessPayment(t *testing.T) {
 			args{
 				context.Background(),
 				Payment{
+					"o123456789",
 					Customer{"test"},
 					Details{
 						Card{"test", "test", 2020, 12},
@@ -85,6 +86,7 @@ func TestService_ProcessPayment(t *testing.T) {
 			args{
 				context.Background(),
 				Payment{
+					"o123456789",
 					Customer{"test"},
 					Details{
 						Card{"test", "test", 2020, 12},
@@ -120,6 +122,7 @@ func TestService_ProcessPayment(t *testing.T) {
 			args{
 				context.Background(),
 				Payment{
+					"o123456789",
 					Customer{"test"},
 					Details{
 						Card{"test", "test", 2020, 12},
