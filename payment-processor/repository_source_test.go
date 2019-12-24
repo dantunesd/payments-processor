@@ -3,6 +3,7 @@ package payment
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"reflect"
 	"testing"
 )
@@ -47,6 +48,23 @@ func TestSourcesRepository_GetByID(t *testing.T) {
 						return &ScannerMock{
 							scan: func(dest ...interface{}) error {
 								return sql.ErrNoRows
+							},
+						}
+					},
+				},
+			},
+			args{},
+			Source{},
+			true,
+		},
+		{
+			"fail on query",
+			fields{
+				QuerierMock{
+					queryRowContext: func(ctx context.Context, query string, args ...interface{}) IScanner {
+						return &ScannerMock{
+							scan: func(dest ...interface{}) error {
+								return errors.New("invalid syntax")
 							},
 						}
 					},
