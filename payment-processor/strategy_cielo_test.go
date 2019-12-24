@@ -24,7 +24,11 @@ func TestCieloStrategy_Process(t *testing.T) {
 			fields{
 				r: repositoryMock{
 					func(CieloRequestBody) (*CieloResponseBody, error) {
-						return &CieloResponseBody{}, nil
+						return &CieloResponseBody{
+							CieloPaymentResponse{
+								Status: 1,
+							},
+						}, nil
 					},
 				},
 			},
@@ -35,11 +39,49 @@ func TestCieloStrategy_Process(t *testing.T) {
 			false,
 		},
 		{
-			"failed to process",
+			"process with success 2",
+			fields{
+				r: repositoryMock{
+					func(CieloRequestBody) (*CieloResponseBody, error) {
+						return &CieloResponseBody{
+							CieloPaymentResponse{
+								Status: 2,
+							},
+						}, nil
+					},
+				},
+			},
+			args{
+				Payment{},
+				Source{},
+			},
+			false,
+		},
+		{
+			"invalid data",
 			fields{
 				r: repositoryMock{
 					func(CieloRequestBody) (*CieloResponseBody, error) {
 						return &CieloResponseBody{}, errors.New("failed to request")
+					},
+				},
+			},
+			args{
+				Payment{},
+				Source{},
+			},
+			true,
+		},
+		{
+			"not authorized",
+			fields{
+				r: repositoryMock{
+					func(CieloRequestBody) (*CieloResponseBody, error) {
+						return &CieloResponseBody{
+							CieloPaymentResponse{
+								Status: 3,
+							},
+						}, nil
 					},
 				},
 			},

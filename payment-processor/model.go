@@ -87,6 +87,7 @@ type CieloResponseBody struct {
 
 // CieloPaymentResponse response payment node
 type CieloPaymentResponse struct {
+	Status        int    `json:"Status"`
 	ReturnMessage string `json:"ReturnMessage"`
 	ReturnCode    string `json:"ReturnCode"`
 }

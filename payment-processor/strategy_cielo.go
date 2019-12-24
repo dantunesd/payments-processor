@@ -5,6 +5,12 @@ import (
 	"time"
 )
 
+// Payment succeeded
+const (
+	Authorized       = 1
+	PaymentConfirmed = 2
+)
+
 // NewCieloStrategy strategy constructor
 func NewCieloStrategy(baseURI, merchantID, merchantKey string, timeout time.Duration) CieloStrategy {
 	return CieloStrategy{
@@ -48,7 +54,19 @@ func (c CieloStrategy) Process(p Payment, s Source) error {
 	}
 	res, err := c.r.Sale(crb)
 
-	fmt.Println("Processing Cielo", res)
+	if err != nil {
+		return NewInvalidRequestError(err.Error())
+	}
 
-	return err
+	if !paymentWithSuccess(res) {
+		return NewPaymentFailedError(
+			fmt.Sprintf("Cielo: Status: %d, ReturnCode: %s, ReturnMessage: %s", res.Payment.Status, res.Payment.ReturnCode, res.Payment.ReturnMessage),
+		)
+	}
+
+	return nil
+}
+
+func paymentWithSuccess(c *CieloResponseBody) bool {
+	return c.Payment.Status == PaymentConfirmed || c.Payment.Status == Authorized
 }
