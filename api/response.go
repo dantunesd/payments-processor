@@ -12,6 +12,11 @@ type ErrorResponse struct {
 	Error   string `json:"error"`
 }
 
+// Response represents a success response
+type Response struct {
+	Message string `json:"message"`
+}
+
 func responseWriter(w http.ResponseWriter, code int, content interface{}) {
 	w.Header().Add("content-type", "application/json")
 	w.WriteHeader(code)
