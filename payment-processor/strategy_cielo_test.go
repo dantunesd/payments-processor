@@ -24,7 +24,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 		{
 			"process with success",
 			fields{
-				r: repositoryMock{
+				r: cieloRepositoryMock{
 					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
 						return &CieloResponseBody{
 							CieloPaymentResponse{
@@ -44,7 +44,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 		{
 			"process with success 2",
 			fields{
-				r: repositoryMock{
+				r: cieloRepositoryMock{
 					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
 						return &CieloResponseBody{
 							CieloPaymentResponse{
@@ -64,7 +64,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 		{
 			"invalid data",
 			fields{
-				r: repositoryMock{
+				r: cieloRepositoryMock{
 					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
 						return &CieloResponseBody{}, errors.New("failed to request")
 					},
@@ -80,7 +80,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 		{
 			"not authorized",
 			fields{
-				r: repositoryMock{
+				r: cieloRepositoryMock{
 					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
 						return &CieloResponseBody{
 							CieloPaymentResponse{
@@ -108,10 +108,10 @@ func TestCieloStrategy_Process(t *testing.T) {
 	}
 }
 
-type repositoryMock struct {
+type cieloRepositoryMock struct {
 	sale func(context.Context, CieloRequestBody) (*CieloResponseBody, error)
 }
 
-func (r repositoryMock) Sale(ctx context.Context, c CieloRequestBody) (*CieloResponseBody, error) {
-	return r.sale(ctx, c)
+func (c cieloRepositoryMock) Sale(ctx context.Context, crb CieloRequestBody) (*CieloResponseBody, error) {
+	return c.sale(ctx, crb)
 }

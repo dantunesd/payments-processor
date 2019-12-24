@@ -22,7 +22,13 @@ func TestRedeStrategy_Process(t *testing.T) {
 	}{
 		{
 			"process with success",
-			fields{},
+			fields{
+				r: redeRepositoryMock{
+					transaction: func(context.Context, RedeRequestBody) (*RedeResponseBody, error) {
+						return &RedeResponseBody{ReturnCode: "00"}, nil
+					},
+				},
+			},
 			args{
 				context.Background(),
 				Payment{},
@@ -39,4 +45,12 @@ func TestRedeStrategy_Process(t *testing.T) {
 			}
 		})
 	}
+}
+
+type redeRepositoryMock struct {
+	transaction func(context.Context, RedeRequestBody) (*RedeResponseBody, error)
+}
+
+func (r redeRepositoryMock) Transaction(ctx context.Context, rrb RedeRequestBody) (*RedeResponseBody, error) {
+	return r.transaction(ctx, rrb)
 }
