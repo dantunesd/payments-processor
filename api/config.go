@@ -10,14 +10,16 @@ import (
 type Config struct {
 	AppName            string        `envconfig:"APP_NAME" default:"Payments-Processor"`
 	AppPort            int           `envconfig:"APP_PORT" default:"3000"`
-	AppReadTimeout     time.Duration `envconfig:"APP_READ_TIMEOUT" default:"3s"`
-	AppWriteTimeout    time.Duration `envconfig:"APP_WRITE_TIMEOUT" default:"3s"`
+	AppReadTimeout     time.Duration `envconfig:"APP_READ_TIMEOUT" default:"6s"`
+	AppWriteTimeout    time.Duration `envconfig:"APP_WRITE_TIMEOUT" default:"6s"`
 	DBDriver           string        `envconfig:"DB_DRIVER" default:"mysql"`
 	DBConnectionString string        `envconfig:"DB_CONNECTION_STRING" default:"root:root@/source"`
 	CieloURI           string        `envconfig:"CIELO_URI" default:"http://localhost:8010"`
 	CieloMerchantID    string        `envconfig:"CIELO_MERCHANT_ID" default:"f85ca5cc-335a-4dff-9ed1-4d500cd21bbd"`
 	CieloMerchantKey   string        `envconfig:"CIELO_MERCHANT_KEY" default:"AUZGAZLATBVIEMEFFCJVWVDPGWZBSXDYREUESDYJ"`
-	GeneralReqTimeout  time.Duration `envconfig:"GENERAL_REQ_TIMEOUT" default:"3s"`
+	RedeURI            string        `envconfig:"REDE_URI" default:"https://api.userede.com.br/desenvolvedores"`
+	RedeAuth           string        `envconfig:"REDE_AUTH" default:"Basic MTAwMDQ5NzI6NzM2MzRhNTE3NzE4NGY0NDk3NTMwYTU0NGZlMmZiOWM="`
+	GeneralReqTimeout  time.Duration `envconfig:"GENERAL_REQ_TIMEOUT" default:"4s"`
 	// CieloURI           string        `envconfig:"CIELO_URI" default:"https://apisandbox.cieloecommerce.cielo.com.br"`
 }
 

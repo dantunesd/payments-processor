@@ -15,11 +15,12 @@ func createServerHandler(s payment.IService) http.Handler {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.RequestID)
-	r.Post("/payment/cielo", paymentCieloHandler(s))
+	r.Post("/payment/cielo", paymentHandler(s, payment.Cielo))
+	r.Post("/payment/rede", paymentHandler(s, payment.Rede))
 	return r
 }
 
-func paymentCieloHandler(s payment.IService) http.HandlerFunc {
+func paymentHandler(s payment.IService, ac payment.Acquirer) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		p := &payment.Payment{}
@@ -29,7 +30,7 @@ func paymentCieloHandler(s payment.IService) http.HandlerFunc {
 			return
 		}
 
-		if pErr := s.ProcessPayment(r.Context(), *p, payment.Cielo); pErr != nil {
+		if pErr := s.ProcessPayment(r.Context(), *p, ac); pErr != nil {
 			responseWriter(w, getHTTPCode(pErr), ErrorResponse{"Failed to proccess payment", pErr.Error()})
 			return
 		}

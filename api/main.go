@@ -1,12 +1,11 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"payments-processor/payment-processor"
-
-	"database/sql"
 
 	"github.com/facebookgo/grace/gracehttp"
 	_ "github.com/go-sql-driver/mysql"
@@ -41,9 +40,19 @@ func main() {
 			config.GeneralReqTimeout,
 		),
 	)
-
 	cs := payment.NewCieloStrategy(cr)
-	re := payment.NewRedeStrategy()
+
+	rr := payment.NewRedeRepository(
+		payment.NewHTTPRequester(
+			logger,
+			config.RedeURI,
+			map[string]string{
+				"Authorization": config.RedeAuth,
+			},
+			config.GeneralReqTimeout,
+		),
+	)
+	re := payment.NewRedeStrategy(rr)
 
 	a := payment.NewAcquirerProvider(
 		payment.AcquirersStrategy{

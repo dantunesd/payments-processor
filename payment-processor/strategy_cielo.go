@@ -49,13 +49,13 @@ func (c CieloStrategy) Process(ctx context.Context, p Payment, s Source) error {
 		return NewInternalServerError("failed to comunicate with Cielo")
 	}
 
-	if !paymentSucceeded(res) {
+	if !c.paymentSucceeded(res) {
 		return NewPaymentError(res.Payment.ReturnMessage)
 	}
 
 	return nil
 }
 
-func paymentSucceeded(c *CieloResponseBody) bool {
-	return c.Payment.Status == PaymentConfirmed || c.Payment.Status == Authorized
+func (c CieloStrategy) paymentSucceeded(crb *CieloResponseBody) bool {
+	return crb.Payment.Status == PaymentConfirmed || crb.Payment.Status == Authorized
 }

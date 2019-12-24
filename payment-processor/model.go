@@ -92,3 +92,21 @@ type CieloPaymentResponse struct {
 	ReturnMessage string `json:"ReturnMessage"`
 	ReturnCode    string `json:"ReturnCode"`
 }
+
+// RedeRequestBody request body
+type RedeRequestBody struct {
+	Capture         bool   `json:"capture"`
+	Reference       string `json:"reference"`
+	Amount          int    `json:"amount"`
+	HolderName      string `json:"cardholderName"`
+	CardNumber      string `json:"cardNumber"`
+	ExpirationMonth int    `json:"expirationMonth"`
+	ExpirationYear  int    `json:"expirationYear"`
+	SecurityCode    string `json:"securityCode"`
+}
+
+// RedeResponseBody response body
+type RedeResponseBody struct {
+	ReturnMessage string `json:"returnMessage"`
+	ReturnCode    string `json:"returnCode"`
+}
