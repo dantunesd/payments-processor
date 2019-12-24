@@ -63,7 +63,7 @@ func (r *HTTPRequester) do(method, path string, body, output interface{}) error 
 	req.Header.Add("content-type", "application/json")
 
 	r.Logger.Info(
-		"logging request",
+		"logging http request",
 		zap.String("path", path),
 		zap.String("method", method),
 		zap.String("body", bodyEncoded.String()),
@@ -74,24 +74,27 @@ func (r *HTTPRequester) do(method, path string, body, output interface{}) error 
 		return dErr
 	}
 
-	resBody, rErr := ioutil.ReadAll(res.Body)
+	resByte, rErr := ioutil.ReadAll(res.Body)
 	if rErr != nil {
 		return rErr
 	}
 
+	resBody := new(bytes.Buffer)
+	json.Compact(resBody, resByte)
+
 	r.Logger.Info(
-		"logging response",
+		"logging http response",
 		zap.String("path", path),
 		zap.String("method", method),
 		zap.Int("statusCode", res.StatusCode),
-		zap.String("response", string(resBody)),
+		zap.String("response", resBody.String()),
 	)
 
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusMultipleChoices {
-		return errors.New(string(resBody))
+		return errors.New(resBody.String())
 	}
 
-	if uErr := json.Unmarshal(resBody, output); uErr != nil {
+	if uErr := json.Unmarshal(resBody.Bytes(), output); uErr != nil {
 		return uErr
 	}
 
