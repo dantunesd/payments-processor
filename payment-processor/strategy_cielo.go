@@ -59,7 +59,7 @@ func (c CieloStrategy) Process(p Payment, s Source) error {
 	}
 
 	if !paymentWithSuccess(res) {
-		return NewPaymentError(fmt.Sprintf(res.Payment.ReturnMessage))
+		return NewPaymentError(res.Payment.ReturnMessage)
 	}
 
 	return nil
