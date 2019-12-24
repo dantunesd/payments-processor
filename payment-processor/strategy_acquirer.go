@@ -1,13 +1,13 @@
 package payment
 
+// Acquirer type for acquirers
+type Acquirer string
+
 // Consts for acquirers
 const (
 	Cielo Acquirer = "Cielo"
 	Rede  Acquirer = "Rede"
 )
-
-// Acquirer type for acquirers
-type Acquirer string
 
 // AcquirersStrategy map for acquirer and strategy
 type AcquirersStrategy map[Acquirer]IAcquirerStrategy
@@ -28,8 +28,8 @@ type AcquirerProvider struct {
 }
 
 // NewAcquirerProvider AcquirerProvider constructor
-func NewAcquirerProvider(acquirers AcquirersStrategy) *AcquirerProvider {
-	return &AcquirerProvider{acquirers}
+func NewAcquirerProvider(as AcquirersStrategy) *AcquirerProvider {
+	return &AcquirerProvider{as}
 }
 
 // GetAcquirerStrategy returns a acquirer strategy
