@@ -55,11 +55,11 @@ func (c CieloStrategy) Process(p Payment, s Source) error {
 	res, err := c.r.Sale(crb)
 
 	if err != nil {
-		return NewInvalidRequestError(err.Error())
+		return NewInternalServerError(err.Error())
 	}
 
 	if !paymentWithSuccess(res) {
-		return NewPaymentFailedError(
+		return NewPaymentError(
 			fmt.Sprintf("Cielo: Status: %d, ReturnCode: %s, ReturnMessage: %s", res.Payment.Status, res.Payment.ReturnCode, res.Payment.ReturnMessage),
 		)
 	}

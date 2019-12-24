@@ -7,8 +7,9 @@ import (
 
 func TestNewError(t *testing.T) {
 	type args struct {
-		message string
-		errType ErrorType
+		message    string
+		errType    ErrorType
+		statusCode int
 	}
 	tests := []struct {
 		name string
@@ -19,17 +20,19 @@ func TestNewError(t *testing.T) {
 			"return a new error",
 			args{
 				"error",
-				InvalidContent,
+				InvalidContentError,
+				400,
 			},
 			&Error{
 				ErrorMessage: "error",
-				ErrorType:    InvalidContent,
+				ErrorType:    InvalidContentError,
+				StatusCode:   400,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewError(tt.args.message, tt.args.errType); !reflect.DeepEqual(got, tt.want) {
+			if got := NewError(tt.args.message, tt.args.errType, tt.args.statusCode); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewError() = %v, want %v", got, tt.want)
 			}
 		})
@@ -52,7 +55,8 @@ func TestNewInvalidContentError(t *testing.T) {
 			},
 			&Error{
 				ErrorMessage: "error",
-				ErrorType:    InvalidContent,
+				ErrorType:    InvalidContentError,
+				StatusCode:   400,
 			},
 		},
 	}
@@ -65,7 +69,7 @@ func TestNewInvalidContentError(t *testing.T) {
 	}
 }
 
-func TestNewInvalidRequestError(t *testing.T) {
+func TestNewInternalServerError(t *testing.T) {
 	type args struct {
 		message string
 	}
@@ -81,20 +85,21 @@ func TestNewInvalidRequestError(t *testing.T) {
 			},
 			&Error{
 				ErrorMessage: "error",
-				ErrorType:    InvalidRequest,
+				ErrorType:    InternalServerError,
+				StatusCode:   500,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewInvalidRequestError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewInvalidRequestError() = %v, want %v", got, tt.want)
+			if got := NewInternalServerError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewInternalServerError() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestNewPaymentFailedError(t *testing.T) {
+func TestNewPaymentError(t *testing.T) {
 	type args struct {
 		message string
 	}
@@ -110,14 +115,15 @@ func TestNewPaymentFailedError(t *testing.T) {
 			},
 			&Error{
 				ErrorMessage: "error",
-				ErrorType:    PaymentFailed,
+				ErrorType:    PaymentError,
+				StatusCode:   400,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewPaymentFailedError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewPaymentFailedError() = %v, want %v", got, tt.want)
+			if got := NewPaymentError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewPaymentError() = %v, want %v", got, tt.want)
 			}
 		})
 	}

@@ -8,8 +8,8 @@ import (
 
 // ErrorResponse represents a response with error
 type ErrorResponse struct {
-	ErrorMessage string `json:"error"`
-	Details      string `json:"details"`
+	Message string `json:"message"`
+	Error   string `json:"error"`
 }
 
 func responseWriter(w http.ResponseWriter, code int, content interface{}) {
@@ -24,16 +24,7 @@ func responseWriter(w http.ResponseWriter, code int, content interface{}) {
 func getHTTPCode(err error) int {
 	switch terr := err.(type) {
 	case *payment.Error:
-		return getCodeByError(terr)
-	default:
-		return http.StatusInternalServerError
-	}
-}
-
-func getCodeByError(err *payment.Error) int {
-	switch err.ErrorType {
-	case payment.InvalidContent:
-		return http.StatusBadRequest
+		return terr.StatusCode
 	default:
 		return http.StatusInternalServerError
 	}
