@@ -1,0 +1,55 @@
+{
+  "responses": [
+    {
+      "inject": "<%- stringify(filename, 'cielo/responses/not-authorized.ejs') %>"
+    }
+  ],
+	"predicates": [
+		{
+			"matches": {
+				"body": "0000000000000002"
+			}
+		},
+    {
+			"equals": {
+				"path": "/1/sales",
+				"method": "POST"
+      }
+    }
+  ]
+},
+{
+  "responses": [
+    {
+      "inject": "<%- stringify(filename, 'cielo/responses/expired.ejs') %>"
+    }
+  ],
+	"predicates": [
+		{
+			"matches": {
+				"body": "0000000000000003"
+			}
+		},
+    {
+			"equals": {
+				"path": "/1/sales",
+				"method": "POST"
+      }
+    }
+  ]
+},
+{
+  "responses": [
+    {
+      "inject": "<%- stringify(filename, 'cielo/responses/default.ejs') %>"
+    }
+  ],
+  "predicates": [
+    {
+      "equals": {
+				"path": "/1/sales",
+				"method": "POST"
+      }
+    }
+  ]
+}
