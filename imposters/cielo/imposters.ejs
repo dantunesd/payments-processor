@@ -1,13 +1,13 @@
 {
   "responses": [
     {
-      "inject": "<%- stringify(filename, 'cielo/responses/not-authorized.ejs') %>"
+      "inject": "<%- stringify(filename, 'cielo/responses/emissor-error.ejs') %>"
     }
   ],
 	"predicates": [
 		{
 			"matches": {
-				"body": "0000000000000002"
+				"body": "emissor-error"
 			}
 		},
     {
@@ -21,33 +21,13 @@
 {
   "responses": [
     {
-      "inject": "<%- stringify(filename, 'cielo/responses/expired.ejs') %>"
+      "inject": "<%- stringify(filename, 'cielo/responses/integration-error.ejs') %>"
     }
   ],
 	"predicates": [
 		{
 			"matches": {
-				"body": "0000000000000003"
-			}
-		},
-    {
-			"equals": {
-				"path": "/1/sales",
-				"method": "POST"
-      }
-    }
-  ]
-},
-{
-  "responses": [
-    {
-      "inject": "<%- stringify(filename, 'cielo/responses/invalid.ejs') %>"
-    }
-  ],
-	"predicates": [
-		{
-			"matches": {
-				"body": "invalid-card"
+				"body": "integration-error"
 			}
 		},
     {

@@ -17,9 +17,10 @@ type Config struct {
 	CieloURI           string        `envconfig:"CIELO_URI" default:"http://localhost:8010"`
 	CieloMerchantID    string        `envconfig:"CIELO_MERCHANT_ID" default:"f85ca5cc-335a-4dff-9ed1-4d500cd21bbd"`
 	CieloMerchantKey   string        `envconfig:"CIELO_MERCHANT_KEY" default:"AUZGAZLATBVIEMEFFCJVWVDPGWZBSXDYREUESDYJ"`
-	RedeURI            string        `envconfig:"REDE_URI" default:"https://api.userede.com.br/desenvolvedores"`
+	RedeURI            string        `envconfig:"REDE_URI" default:"http://localhost:8010"`
 	RedeAuth           string        `envconfig:"REDE_AUTH" default:"Basic MTAwMDQ5NzI6NzM2MzRhNTE3NzE4NGY0NDk3NTMwYTU0NGZlMmZiOWM="`
 	GeneralReqTimeout  time.Duration `envconfig:"GENERAL_REQ_TIMEOUT" default:"4s"`
+	// RedeURI            string        `envconfig:"REDE_URI" default:"https://api.userede.com.br/desenvolvedores"`
 	// CieloURI           string        `envconfig:"CIELO_URI" default:"https://apisandbox.cieloecommerce.cielo.com.br"`
 }
 
