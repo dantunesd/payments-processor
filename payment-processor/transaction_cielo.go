@@ -23,20 +23,8 @@ func NewCieloTransaction(r IResponser) ITransaction {
 	}
 }
 
-// IsSucceeded validates if the transaction was succeded
-func (c CieloTransaction) IsSucceeded() bool {
-	if c.hasComunicationError() {
-		return false
-	}
-
-	if c.hasIntegrationError() {
-		return false
-	}
-	return c.paymentSucceeded(c.decode().Payment.Status)
-}
-
-// GetError returns the error
-func (c CieloTransaction) GetError() error {
+// PaymentSucceeded returns the error
+func (c CieloTransaction) PaymentSucceeded() error {
 	if c.hasComunicationError() {
 		return NewInternalServerError(string(c.r.GetBody()))
 	}

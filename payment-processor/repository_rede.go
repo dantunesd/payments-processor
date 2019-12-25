@@ -23,7 +23,7 @@ func NewRedeRepository(r IHTTPRequester) IRedeRepository {
 	}
 }
 
-// Transaction .
+// Transaction makes a rede transaction
 func (c *RedeRepository) Transaction(ctx context.Context, rrb RedeRequestBody) (ITransaction, error) {
 
 	r, err := c.r.Post(ctx, transactionPath, rrb)

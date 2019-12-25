@@ -27,7 +27,6 @@ func TestRedeStrategy_Process(t *testing.T) {
 				r: redeRepositoryMock{
 					func(context.Context, RedeRequestBody) (ITransaction, error) {
 						return &redeTransactionMock{
-							func() bool { return true },
 							func() error { return nil },
 						}, nil
 					},
@@ -46,7 +45,6 @@ func TestRedeStrategy_Process(t *testing.T) {
 				r: redeRepositoryMock{
 					func(context.Context, RedeRequestBody) (ITransaction, error) {
 						return &redeTransactionMock{
-							func() bool { return false },
 							func() error { return errors.New("failed") },
 						}, nil
 					},
@@ -95,14 +93,9 @@ func (r redeRepositoryMock) Transaction(ctx context.Context, rrb RedeRequestBody
 }
 
 type redeTransactionMock struct {
-	isSucceeded func() bool
-	getError    func() error
+	paymentSucceeded func() error
 }
 
-func (r redeTransactionMock) IsSucceeded() bool {
-	return r.isSucceeded()
-}
-
-func (r redeTransactionMock) GetError() error {
-	return r.getError()
+func (r redeTransactionMock) PaymentSucceeded() error {
+	return r.paymentSucceeded()
 }

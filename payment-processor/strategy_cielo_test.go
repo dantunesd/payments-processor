@@ -27,7 +27,6 @@ func TestCieloStrategy_Process(t *testing.T) {
 				r: cieloRepositoryMock{
 					func(context.Context, CieloRequestBody) (ITransaction, error) {
 						return &cieloTransactionMock{
-							func() bool { return true },
 							func() error { return nil },
 						}, nil
 					},
@@ -46,7 +45,6 @@ func TestCieloStrategy_Process(t *testing.T) {
 				r: cieloRepositoryMock{
 					func(context.Context, CieloRequestBody) (ITransaction, error) {
 						return &cieloTransactionMock{
-							func() bool { return false },
 							func() error { return errors.New("failed") },
 						}, nil
 					},
@@ -78,7 +76,7 @@ func TestCieloStrategy_Process(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := CieloStrategy{r: tt.fields.r}
+			c := NewCieloStrategy(tt.fields.r)
 			if err := c.Process(tt.args.ctx, tt.args.p, tt.args.s); (err != nil) != tt.wantErr {
 				t.Errorf("CieloStrategy.Process() error = %v, wantErr %v", err, tt.wantErr)
 			}
@@ -95,14 +93,9 @@ func (c cieloRepositoryMock) Transaction(ctx context.Context, crb CieloRequestBo
 }
 
 type cieloTransactionMock struct {
-	isSucceeded func() bool
-	getError    func() error
+	paymentSucceeded func() error
 }
 
-func (c cieloTransactionMock) IsSucceeded() bool {
-	return c.isSucceeded()
-}
-
-func (c cieloTransactionMock) GetError() error {
-	return c.getError()
+func (c cieloTransactionMock) PaymentSucceeded() error {
+	return c.paymentSucceeded()
 }

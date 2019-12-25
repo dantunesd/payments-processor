@@ -8,7 +8,7 @@ import (
 // RedePaymentConfirmed succeeded
 const RedePaymentConfirmed = "00"
 
-// RedeTransaction represents a R transaction
+// RedeTransaction represents a Rede transaction
 type RedeTransaction struct {
 	r IResponser
 }
@@ -20,19 +20,8 @@ func NewRedeTransaction(r IResponser) RedeTransaction {
 	}
 }
 
-// IsSucceeded validates if the transaction was succeded
-func (r RedeTransaction) IsSucceeded() bool {
-	if r.hasComunicationError() {
-		return false
-	}
-
-	out := r.decode()
-
-	return r.paymentSucceeded(out.ReturnCode)
-}
-
-// GetError returns the error
-func (r RedeTransaction) GetError() error {
+// PaymentSucceeded returns the error
+func (r RedeTransaction) PaymentSucceeded() error {
 	if r.hasComunicationError() {
 		return NewInternalServerError(string(r.r.GetBody()))
 	}

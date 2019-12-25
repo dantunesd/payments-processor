@@ -36,9 +36,5 @@ func (r RedeStrategy) Process(ctx context.Context, p Payment, s Source) error {
 		return err
 	}
 
-	if !transaction.IsSucceeded() {
-		return transaction.GetError()
-	}
-
-	return nil
+	return transaction.PaymentSucceeded()
 }

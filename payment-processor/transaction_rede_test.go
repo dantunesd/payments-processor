@@ -4,97 +4,7 @@ import (
 	"testing"
 )
 
-func TestRedeTransaction_IsSucceeded(t *testing.T) {
-	type fields struct {
-		r IResponser
-	}
-	tests := []struct {
-		name   string
-		fields fields
-		want   bool
-	}{
-		{
-			"transaction succeeded",
-			fields{
-				&redeResponser{
-					getStatusCode: func() int {
-						return 200
-					},
-					getBody: func() []byte {
-						return []byte(`{"returnMessage":"Successful.","returnCode":"00"}`)
-					},
-				},
-			},
-			true,
-		},
-		{
-			"transaction with integration error",
-			fields{
-				&redeResponser{
-					getStatusCode: func() int {
-						return 400
-					},
-					getBody: func() []byte {
-						return []byte(`{"returnCode":"37","returnMessage":"CardNumber: Invalid parameter format."}`)
-					},
-				},
-			},
-			false,
-		},
-		{
-			"transaction with business error",
-			fields{
-				&redeResponser{
-					getStatusCode: func() int {
-						return 412
-					},
-					getBody: func() []byte {
-						return []byte(`{"returnCode":"42","returnMessage":"Reference: Order number already exists."}`)
-					},
-				},
-			},
-			false,
-		},
-		{
-			"transaction with emissor error",
-			fields{
-				&redeResponser{
-					getStatusCode: func() int {
-						return 400
-					},
-					getBody: func() []byte {
-						return []byte(`{"returnCode":"101","returnMessage":"Unauthorized. Problems on the card, contact the issuer."}`)
-					},
-				},
-			},
-			false,
-		},
-		{
-			"transaction with server error",
-			fields{
-				&redeResponser{
-					getStatusCode: func() int {
-						return 500
-					},
-					getBody: func() []byte {
-						return []byte(`internal server error`)
-					},
-				},
-			},
-			false,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			r := NewRedeTransaction(tt.fields.r)
-			if got := r.IsSucceeded(); got != tt.want {
-				t.Errorf("RedeTransaction.IsSucceeded() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestRedeTransaction_GetError(t *testing.T) {
+func TestRedeTransaction_PaymentSucceeded(t *testing.T) {
 	type fields struct {
 		r IResponser
 	}
@@ -179,8 +89,8 @@ func TestRedeTransaction_GetError(t *testing.T) {
 			r := RedeTransaction{
 				r: tt.fields.r,
 			}
-			if err := r.GetError(); (err != nil) != tt.wantErr {
-				t.Errorf("RedeTransaction.GetError() error = %v, wantErr %v", err, tt.wantErr)
+			if err := r.PaymentSucceeded(); (err != nil) != tt.wantErr {
+				t.Errorf("RedeTransaction.PaymentSucceeded() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
