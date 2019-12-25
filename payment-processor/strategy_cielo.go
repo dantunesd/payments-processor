@@ -50,7 +50,7 @@ func (c CieloStrategy) Process(ctx context.Context, p Payment, s Source) error {
 	}
 
 	if !c.paymentSucceeded(res) {
-		return NewEmissorError(res.Payment.ReturnMessage)
+		return NewTransactionError(res.Payment.ReturnMessage)
 	}
 
 	return nil

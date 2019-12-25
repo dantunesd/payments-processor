@@ -99,7 +99,7 @@ func TestNewInternalServerError(t *testing.T) {
 	}
 }
 
-func TestNewEmissorError(t *testing.T) {
+func TestNewTransactionError(t *testing.T) {
 	type args struct {
 		message string
 	}
@@ -115,15 +115,15 @@ func TestNewEmissorError(t *testing.T) {
 			},
 			&Error{
 				ErrorMessage: "error",
-				ErrorType:    EmissorError,
+				ErrorType:    TransactionError,
 				StatusCode:   400,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewEmissorError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewEmissorError() = %v, want %v", got, tt.want)
+			if got := NewTransactionError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewTransactionError() = %v, want %v", got, tt.want)
 			}
 		})
 	}

@@ -10,7 +10,7 @@ const (
 	InvalidContentError ErrorType = iota
 	InternalServerError
 	IntegrationError
-	EmissorError
+	TransactionError
 )
 
 // Error is a representation for error
@@ -40,9 +40,9 @@ func NewIntegrationError(message string) *Error {
 	return NewError(message, IntegrationError, http.StatusBadRequest)
 }
 
-// NewEmissorError constructor of EmissorError.
-func NewEmissorError(message string) *Error {
-	return NewError(message, EmissorError, http.StatusBadRequest)
+// NewTransactionError constructor of TransactionError.
+func NewTransactionError(message string) *Error {
+	return NewError(message, TransactionError, http.StatusBadRequest)
 }
 
 // Error returns error message

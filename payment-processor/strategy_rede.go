@@ -40,7 +40,7 @@ func (r RedeStrategy) Process(ctx context.Context, p Payment, s Source) error {
 	}
 
 	if !r.paymentSucceeded(res) {
-		return NewEmissorError(res.ReturnMessage)
+		return NewTransactionError(res.ReturnMessage)
 	}
 
 	return nil
