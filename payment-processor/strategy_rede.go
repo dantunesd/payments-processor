@@ -5,9 +5,6 @@ import (
 	"fmt"
 )
 
-// RedePaymentConfirmed succeeded
-const RedePaymentConfirmed = "00"
-
 // RedeStrategy .
 type RedeStrategy struct {
 	r IRedeRepository
@@ -34,18 +31,14 @@ func (r RedeStrategy) Process(ctx context.Context, p Payment, s Source) error {
 		SecurityCode:    fmt.Sprintf("%d", s.CVV),
 	}
 
-	res, err := r.r.Transaction(ctx, rrb)
+	transaction, err := r.r.Transaction(ctx, rrb)
 	if err != nil {
-		return NewIntegrationError(("failed to comunicate with Rede"))
+		return err
 	}
 
-	if !r.paymentSucceeded(res) {
-		return NewTransactionError(res.ReturnMessage)
+	if !transaction.IsSucceeded() {
+		return transaction.GetError()
 	}
 
 	return nil
-}
-
-func (r RedeStrategy) paymentSucceeded(rrb *RedeResponseBody) bool {
-	return rrb.ReturnCode == RedePaymentConfirmed
 }

@@ -1,7 +1,7 @@
 package payment
 
-// Transaction is a interface for a transaction
-type Transaction interface {
+// ITransaction is a interface for a transaction
+type ITransaction interface {
 	IsSucceeded() bool
 	GetError() error
 }

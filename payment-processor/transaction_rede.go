@@ -5,6 +5,9 @@ import (
 	"net/http"
 )
 
+// RedePaymentConfirmed succeeded
+const RedePaymentConfirmed = "00"
+
 // RedeTransaction represents a R transaction
 type RedeTransaction struct {
 	r IResponser

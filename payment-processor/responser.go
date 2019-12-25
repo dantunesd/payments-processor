@@ -14,18 +14,18 @@ type Response struct {
 
 // NewResponse constructor
 func NewResponse(statusCode int, body []byte) IResponser {
-	return &Response{
+	return Response{
 		StatusCode: statusCode,
 		Body:       body,
 	}
 }
 
 // GetStatusCode return status code
-func (r *Response) GetStatusCode() int {
+func (r Response) GetStatusCode() int {
 	return r.StatusCode
 }
 
 // GetBody return body
-func (r *Response) GetBody() []byte {
+func (r Response) GetBody() []byte {
 	return r.Body
 }

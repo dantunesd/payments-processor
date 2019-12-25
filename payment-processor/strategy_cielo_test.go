@@ -25,11 +25,10 @@ func TestCieloStrategy_Process(t *testing.T) {
 			"process with success",
 			fields{
 				r: cieloRepositoryMock{
-					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
-						return &CieloResponseBody{
-							CieloPaymentResponse{
-								Status: 1,
-							},
+					func(context.Context, CieloRequestBody) (ITransaction, error) {
+						return &cieloTransactionMock{
+							func() bool { return true },
+							func() error { return nil },
 						}, nil
 					},
 				},
@@ -42,31 +41,14 @@ func TestCieloStrategy_Process(t *testing.T) {
 			false,
 		},
 		{
-			"process with success 2",
+			"transaction failed",
 			fields{
 				r: cieloRepositoryMock{
-					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
-						return &CieloResponseBody{
-							CieloPaymentResponse{
-								Status: 2,
-							},
+					func(context.Context, CieloRequestBody) (ITransaction, error) {
+						return &cieloTransactionMock{
+							func() bool { return false },
+							func() error { return errors.New("failed") },
 						}, nil
-					},
-				},
-			},
-			args{
-				context.Background(),
-				Payment{},
-				Source{},
-			},
-			false,
-		},
-		{
-			"invalid data",
-			fields{
-				r: cieloRepositoryMock{
-					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
-						return &CieloResponseBody{}, errors.New("failed to request")
 					},
 				},
 			},
@@ -78,15 +60,11 @@ func TestCieloStrategy_Process(t *testing.T) {
 			true,
 		},
 		{
-			"not authorized",
+			"error",
 			fields{
 				r: cieloRepositoryMock{
-					func(context.Context, CieloRequestBody) (*CieloResponseBody, error) {
-						return &CieloResponseBody{
-							CieloPaymentResponse{
-								Status: 3,
-							},
-						}, nil
+					func(context.Context, CieloRequestBody) (ITransaction, error) {
+						return nil, errors.New("error x")
 					},
 				},
 			},
@@ -109,9 +87,22 @@ func TestCieloStrategy_Process(t *testing.T) {
 }
 
 type cieloRepositoryMock struct {
-	sale func(context.Context, CieloRequestBody) (*CieloResponseBody, error)
+	transaction func(context.Context, CieloRequestBody) (ITransaction, error)
 }
 
-func (c cieloRepositoryMock) Sale(ctx context.Context, crb CieloRequestBody) (*CieloResponseBody, error) {
-	return c.sale(ctx, crb)
+func (c cieloRepositoryMock) Transaction(ctx context.Context, crb CieloRequestBody) (ITransaction, error) {
+	return c.transaction(ctx, crb)
+}
+
+type cieloTransactionMock struct {
+	isSucceeded func() bool
+	getError    func() error
+}
+
+func (c cieloTransactionMock) IsSucceeded() bool {
+	return c.isSucceeded()
+}
+
+func (c cieloTransactionMock) GetError() error {
+	return c.getError()
 }

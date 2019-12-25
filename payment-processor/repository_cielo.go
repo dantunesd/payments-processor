@@ -2,16 +2,13 @@ package payment
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
-	"net/http"
 )
 
 const salePath = "/1/sales"
 
 // ICieloRepository is a interface for Cielo Repository
 type ICieloRepository interface {
-	Sale(context.Context, CieloRequestBody) (*CieloResponseBody, error)
+	Transaction(context.Context, CieloRequestBody) (ITransaction, error)
 }
 
 // CieloRepository repository to comunicate with cielo
@@ -26,23 +23,14 @@ func NewCieloRepository(r IHTTPRequester) ICieloRepository {
 	}
 }
 
-// Sale .
-func (c *CieloRepository) Sale(ctx context.Context, crb CieloRequestBody) (*CieloResponseBody, error) {
-	out := &CieloResponseBody{}
+// Transaction makes a cielo transaction
+func (c *CieloRepository) Transaction(ctx context.Context, crb CieloRequestBody) (ITransaction, error) {
 
 	r, err := c.r.Post(ctx, salePath, crb)
 
 	if err != nil {
-		return out, err
+		return nil, err
 	}
 
-	if r.GetStatusCode() < http.StatusOK || r.GetStatusCode() >= http.StatusMultipleChoices {
-		return out, errors.New(string(r.GetBody()))
-	}
-
-	if uErr := json.Unmarshal(r.GetBody(), out); uErr != nil {
-		return out, uErr
-	}
-
-	return out, nil
+	return NewCieloTransaction(r), nil
 }

@@ -5,13 +5,19 @@ import (
 	"net/http"
 )
 
+// Payment succeeded
+const (
+	Authorized       = 1
+	PaymentConfirmed = 2
+)
+
 // CieloTransaction represents a cielo transaction
 type CieloTransaction struct {
 	r IResponser
 }
 
 // NewCieloTransaction constructor
-func NewCieloTransaction(r IResponser) CieloTransaction {
+func NewCieloTransaction(r IResponser) ITransaction {
 	return CieloTransaction{
 		r: r,
 	}

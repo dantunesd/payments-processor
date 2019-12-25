@@ -5,12 +5,6 @@ import (
 	"fmt"
 )
 
-// Payment succeeded
-const (
-	Authorized       = 1
-	PaymentConfirmed = 2
-)
-
 // NewCieloStrategy strategy constructor
 func NewCieloStrategy(r ICieloRepository) CieloStrategy {
 	return CieloStrategy{
@@ -43,19 +37,14 @@ func (c CieloStrategy) Process(ctx context.Context, p Payment, s Source) error {
 			},
 		},
 	}
-	res, err := c.r.Sale(ctx, crb)
-
+	transaction, err := c.r.Transaction(ctx, crb)
 	if err != nil {
-		return NewIntegrationError("failed to comunicate with Cielo")
+		return err
 	}
 
-	if !c.paymentSucceeded(res) {
-		return NewTransactionError(res.Payment.ReturnMessage)
+	if !transaction.IsSucceeded() {
+		return transaction.GetError()
 	}
 
 	return nil
-}
-
-func (c CieloStrategy) paymentSucceeded(crb *CieloResponseBody) bool {
-	return crb.Payment.Status == PaymentConfirmed || crb.Payment.Status == Authorized
 }

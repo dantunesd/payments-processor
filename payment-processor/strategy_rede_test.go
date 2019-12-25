@@ -2,6 +2,7 @@ package payment
 
 import (
 	"context"
+	"errors"
 	"testing"
 )
 
@@ -24,8 +25,11 @@ func TestRedeStrategy_Process(t *testing.T) {
 			"process with success",
 			fields{
 				r: redeRepositoryMock{
-					transaction: func(context.Context, RedeRequestBody) (*RedeResponseBody, error) {
-						return &RedeResponseBody{ReturnCode: "00"}, nil
+					func(context.Context, RedeRequestBody) (ITransaction, error) {
+						return &redeTransactionMock{
+							func() bool { return true },
+							func() error { return nil },
+						}, nil
 					},
 				},
 			},
@@ -35,6 +39,41 @@ func TestRedeStrategy_Process(t *testing.T) {
 				Source{},
 			},
 			false,
+		},
+		{
+			"trasaction failed",
+			fields{
+				r: redeRepositoryMock{
+					func(context.Context, RedeRequestBody) (ITransaction, error) {
+						return &redeTransactionMock{
+							func() bool { return false },
+							func() error { return errors.New("failed") },
+						}, nil
+					},
+				},
+			},
+			args{
+				context.Background(),
+				Payment{},
+				Source{},
+			},
+			true,
+		},
+		{
+			"error",
+			fields{
+				r: redeRepositoryMock{
+					func(context.Context, RedeRequestBody) (ITransaction, error) {
+						return nil, errors.New("failed")
+					},
+				},
+			},
+			args{
+				context.Background(),
+				Payment{},
+				Source{},
+			},
+			true,
 		},
 	}
 	for _, tt := range tests {
@@ -48,9 +87,22 @@ func TestRedeStrategy_Process(t *testing.T) {
 }
 
 type redeRepositoryMock struct {
-	transaction func(context.Context, RedeRequestBody) (*RedeResponseBody, error)
+	transaction func(context.Context, RedeRequestBody) (ITransaction, error)
 }
 
-func (r redeRepositoryMock) Transaction(ctx context.Context, rrb RedeRequestBody) (*RedeResponseBody, error) {
+func (r redeRepositoryMock) Transaction(ctx context.Context, rrb RedeRequestBody) (ITransaction, error) {
 	return r.transaction(ctx, rrb)
+}
+
+type redeTransactionMock struct {
+	isSucceeded func() bool
+	getError    func() error
+}
+
+func (r redeTransactionMock) IsSucceeded() bool {
+	return r.isSucceeded()
+}
+
+func (r redeTransactionMock) GetError() error {
+	return r.getError()
 }
