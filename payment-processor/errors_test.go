@@ -129,36 +129,6 @@ func TestNewTransactionError(t *testing.T) {
 	}
 }
 
-func TestNewIntegrationError(t *testing.T) {
-	type args struct {
-		message string
-	}
-	tests := []struct {
-		name string
-		args args
-		want *Error
-	}{
-		{
-			"return a error",
-			args{
-				message: "error",
-			},
-			&Error{
-				ErrorMessage: "error",
-				ErrorType:    IntegrationError,
-				StatusCode:   400,
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := NewIntegrationError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewIntegrationError() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestError_Error(t *testing.T) {
 	type fields struct {
 		ErrorMessage string
