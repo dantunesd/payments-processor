@@ -30,7 +30,8 @@ func (c CieloTransaction) PaymentSucceeded() error {
 	}
 
 	if c.hasIntegrationError() {
-		return NewTransactionError(string(c.r.GetBody()))
+		c := c.decodeError()
+		return NewTransactionError(c.Message)
 	}
 
 	out := c.decode()
@@ -46,7 +47,7 @@ func (c CieloTransaction) hasComunicationError() bool {
 }
 
 func (c CieloTransaction) hasIntegrationError() bool {
-	return c.r.GetStatusCode() != http.StatusOK
+	return c.r.GetStatusCode() == http.StatusBadRequest
 }
 
 func (c CieloTransaction) hasEmissorError(status int) bool {
@@ -61,4 +62,10 @@ func (c CieloTransaction) decode() *CieloResponseBody {
 	out := &CieloResponseBody{}
 	json.Unmarshal(c.r.GetBody(), out)
 	return out
+}
+
+func (c CieloTransaction) decodeError() *CieloIntegrationError {
+	out := SCieloIntegrationError{}
+	json.Unmarshal(c.r.GetBody(), &out)
+	return out[0]
 }

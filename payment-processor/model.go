@@ -86,6 +86,15 @@ type CieloResponseBody struct {
 	Payment CieloPaymentResponse `json:"Payment"`
 }
 
+// SCieloIntegrationError .
+type SCieloIntegrationError []*CieloIntegrationError
+
+// CieloIntegrationError error body
+type CieloIntegrationError struct {
+	Code    string `json:"Code"`
+	Message string `json:"Message"`
+}
+
 // CieloPaymentResponse response payment node
 type CieloPaymentResponse struct {
 	Status        int    `json:"Status"`

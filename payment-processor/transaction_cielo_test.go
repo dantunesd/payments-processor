@@ -49,7 +49,7 @@ func TestCieloTransaction_PaymentSucceeded(t *testing.T) {
 						return 400
 					},
 					getBody: func() []byte {
-						return []byte(`{}`)
+						return []byte(`[{"Code":177,"Message":"Card Number is invalid"}]`)
 					},
 				},
 			},
