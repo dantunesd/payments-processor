@@ -46,11 +46,11 @@ func (c CieloStrategy) Process(ctx context.Context, p Payment, s Source) error {
 	res, err := c.r.Sale(ctx, crb)
 
 	if err != nil {
-		return NewInternalServerError("failed to comunicate with Cielo")
+		return NewIntegrationError("failed to comunicate with Cielo")
 	}
 
 	if !c.paymentSucceeded(res) {
-		return NewPaymentError(res.Payment.ReturnMessage)
+		return NewEmissorError(res.Payment.ReturnMessage)
 	}
 
 	return nil

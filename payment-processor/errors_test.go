@@ -99,7 +99,7 @@ func TestNewInternalServerError(t *testing.T) {
 	}
 }
 
-func TestNewPaymentError(t *testing.T) {
+func TestNewEmissorError(t *testing.T) {
 	type args struct {
 		message string
 	}
@@ -115,15 +115,45 @@ func TestNewPaymentError(t *testing.T) {
 			},
 			&Error{
 				ErrorMessage: "error",
-				ErrorType:    PaymentError,
+				ErrorType:    EmissorError,
 				StatusCode:   400,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewPaymentError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewPaymentError() = %v, want %v", got, tt.want)
+			if got := NewEmissorError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewEmissorError() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestNewIntegrationError(t *testing.T) {
+	type args struct {
+		message string
+	}
+	tests := []struct {
+		name string
+		args args
+		want *Error
+	}{
+		{
+			"return a error",
+			args{
+				message: "error",
+			},
+			&Error{
+				ErrorMessage: "error",
+				ErrorType:    IntegrationError,
+				StatusCode:   400,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewIntegrationError(tt.args.message); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewIntegrationError() = %v, want %v", got, tt.want)
 			}
 		})
 	}

@@ -9,7 +9,8 @@ type ErrorType int
 const (
 	InvalidContentError ErrorType = iota
 	InternalServerError
-	PaymentError
+	IntegrationError
+	EmissorError
 )
 
 // Error is a representation for error
@@ -34,9 +35,14 @@ func NewInternalServerError(message string) *Error {
 	return NewError(message, InternalServerError, http.StatusInternalServerError)
 }
 
-// NewPaymentError constructor of PaymentError.
-func NewPaymentError(message string) *Error {
-	return NewError(message, PaymentError, http.StatusBadRequest)
+// NewIntegrationError constructor of IntegrationError.
+func NewIntegrationError(message string) *Error {
+	return NewError(message, IntegrationError, http.StatusBadRequest)
+}
+
+// NewEmissorError constructor of EmissorError.
+func NewEmissorError(message string) *Error {
+	return NewError(message, EmissorError, http.StatusBadRequest)
 }
 
 // Error returns error message

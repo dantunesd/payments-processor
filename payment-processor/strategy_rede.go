@@ -36,11 +36,11 @@ func (r RedeStrategy) Process(ctx context.Context, p Payment, s Source) error {
 
 	res, err := r.r.Transaction(ctx, rrb)
 	if err != nil {
-		return NewInternalServerError(("failed to comunicate with Rede"))
+		return NewIntegrationError(("failed to comunicate with Rede"))
 	}
 
 	if !r.paymentSucceeded(res) {
-		return NewPaymentError(res.ReturnMessage)
+		return NewEmissorError(res.ReturnMessage)
 	}
 
 	return nil
