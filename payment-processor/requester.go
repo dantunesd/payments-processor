@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -14,7 +13,7 @@ import (
 
 // IHTTPRequester interface for http requests
 type IHTTPRequester interface {
-	Post(ctx context.Context, path string, body, output interface{}) error
+	Post(ctx context.Context, path string, body interface{}) (IResponser, error)
 }
 
 type headers map[string]string
@@ -38,11 +37,11 @@ func NewHTTPRequester(l *zap.Logger, baseURL string, headers headers, timeout ti
 }
 
 // Post perform a post request
-func (r *HTTPRequester) Post(ctx context.Context, path string, body, output interface{}) error {
-	return r.do("POST", path, body, output)
+func (r *HTTPRequester) Post(ctx context.Context, path string, body interface{}) (IResponser, error) {
+	return r.do("POST", path, body)
 }
 
-func (r *HTTPRequester) do(method, path string, body, output interface{}) error {
+func (r *HTTPRequester) do(method, path string, body interface{}) (IResponser, error) {
 	c := http.Client{
 		Timeout: r.Timeout,
 	}
@@ -50,13 +49,13 @@ func (r *HTTPRequester) do(method, path string, body, output interface{}) error 
 	bodyEncoded := new(bytes.Buffer)
 	if body != nil {
 		if eErr := json.NewEncoder(bodyEncoded).Encode(body); eErr != nil {
-			return eErr
+			return nil, NewInternalServerError(eErr.Error())
 		}
 	}
 
 	req, rErr := http.NewRequest(method, r.BaseURL+path, bodyEncoded)
 	if rErr != nil {
-		return rErr
+		return nil, NewInternalServerError(rErr.Error())
 	}
 
 	for key, val := range r.Headers {
@@ -74,12 +73,12 @@ func (r *HTTPRequester) do(method, path string, body, output interface{}) error 
 
 	res, dErr := c.Do(req)
 	if dErr != nil {
-		return dErr
+		return nil, NewInternalServerError(dErr.Error())
 	}
 
-	resByte, rErr := ioutil.ReadAll(res.Body)
-	if rErr != nil {
-		return rErr
+	resByte, iErr := ioutil.ReadAll(res.Body)
+	if iErr != nil {
+		return nil, NewInternalServerError(iErr.Error())
 	}
 
 	resBody := new(bytes.Buffer)
@@ -94,13 +93,5 @@ func (r *HTTPRequester) do(method, path string, body, output interface{}) error 
 		zap.Int("statusCode", res.StatusCode),
 	)
 
-	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusMultipleChoices {
-		return errors.New(resBody.String())
-	}
-
-	if uErr := json.Unmarshal(resBody.Bytes(), output); uErr != nil {
-		return uErr
-	}
-
-	return nil
+	return NewResponse(res.StatusCode, resByte), nil
 }

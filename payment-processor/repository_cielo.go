@@ -1,6 +1,11 @@
 package payment
 
-import "context"
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"net/http"
+)
 
 const salePath = "/1/sales"
 
@@ -24,8 +29,20 @@ func NewCieloRepository(r IHTTPRequester) ICieloRepository {
 // Sale .
 func (c *CieloRepository) Sale(ctx context.Context, crb CieloRequestBody) (*CieloResponseBody, error) {
 	out := &CieloResponseBody{}
-	if err := c.r.Post(ctx, salePath, crb, out); err != nil {
+
+	r, err := c.r.Post(ctx, salePath, crb)
+
+	if err != nil {
 		return out, err
 	}
+
+	if r.GetStatusCode() < http.StatusOK || r.GetStatusCode() >= http.StatusMultipleChoices {
+		return out, errors.New(string(r.GetBody()))
+	}
+
+	if uErr := json.Unmarshal(r.GetBody(), out); uErr != nil {
+		return out, uErr
+	}
+
 	return out, nil
 }
