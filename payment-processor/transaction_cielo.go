@@ -2,6 +2,7 @@ package payment
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -31,12 +32,12 @@ func (c CieloTransaction) PaymentSucceeded() error {
 
 	if c.hasIntegrationError() {
 		c := c.decodeError()
-		return NewTransactionError(c.Message)
+		return NewTransactionError(fmt.Sprintf("ReturnCode: %d, ReturnMessage: %s", c.Code, c.Message))
 	}
 
 	out := c.decode()
 	if c.hasEmissorError(out.Payment.Status) {
-		return NewTransactionError(out.Payment.ReturnMessage)
+		return NewTransactionError(fmt.Sprintf("ReturnCode: %s, ReturnMessage: %s", out.Payment.ReturnCode, out.Payment.ReturnMessage))
 	}
 
 	return nil
@@ -67,5 +68,8 @@ func (c CieloTransaction) decode() *CieloResponseBody {
 func (c CieloTransaction) decodeError() *CieloIntegrationError {
 	out := SCieloIntegrationError{}
 	json.Unmarshal(c.r.GetBody(), &out)
-	return out[0]
+	if len(out) > 0 {
+		return out[0]
+	}
+	return &CieloIntegrationError{}
 }

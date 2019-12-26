@@ -2,6 +2,7 @@ package payment
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -28,7 +29,7 @@ func (r RedeTransaction) PaymentSucceeded() error {
 
 	out := r.decode()
 	if !r.paymentSucceeded(out.ReturnCode) {
-		return NewTransactionError(out.ReturnMessage)
+		return NewTransactionError(fmt.Sprintf("ReturnCode: %s, ReturnMessage: %s", out.ReturnCode, out.ReturnMessage))
 	}
 
 	return nil

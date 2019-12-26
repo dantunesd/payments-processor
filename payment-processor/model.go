@@ -91,7 +91,7 @@ type SCieloIntegrationError []*CieloIntegrationError
 
 // CieloIntegrationError error body
 type CieloIntegrationError struct {
-	Code    string `json:"Code"`
+	Code    int    `json:"Code"`
 	Message string `json:"Message"`
 }
 
