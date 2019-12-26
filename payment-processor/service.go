@@ -2,18 +2,18 @@ package payment
 
 import "context"
 
-// IService interface for service
+// IService interface for service.
 type IService interface {
 	ProcessPayment(ctx context.Context, p Payment, acquirer Acquirer) error
 }
 
-// Service implements the payment process
+// Service implements the payment process.
 type Service struct {
 	sr ISourceRepository
 	ap IAcquirerProvider
 }
 
-// NewService constructor for Service
+// NewService Service's constructor.
 func NewService(sr ISourceRepository, ap IAcquirerProvider) *Service {
 	return &Service{
 		sr: sr,
@@ -21,7 +21,7 @@ func NewService(sr ISourceRepository, ap IAcquirerProvider) *Service {
 	}
 }
 
-// ProcessPayment process a payment
+// ProcessPayment process a payment with an acquirer.
 func (s Service) ProcessPayment(ctx context.Context, p Payment, acquirer Acquirer) error {
 
 	if vErr := p.IsValid(); vErr != nil {

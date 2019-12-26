@@ -11,14 +11,14 @@ import (
 	"go.uber.org/zap"
 )
 
-// IHTTPRequester interface for http requests
+// IHTTPRequester interface for http requests.
 type IHTTPRequester interface {
 	Post(ctx context.Context, path string, body interface{}) (IResponser, error)
 }
 
 type headers map[string]string
 
-// HTTPRequester wrapper for client http
+// HTTPRequester wrapper for http requests.
 type HTTPRequester struct {
 	l       *zap.Logger
 	BaseURL string
@@ -26,7 +26,7 @@ type HTTPRequester struct {
 	Timeout time.Duration
 }
 
-// NewHTTPRequester constructor.
+// NewHTTPRequester HTTPRequester's constructor.
 func NewHTTPRequester(l *zap.Logger, baseURL string, headers headers, timeout time.Duration) IHTTPRequester {
 	return &HTTPRequester{
 		l:       l,
@@ -36,7 +36,7 @@ func NewHTTPRequester(l *zap.Logger, baseURL string, headers headers, timeout ti
 	}
 }
 
-// Post perform a post request
+// Post performs a post request.
 func (r *HTTPRequester) Post(ctx context.Context, path string, body interface{}) (IResponser, error) {
 	return r.do("POST", path, body)
 }

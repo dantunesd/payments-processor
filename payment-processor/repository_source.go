@@ -6,24 +6,24 @@ import (
 	"fmt"
 )
 
-// ISourceRepository is a interface for Source repository
+// ISourceRepository is a interface for Source repository.
 type ISourceRepository interface {
 	GetByID(ctx context.Context, sourceID string) (Source, error)
 }
 
-// SourcesRepository is a repository for Sources db
+// SourcesRepository is a repository to communicate with sources db.
 type SourcesRepository struct {
 	db IQuerier
 }
 
-// NewSourcesRepository constructor for SourcesRepository
+// NewSourcesRepository SourcesRepository's constructor.
 func NewSourcesRepository(db IQuerier) *SourcesRepository {
 	return &SourcesRepository{
 		db: db,
 	}
 }
 
-// GetByID returns a Source
+// GetByID returns a Source.
 func (s *SourcesRepository) GetByID(ctx context.Context, sourceID string) (Source, error) {
 	var src Source
 	err := s.db.QueryRowContext(ctx, "SELECT source_id, card_number, cvv FROM sources WHERE source_id = ?", sourceID).Scan(

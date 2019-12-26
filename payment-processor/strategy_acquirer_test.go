@@ -7,7 +7,7 @@ import (
 
 func TestAcquirerProvider_GetAcquirer(t *testing.T) {
 	type fields struct {
-		Acquirers AcquirersStrategy
+		Acquirers AcquirerStrategies
 	}
 	type args struct {
 		as Acquirer
@@ -21,7 +21,7 @@ func TestAcquirerProvider_GetAcquirer(t *testing.T) {
 		{
 			"return an acquirer with success",
 			fields{
-				Acquirers: AcquirersStrategy{
+				Acquirers: AcquirerStrategies{
 					Cielo: CieloStrategy{},
 					Rede:  RedeStrategy{},
 				},
@@ -34,7 +34,7 @@ func TestAcquirerProvider_GetAcquirer(t *testing.T) {
 		{
 			"return an inexistent acquirer",
 			fields{
-				Acquirers: AcquirersStrategy{
+				Acquirers: AcquirerStrategies{
 					Cielo: CieloStrategy{},
 					Rede:  RedeStrategy{},
 				},

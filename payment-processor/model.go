@@ -4,7 +4,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-// Payment represents a incoming payment from client
+// Payment represents a incoming payment from client.
 type Payment struct {
 	OrderID       string        `json:"order_id" validate:"required"`
 	Customer      Customer      `json:"customer" validate:"required"`
@@ -12,7 +12,7 @@ type Payment struct {
 	Establishment Establishment `json:"establishment" validate:"required"`
 }
 
-// IsValid validates payment data
+// IsValid validates payment data.
 func (p *Payment) IsValid() error {
 	v := validator.New()
 	if err := v.Struct(p); err != nil {
@@ -21,12 +21,12 @@ func (p *Payment) IsValid() error {
 	return nil
 }
 
-// Customer represents a payment's customer
+// Customer represents a payment's customer.
 type Customer struct {
 	Name string `json:"name" validate:"required"`
 }
 
-// Details represents a payment's Details
+// Details represents a payment's details.
 type Details struct {
 	Card         Card     `json:"card" validate:"required"`
 	Amount       int      `json:"amount" validate:"min=100,required"`
@@ -35,7 +35,7 @@ type Details struct {
 	Itens        []string `json:"itens" validate:"gte=1,required"`
 }
 
-// Card represents a payment's Card
+// Card represents a payment's card.
 type Card struct {
 	SourceID        string `json:"source_id" validate:"required"`
 	Brand           string `json:"brand" validate:"required"`
@@ -43,28 +43,28 @@ type Card struct {
 	ExpirationMonth int    `json:"expiration_month" validate:"required"`
 }
 
-// Establishment represents a payment's establishment
+// Establishment represents a payment's establishment.
 type Establishment struct {
 	Identifier string `json:"identifier" validate:"required"`
 	Address    string `json:"address" validate:"required"`
 	PostalCode int    `json:"postal_code" validate:"required"`
 }
 
-// Source represents a open source
+// Source represents a open source.
 type Source struct {
 	SourceID   string `json:"source_id"`
 	CardNumber string `json:"card_number"`
 	CVV        int    `json:"cvv"`
 }
 
-// CieloRequestBody request body
+// CieloRequestBody represents the request body of Cielo.
 type CieloRequestBody struct {
 	MerchantOrderID string              `json:"MerchantOrderId"`
 	Customer        Customer            `json:"Customer"`
 	Payment         CieloRequestPayment `json:"Payment"`
 }
 
-// CieloRequestPayment payment node
+// CieloRequestPayment represents Cielo's payment node.
 type CieloRequestPayment struct {
 	Type         string          `json:"Type"`
 	Amount       int             `json:"Amount"`
@@ -72,7 +72,7 @@ type CieloRequestPayment struct {
 	CreditCard   CieloCreditCard `json:"CreditCard"`
 }
 
-// CieloCreditCard credit card node
+// CieloCreditCard represents Cielo's creditcard node.
 type CieloCreditCard struct {
 	CardNumber     string `json:"CardNumber"`
 	Holder         string `json:"Holder"`
@@ -81,28 +81,28 @@ type CieloCreditCard struct {
 	Brand          string `json:"Brand"`
 }
 
-// CieloResponseBody response body
+// CieloResponseBody represents a Cielo's response body with success.
 type CieloResponseBody struct {
 	Payment CieloPaymentResponse `json:"Payment"`
 }
 
-// SCieloIntegrationError .
-type SCieloIntegrationError []*CieloIntegrationError
-
-// CieloIntegrationError error body
-type CieloIntegrationError struct {
-	Code    int    `json:"Code"`
-	Message string `json:"Message"`
-}
-
-// CieloPaymentResponse response payment node
+// CieloPaymentResponse represents Cielo's payment node.
 type CieloPaymentResponse struct {
 	Status        int    `json:"Status"`
 	ReturnMessage string `json:"ReturnMessage"`
 	ReturnCode    string `json:"ReturnCode"`
 }
 
-// RedeRequestBody request body
+// SCieloIntegrationError is a slice of CieloIntegrationError.
+type SCieloIntegrationError []*CieloIntegrationError
+
+// CieloIntegrationError represents a Cielo's response body with error.
+type CieloIntegrationError struct {
+	Code    int    `json:"Code"`
+	Message string `json:"Message"`
+}
+
+// RedeRequestBody represents a Rede's request body.
 type RedeRequestBody struct {
 	Capture         bool   `json:"capture"`
 	Reference       string `json:"reference"`
@@ -114,7 +114,7 @@ type RedeRequestBody struct {
 	SecurityCode    string `json:"securityCode"`
 }
 
-// RedeResponseBody response body
+// RedeResponseBody represents a Rede's response body.
 type RedeResponseBody struct {
 	ReturnMessage string `json:"returnMessage"`
 	ReturnCode    string `json:"returnCode"`

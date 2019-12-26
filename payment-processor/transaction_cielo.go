@@ -6,25 +6,25 @@ import (
 	"net/http"
 )
 
-// Payment succeeded
+// Cielo Payment succeeded.
 const (
 	CieloPaymentAuthorized = 1
 	CieloPaymentConfirmed  = 2
 )
 
-// CieloTransaction represents a cielo transaction
+// CieloTransaction implementation of ITransaction.
 type CieloTransaction struct {
 	r IResponser
 }
 
-// NewCieloTransaction constructor
+// NewCieloTransaction CieloTransaction's constructor.
 func NewCieloTransaction(r IResponser) ITransaction {
 	return CieloTransaction{
 		r: r,
 	}
 }
 
-// PaymentSucceeded returns the error
+// PaymentSucceeded verify the transaction results.
 func (c CieloTransaction) PaymentSucceeded() error {
 	if c.hasComunicationError() {
 		return NewInternalServerError(string(c.r.GetBody()))

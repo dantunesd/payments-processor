@@ -6,7 +6,7 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-// Config is a representation for env variables
+// Config holds the environment variables values.
 type Config struct {
 	AppName            string        `envconfig:"APP_NAME" default:"Payments-Processor"`
 	AppPort            int           `envconfig:"APP_PORT" default:"3000"`
@@ -24,7 +24,7 @@ type Config struct {
 	// CieloURI           string        `envconfig:"CIELO_URI" default:"https://apisandbox.cieloecommerce.cielo.com.br"`
 }
 
-// NewConfig Config constructor.
+// NewConfig Config's constructor.
 func NewConfig() (*Config, error) {
 	cfg := &Config{}
 	return cfg, envconfig.Process("", cfg)

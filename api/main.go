@@ -52,7 +52,7 @@ func main() {
 	rs := payment.NewRedeStrategy(rr)
 
 	ap := payment.NewAcquirerProvider(
-		payment.AcquirersStrategy{
+		payment.AcquirerStrategies{
 			payment.Cielo: cs,
 			payment.Rede:  rs,
 		},

@@ -6,22 +6,22 @@ import (
 	"net/http"
 )
 
-// RedePaymentConfirmed succeeded
+// RedePaymentConfirmed succeeded.
 const RedePaymentConfirmed = "00"
 
-// RedeTransaction represents a Rede transaction
+// RedeTransaction implementation of ITransaction.
 type RedeTransaction struct {
 	r IResponser
 }
 
-// NewRedeTransaction constructor
+// NewRedeTransaction RedeTransaction's constructor.
 func NewRedeTransaction(r IResponser) RedeTransaction {
 	return RedeTransaction{
 		r: r,
 	}
 }
 
-// PaymentSucceeded returns the error
+// PaymentSucceeded verify the transaction results.
 func (r RedeTransaction) PaymentSucceeded() error {
 	if r.hasComunicationError() {
 		return NewInternalServerError(string(r.r.GetBody()))

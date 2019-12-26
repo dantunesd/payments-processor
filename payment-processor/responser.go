@@ -1,18 +1,18 @@
 package payment
 
-// IResponser interface for responser
+// IResponser interface for http response.
 type IResponser interface {
 	GetStatusCode() int
 	GetBody() []byte
 }
 
-// Response represents a response
+// Response represents a http response.
 type Response struct {
 	StatusCode int
 	Body       []byte
 }
 
-// NewResponse constructor
+// NewResponse Response's constructor.
 func NewResponse(statusCode int, body []byte) IResponser {
 	return Response{
 		StatusCode: statusCode,
@@ -20,12 +20,12 @@ func NewResponse(statusCode int, body []byte) IResponser {
 	}
 }
 
-// GetStatusCode return status code
+// GetStatusCode returns the status code.
 func (r Response) GetStatusCode() int {
 	return r.StatusCode
 }
 
-// GetBody return body
+// GetBody returns the body content.
 func (r Response) GetBody() []byte {
 	return r.Body
 }

@@ -2,44 +2,44 @@ package payment
 
 import "net/http"
 
-// ErrorType error types.
+// ErrorType type for custom errors.
 type ErrorType int
 
-// Error types values.
+// ErrorTypes.
 const (
 	InvalidContentError ErrorType = iota
 	InternalServerError
 	TransactionError
 )
 
-// Error is a representation for error
+// Error is a customized error
 type Error struct {
 	ErrorMessage string
 	ErrorType    ErrorType
 	StatusCode   int
 }
 
-// NewError constructor of Error.
+// NewError Error's constructor.
 func NewError(message string, errType ErrorType, statusCode int) *Error {
 	return &Error{ErrorMessage: message, ErrorType: errType, StatusCode: statusCode}
 }
 
-// NewInvalidContentError constructor of InvalidContentError.
+// NewInvalidContentError InvalidContentError's constructor.
 func NewInvalidContentError(message string) *Error {
 	return NewError(message, InvalidContentError, http.StatusBadRequest)
 }
 
-// NewInternalServerError constructor of InternalServerError.
+// NewInternalServerError InternalServerError's constructor.
 func NewInternalServerError(message string) *Error {
 	return NewError(message, InternalServerError, http.StatusInternalServerError)
 }
 
-// NewTransactionError constructor of TransactionError.
+// NewTransactionError TransactionError's constructor.
 func NewTransactionError(message string) *Error {
 	return NewError(message, TransactionError, http.StatusBadRequest)
 }
 
-// Error returns error message
+// Error return a customized error
 func (e *Error) Error() string {
 	return e.ErrorMessage
 }

@@ -2,39 +2,39 @@ package payment
 
 import "context"
 
-// Acquirer type for acquirers
-type Acquirer string
-
-// Consts for acquirers
+// Available acquirers.
 const (
 	Cielo Acquirer = "Cielo"
 	Rede  Acquirer = "Rede"
 )
 
-// AcquirersStrategy map for acquirer and strategy
-type AcquirersStrategy map[Acquirer]IAcquirerStrategy
+// Acquirer type
+type Acquirer string
 
-// IAcquirerStrategy interface for a AcquirerStrategy
+// AcquirerStrategies is map for acquirers and strategies.
+type AcquirerStrategies map[Acquirer]IAcquirerStrategy
+
+// IAcquirerStrategy interface for acquirer strategy.
 type IAcquirerStrategy interface {
 	Process(context.Context, Payment, Source) error
 }
 
-// IAcquirerProvider interface for a AcquirerProvider
+// IAcquirerProvider interface for acquirer provider.
 type IAcquirerProvider interface {
 	GetAcquirerStrategy(Acquirer) IAcquirerStrategy
 }
 
-// AcquirerProvider is a acquirer provider
+// AcquirerProvider implementation of IAcquirerProvider.
 type AcquirerProvider struct {
-	As AcquirersStrategy
+	As AcquirerStrategies
 }
 
-// NewAcquirerProvider AcquirerProvider constructor
-func NewAcquirerProvider(as AcquirersStrategy) *AcquirerProvider {
+// NewAcquirerProvider AcquirerProvider's constructor.
+func NewAcquirerProvider(as AcquirerStrategies) *AcquirerProvider {
 	return &AcquirerProvider{as}
 }
 
-// GetAcquirerStrategy returns a acquirer strategy
+// GetAcquirerStrategy returns a acquirer strategy.
 func (a *AcquirerProvider) GetAcquirerStrategy(acquirer Acquirer) IAcquirerStrategy {
 	return a.As[acquirer]
 }

@@ -6,13 +6,13 @@ import (
 	"payments-processor/payment-processor"
 )
 
-// ErrorResponse represents a response with error
+// ErrorResponse represents a http response with error.
 type ErrorResponse struct {
 	Message string `json:"message"`
 	Error   string `json:"error"`
 }
 
-// Response represents a success response
+// Response represents a http response with success.
 type Response struct {
 	Message string `json:"message"`
 }

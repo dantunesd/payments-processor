@@ -6,17 +6,23 @@ import (
 	"go.uber.org/zap"
 )
 
-// IScanner interface for db scanner
+// IScanner interface for db scanner.
 type IScanner interface {
 	Scan(dest ...interface{}) error
 }
 
-// IQuerier interface for db queries
+// IQuerier interface for db queries.
 type IQuerier interface {
 	QueryRowContext(ctx context.Context, query string, args ...interface{}) IScanner
 }
 
-// NewLoggableDBWrapper constructor
+// LoggableDBWrapper is loggable db wrapper.
+type LoggableDBWrapper struct {
+	db *sql.DB
+	lg *zap.Logger
+}
+
+// NewLoggableDBWrapper LoggableDBWrapper's constructor.
 func NewLoggableDBWrapper(db *sql.DB, lg *zap.Logger) *LoggableDBWrapper {
 	return &LoggableDBWrapper{
 		db: db,
@@ -24,13 +30,7 @@ func NewLoggableDBWrapper(db *sql.DB, lg *zap.Logger) *LoggableDBWrapper {
 	}
 }
 
-// LoggableDBWrapper wrapper for DB
-type LoggableDBWrapper struct {
-	db *sql.DB
-	lg *zap.Logger
-}
-
-// QueryRowContext wrapper for QueryRowContext
+// QueryRowContext is a wrapper for sql DB QueryRowContext.
 func (l *LoggableDBWrapper) QueryRowContext(ctx context.Context, query string, args ...interface{}) IScanner {
 
 	l.lg.Info(

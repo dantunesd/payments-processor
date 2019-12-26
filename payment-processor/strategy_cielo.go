@@ -5,19 +5,19 @@ import (
 	"fmt"
 )
 
-// NewCieloStrategy strategy constructor
+// CieloStrategy implementation of IAcquirerStrategy.
+type CieloStrategy struct {
+	cr ICieloRepository
+}
+
+// NewCieloStrategy CieloStrategy's constructor.
 func NewCieloStrategy(cr ICieloRepository) CieloStrategy {
 	return CieloStrategy{
 		cr: cr,
 	}
 }
 
-// CieloStrategy .
-type CieloStrategy struct {
-	cr ICieloRepository
-}
-
-// Process .
+// Process processes the Cielo's transaction results.
 func (c CieloStrategy) Process(ctx context.Context, p Payment, s Source) error {
 
 	crb := CieloRequestBody{

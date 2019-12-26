@@ -6,24 +6,24 @@ import (
 
 const salePath = "/1/sales"
 
-// ICieloRepository is a interface for Cielo Repository
+// ICieloRepository is a interface for Cielo Repository.
 type ICieloRepository interface {
 	Transaction(context.Context, CieloRequestBody) (ITransaction, error)
 }
 
-// CieloRepository repository to comunicate with cielo
+// CieloRepository repository to comunicate with cielo.
 type CieloRepository struct {
 	hr IHTTPRequester
 }
 
-// NewCieloRepository constructor
+// NewCieloRepository CieloRepository's constructor
 func NewCieloRepository(hr IHTTPRequester) ICieloRepository {
 	return &CieloRepository{
 		hr: hr,
 	}
 }
 
-// Transaction makes a cielo transaction
+// Transaction makes a cielo transaction.
 func (c *CieloRepository) Transaction(ctx context.Context, crb CieloRequestBody) (ITransaction, error) {
 
 	r, err := c.hr.Post(ctx, salePath, crb)

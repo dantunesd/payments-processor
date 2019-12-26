@@ -6,24 +6,24 @@ import (
 
 const transactionPath = "/v1/transactions"
 
-// IRedeRepository is a interface for Rede Repository
+// IRedeRepository is a interface for Rede Repository.
 type IRedeRepository interface {
 	Transaction(context.Context, RedeRequestBody) (ITransaction, error)
 }
 
-// RedeRepository repository to comunicate with cielo
+// RedeRepository repository to comunicate with rede.
 type RedeRepository struct {
 	hr IHTTPRequester
 }
 
-// NewRedeRepository constructor
+// NewRedeRepository RedeRepository's constructor.
 func NewRedeRepository(hr IHTTPRequester) IRedeRepository {
 	return &RedeRepository{
 		hr: hr,
 	}
 }
 
-// Transaction makes a rede transaction
+// Transaction makes a rede transaction.
 func (c *RedeRepository) Transaction(ctx context.Context, rrb RedeRequestBody) (ITransaction, error) {
 
 	r, err := c.hr.Post(ctx, transactionPath, rrb)
