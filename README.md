@@ -34,24 +34,36 @@ make start-dep
 
 ---
 
-## Run
+## Application
 
 Run the command bellow to start the application:
+
+*NOTE* : you must run `build` and start `dependencies` before.
 
 ```bash
 make start-app
 ```
 
-*NOTE* : you must run `build` and `dependencies` before.
-
 ---
 
-## Tests
+## Unit Tests
 
 Run the command bellow to run all unit tests:
 
 ```bash
 make unit-test
+```
+
+---
+
+## Integration Tests
+
+Run the command bellow to run all integration tests:
+
+*NOTE* : you must start `dependencies` and start `application` before.
+
+```bash
+make integration-test
 ```
 
 ---

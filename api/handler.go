@@ -26,7 +26,7 @@ func paymentHandler(s payment.IService, acquirer payment.Acquirer) http.HandlerF
 		p := &payment.Payment{}
 
 		if dErr := json.NewDecoder(r.Body).Decode(p); dErr != nil {
-			responseWriter(w, getHTTPCode(dErr), ErrorResponse{"Invalid body content", dErr.Error()})
+			responseWriter(w, http.StatusBadRequest, ErrorResponse{"Invalid body content", dErr.Error()})
 			return
 		}
 
