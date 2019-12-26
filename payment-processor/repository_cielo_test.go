@@ -27,7 +27,7 @@ func TestCieloRepository_Transaction(t *testing.T) {
 			fields{
 				r: requesterMock{
 					post: func(ctx context.Context, path string, body interface{}) (IResponser, error) {
-						return Response{200, []byte{}}, nil
+						return &Response{200, []byte{}}, nil
 					},
 				},
 			},
@@ -35,7 +35,7 @@ func TestCieloRepository_Transaction(t *testing.T) {
 				context.Background(),
 				CieloRequestBody{},
 			},
-			CieloTransaction{Response{200, []byte{}}},
+			&CieloTransaction{&Response{200, []byte{}}},
 			false,
 		},
 		{

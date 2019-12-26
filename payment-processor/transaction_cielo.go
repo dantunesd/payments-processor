@@ -18,14 +18,14 @@ type CieloTransaction struct {
 }
 
 // NewCieloTransaction CieloTransaction's constructor.
-func NewCieloTransaction(r IResponser) ITransaction {
-	return CieloTransaction{
+func NewCieloTransaction(r IResponser) *CieloTransaction {
+	return &CieloTransaction{
 		r: r,
 	}
 }
 
 // PaymentSucceeded verify the transaction results.
-func (c CieloTransaction) PaymentSucceeded() error {
+func (c *CieloTransaction) PaymentSucceeded() error {
 	if c.hasComunicationError() {
 		return NewInternalServerError(string(c.r.GetBody()))
 	}
@@ -43,33 +43,33 @@ func (c CieloTransaction) PaymentSucceeded() error {
 	return nil
 }
 
-func (c CieloTransaction) hasComunicationError() bool {
+func (c *CieloTransaction) hasComunicationError() bool {
 	return c.r.GetStatusCode() == http.StatusInternalServerError
 }
 
-func (c CieloTransaction) hasIntegrationError() bool {
+func (c *CieloTransaction) hasIntegrationError() bool {
 	return c.r.GetStatusCode() == http.StatusBadRequest
 }
 
-func (c CieloTransaction) hasEmissorError(status int) bool {
+func (c *CieloTransaction) hasEmissorError(status int) bool {
 	return !c.paymentSucceeded(status)
 }
 
-func (c CieloTransaction) paymentSucceeded(status int) bool {
+func (c *CieloTransaction) paymentSucceeded(status int) bool {
 	return status == CieloPaymentConfirmed || status == CieloPaymentAuthorized
 }
 
-func (c CieloTransaction) decode() *CieloResponseBody {
+func (c *CieloTransaction) decode() CieloResponseBody {
 	crb := &CieloResponseBody{}
 	json.Unmarshal(c.r.GetBody(), crb)
-	return crb
+	return *crb
 }
 
-func (c CieloTransaction) decodeError() *CieloIntegrationError {
+func (c *CieloTransaction) decodeError() CieloIntegrationError {
 	cir := SCieloIntegrationError{}
 	json.Unmarshal(c.r.GetBody(), &cir)
 	if len(cir) > 0 {
-		return cir[0]
+		return *cir[0]
 	}
-	return &CieloIntegrationError{}
+	return CieloIntegrationError{}
 }

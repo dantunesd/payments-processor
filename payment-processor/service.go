@@ -22,7 +22,7 @@ func NewService(sr ISourceRepository, ap IAcquirerProvider) *Service {
 }
 
 // ProcessPayment process a payment with an acquirer.
-func (s Service) ProcessPayment(ctx context.Context, p Payment, acquirer Acquirer) error {
+func (s *Service) ProcessPayment(ctx context.Context, p Payment, acquirer Acquirer) error {
 
 	if vErr := p.IsValid(); vErr != nil {
 		return vErr

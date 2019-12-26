@@ -17,19 +17,19 @@ type RedeRepository struct {
 }
 
 // NewRedeRepository RedeRepository's constructor.
-func NewRedeRepository(hr IHTTPRequester) IRedeRepository {
+func NewRedeRepository(hr IHTTPRequester) *RedeRepository {
 	return &RedeRepository{
 		hr: hr,
 	}
 }
 
 // Transaction makes a rede transaction.
-func (c *RedeRepository) Transaction(ctx context.Context, rrb RedeRequestBody) (ITransaction, error) {
+func (r *RedeRepository) Transaction(ctx context.Context, rrb RedeRequestBody) (ITransaction, error) {
 
-	r, err := c.hr.Post(ctx, transactionPath, rrb)
+	res, err := r.hr.Post(ctx, transactionPath, rrb)
 	if err != nil {
 		return nil, err
 	}
 
-	return NewRedeTransaction(r), nil
+	return NewRedeTransaction(res), nil
 }

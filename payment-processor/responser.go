@@ -13,19 +13,19 @@ type Response struct {
 }
 
 // NewResponse Response's constructor.
-func NewResponse(statusCode int, body []byte) IResponser {
-	return Response{
+func NewResponse(statusCode int, body []byte) *Response {
+	return &Response{
 		StatusCode: statusCode,
 		Body:       body,
 	}
 }
 
 // GetStatusCode returns the status code.
-func (r Response) GetStatusCode() int {
+func (r *Response) GetStatusCode() int {
 	return r.StatusCode
 }
 
 // GetBody returns the body content.
-func (r Response) GetBody() []byte {
+func (r *Response) GetBody() []byte {
 	return r.Body
 }

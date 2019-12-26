@@ -22,21 +22,21 @@ func TestAcquirerProvider_GetAcquirer(t *testing.T) {
 			"return an acquirer with success",
 			fields{
 				Acquirers: AcquirerStrategies{
-					Cielo: CieloStrategy{},
-					Rede:  RedeStrategy{},
+					Cielo: &CieloStrategy{},
+					Rede:  &RedeStrategy{},
 				},
 			},
 			args{
 				Cielo,
 			},
-			CieloStrategy{},
+			&CieloStrategy{},
 		},
 		{
 			"return an inexistent acquirer",
 			fields{
 				Acquirers: AcquirerStrategies{
-					Cielo: CieloStrategy{},
-					Rede:  RedeStrategy{},
+					Cielo: &CieloStrategy{},
+					Rede:  &RedeStrategy{},
 				},
 			},
 			args{

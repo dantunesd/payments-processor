@@ -17,7 +17,7 @@ type CieloRepository struct {
 }
 
 // NewCieloRepository CieloRepository's constructor
-func NewCieloRepository(hr IHTTPRequester) ICieloRepository {
+func NewCieloRepository(hr IHTTPRequester) *CieloRepository {
 	return &CieloRepository{
 		hr: hr,
 	}

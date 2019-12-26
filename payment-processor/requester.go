@@ -21,18 +21,18 @@ type headers map[string]string
 // HTTPRequester wrapper for http requests.
 type HTTPRequester struct {
 	l       *zap.Logger
-	BaseURL string
-	Headers headers
-	Timeout time.Duration
+	baseURL string
+	headers headers
+	timeout time.Duration
 }
 
 // NewHTTPRequester HTTPRequester's constructor.
-func NewHTTPRequester(l *zap.Logger, baseURL string, headers headers, timeout time.Duration) IHTTPRequester {
+func NewHTTPRequester(l *zap.Logger, baseURL string, headers headers, timeout time.Duration) *HTTPRequester {
 	return &HTTPRequester{
 		l:       l,
-		BaseURL: baseURL,
-		Headers: headers,
-		Timeout: timeout,
+		baseURL: baseURL,
+		headers: headers,
+		timeout: timeout,
 	}
 }
 
@@ -43,7 +43,7 @@ func (r *HTTPRequester) Post(ctx context.Context, path string, body interface{})
 
 func (r *HTTPRequester) do(method, path string, body interface{}) (IResponser, error) {
 	c := http.Client{
-		Timeout: r.Timeout,
+		Timeout: r.timeout,
 	}
 
 	bodyEncoded := new(bytes.Buffer)
@@ -53,19 +53,19 @@ func (r *HTTPRequester) do(method, path string, body interface{}) (IResponser, e
 		}
 	}
 
-	req, rErr := http.NewRequest(method, r.BaseURL+path, bodyEncoded)
+	req, rErr := http.NewRequest(method, r.baseURL+path, bodyEncoded)
 	if rErr != nil {
 		return nil, NewInternalServerError(rErr.Error())
 	}
 
 	req.Header.Add("content-type", "application/json")
-	for k, v := range r.Headers {
+	for k, v := range r.headers {
 		req.Header.Add(k, v)
 	}
 
 	r.l.Info(
 		"logging http request",
-		zap.String("baseUrl", r.BaseURL),
+		zap.String("baseUrl", r.baseURL),
 		zap.String("path", path),
 		zap.String("method", method),
 		zap.String("body", bodyEncoded.String()),
@@ -86,7 +86,7 @@ func (r *HTTPRequester) do(method, path string, body interface{}) (IResponser, e
 
 	r.l.Info(
 		"logging http response",
-		zap.String("baseUrl", r.BaseURL),
+		zap.String("baseUrl", r.baseURL),
 		zap.String("path", path),
 		zap.String("method", method),
 		zap.String("body", bodyCompacted.String()),

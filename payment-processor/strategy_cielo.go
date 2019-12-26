@@ -11,14 +11,14 @@ type CieloStrategy struct {
 }
 
 // NewCieloStrategy CieloStrategy's constructor.
-func NewCieloStrategy(cr ICieloRepository) CieloStrategy {
-	return CieloStrategy{
+func NewCieloStrategy(cr ICieloRepository) *CieloStrategy {
+	return &CieloStrategy{
 		cr: cr,
 	}
 }
 
 // Process processes the Cielo's transaction results.
-func (c CieloStrategy) Process(ctx context.Context, p Payment, s Source) error {
+func (c *CieloStrategy) Process(ctx context.Context, p Payment, s Source) error {
 
 	crb := CieloRequestBody{
 		MerchantOrderID: p.OrderID,

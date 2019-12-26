@@ -15,14 +15,14 @@ type RedeTransaction struct {
 }
 
 // NewRedeTransaction RedeTransaction's constructor.
-func NewRedeTransaction(r IResponser) RedeTransaction {
-	return RedeTransaction{
+func NewRedeTransaction(r IResponser) *RedeTransaction {
+	return &RedeTransaction{
 		r: r,
 	}
 }
 
 // PaymentSucceeded verify the transaction results.
-func (r RedeTransaction) PaymentSucceeded() error {
+func (r *RedeTransaction) PaymentSucceeded() error {
 	if r.hasComunicationError() {
 		return NewInternalServerError(string(r.r.GetBody()))
 	}
@@ -35,16 +35,16 @@ func (r RedeTransaction) PaymentSucceeded() error {
 	return nil
 }
 
-func (r RedeTransaction) hasComunicationError() bool {
+func (r *RedeTransaction) hasComunicationError() bool {
 	return r.r.GetStatusCode() == http.StatusInternalServerError
 }
 
-func (r RedeTransaction) paymentSucceeded(code string) bool {
+func (r *RedeTransaction) paymentSucceeded(code string) bool {
 	return code == RedePaymentConfirmed
 }
 
-func (r RedeTransaction) decode() *RedeResponseBody {
+func (r *RedeTransaction) decode() RedeResponseBody {
 	rrb := &RedeResponseBody{}
 	json.Unmarshal(r.r.GetBody(), rrb)
-	return rrb
+	return *rrb
 }

@@ -11,14 +11,14 @@ type RedeStrategy struct {
 }
 
 // NewRedeStrategy RedeStrategy's constructor.
-func NewRedeStrategy(rr IRedeRepository) RedeStrategy {
-	return RedeStrategy{
+func NewRedeStrategy(rr IRedeRepository) *RedeStrategy {
+	return &RedeStrategy{
 		rr: rr,
 	}
 }
 
 // Process processes the Rede's transaction results.
-func (r RedeStrategy) Process(ctx context.Context, p Payment, s Source) error {
+func (r *RedeStrategy) Process(ctx context.Context, p Payment, s Source) error {
 
 	rrb := RedeRequestBody{
 		Capture:         true,
