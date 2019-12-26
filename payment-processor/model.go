@@ -30,17 +30,17 @@ type Customer struct {
 type Details struct {
 	Card         Card     `json:"card" validate:"required"`
 	Amount       int      `json:"amount" validate:"min=100,required"`
-	PaymentType  string   `json:"payment_type" validate:"required"`
+	PaymentType  string   `json:"payment_type" validate:"alpha,required"`
 	Installments int      `json:"installments" validate:"min=1,required"`
 	Itens        []string `json:"itens" validate:"gte=1,required"`
 }
 
 // Card represents a payment's card.
 type Card struct {
-	SourceID        string `json:"source_id" validate:"required"`
-	Brand           string `json:"brand" validate:"required"`
+	SourceID        string `json:"source_id" validate:"alphanum,required"`
+	Brand           string `json:"brand" validate:"alpha,required"`
 	ExpirationYear  int    `json:"expiration_year" validate:"required"`
-	ExpirationMonth int    `json:"expiration_month" validate:"required"`
+	ExpirationMonth int    `json:"expiration_month" validate:"min=1,max=12,required"`
 }
 
 // Establishment represents a payment's establishment.
