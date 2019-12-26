@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"time"
 
 	"go.uber.org/zap"
 )
@@ -20,19 +19,19 @@ type headers map[string]string
 
 // HTTPRequester wrapper for http requests.
 type HTTPRequester struct {
+	c       *http.Client
 	l       *zap.Logger
 	baseURL string
 	headers headers
-	timeout time.Duration
 }
 
 // NewHTTPRequester HTTPRequester's constructor.
-func NewHTTPRequester(l *zap.Logger, baseURL string, headers headers, timeout time.Duration) *HTTPRequester {
+func NewHTTPRequester(c *http.Client, l *zap.Logger, baseURL string, headers headers) *HTTPRequester {
 	return &HTTPRequester{
+		c:       c,
 		l:       l,
 		baseURL: baseURL,
 		headers: headers,
-		timeout: timeout,
 	}
 }
 
@@ -42,15 +41,10 @@ func (r *HTTPRequester) Post(ctx context.Context, path string, body interface{})
 }
 
 func (r *HTTPRequester) do(method, path string, body interface{}) (IResponser, error) {
-	c := http.Client{
-		Timeout: r.timeout,
-	}
 
 	bodyEncoded := new(bytes.Buffer)
-	if body != nil {
-		if eErr := json.NewEncoder(bodyEncoded).Encode(body); eErr != nil {
-			return nil, NewInternalServerError(eErr.Error())
-		}
+	if bErr := r.prepareBody(body, bodyEncoded); bErr != nil {
+		return nil, NewInternalServerError(bErr.Error())
 	}
 
 	req, rErr := http.NewRequest(method, r.baseURL+path, bodyEncoded)
@@ -58,20 +52,11 @@ func (r *HTTPRequester) do(method, path string, body interface{}) (IResponser, e
 		return nil, NewInternalServerError(rErr.Error())
 	}
 
-	req.Header.Add("content-type", "application/json")
-	for k, v := range r.headers {
-		req.Header.Add(k, v)
-	}
+	r.prepareHeaders(req)
 
-	r.l.Info(
-		"logging http request",
-		zap.String("baseUrl", r.baseURL),
-		zap.String("path", path),
-		zap.String("method", method),
-		zap.String("body", bodyEncoded.String()),
-	)
+	r.log("logging http request", r.baseURL, path, method, bodyEncoded.String(), nil)
 
-	res, dErr := c.Do(req)
+	res, dErr := r.c.Do(req)
 	if dErr != nil {
 		return nil, NewInternalServerError(dErr.Error())
 	}
@@ -84,14 +69,32 @@ func (r *HTTPRequester) do(method, path string, body interface{}) (IResponser, e
 	bodyCompacted := new(bytes.Buffer)
 	json.Compact(bodyCompacted, bodyDecoded)
 
-	r.l.Info(
-		"logging http response",
-		zap.String("baseUrl", r.baseURL),
-		zap.String("path", path),
-		zap.String("method", method),
-		zap.String("body", bodyCompacted.String()),
-		zap.Int("statusCode", res.StatusCode),
-	)
+	r.log("logging http response", r.baseURL, path, method, bodyCompacted.String(), res.StatusCode)
 
 	return NewResponse(res.StatusCode, bodyDecoded), nil
+}
+
+func (r *HTTPRequester) prepareBody(body interface{}, bodyEncoded *bytes.Buffer) error {
+	if body == nil {
+		return nil
+	}
+	return json.NewEncoder(bodyEncoded).Encode(body)
+}
+
+func (r *HTTPRequester) prepareHeaders(req *http.Request) {
+	req.Header.Add("content-type", "application/json")
+	for k, v := range r.headers {
+		req.Header.Add(k, v)
+	}
+}
+
+func (r *HTTPRequester) log(message, baseURL, path, method, body string, statusCode interface{}) {
+	r.l.Info(
+		message,
+		zap.String("baseUrl", baseURL),
+		zap.String("path", path),
+		zap.String("method", method),
+		zap.String("body", body),
+		zap.Any("statusCode", statusCode),
+	)
 }

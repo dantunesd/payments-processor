@@ -26,13 +26,13 @@ func main() {
 
 	cr := payment.NewCieloRepository(
 		payment.NewHTTPRequester(
+			&http.Client{Timeout: cfg.GeneralReqTimeout},
 			l,
 			cfg.CieloURI,
 			map[string]string{
 				"merchantid":  cfg.CieloMerchantID,
 				"merchantkey": cfg.CieloMerchantKey,
 			},
-			cfg.GeneralReqTimeout,
 		),
 	)
 
@@ -40,12 +40,12 @@ func main() {
 
 	rr := payment.NewRedeRepository(
 		payment.NewHTTPRequester(
+			&http.Client{Timeout: cfg.GeneralReqTimeout},
 			l,
 			cfg.RedeURI,
 			map[string]string{
 				"Authorization": cfg.RedeAuth,
 			},
-			cfg.GeneralReqTimeout,
 		),
 	)
 
@@ -60,7 +60,7 @@ func main() {
 
 	db, oErr := sql.Open(cfg.DBDriver, cfg.DBConnectionString)
 	if oErr != nil {
-		log.Fatal(lErr)
+		l.Fatal(lErr.Error())
 	}
 
 	sr := payment.NewSourcesRepository(
