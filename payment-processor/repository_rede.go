@@ -13,20 +13,20 @@ type IRedeRepository interface {
 
 // RedeRepository repository to comunicate with cielo
 type RedeRepository struct {
-	r IHTTPRequester
+	hr IHTTPRequester
 }
 
 // NewRedeRepository constructor
-func NewRedeRepository(r IHTTPRequester) IRedeRepository {
+func NewRedeRepository(hr IHTTPRequester) IRedeRepository {
 	return &RedeRepository{
-		r: r,
+		hr: hr,
 	}
 }
 
 // Transaction makes a rede transaction
 func (c *RedeRepository) Transaction(ctx context.Context, rrb RedeRequestBody) (ITransaction, error) {
 
-	r, err := c.r.Post(ctx, transactionPath, rrb)
+	r, err := c.hr.Post(ctx, transactionPath, rrb)
 	if err != nil {
 		return nil, err
 	}

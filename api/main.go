@@ -13,66 +13,68 @@ import (
 )
 
 func main() {
-	config, cErr := NewConfig()
+	cfg, cErr := NewConfig()
 	if cErr != nil {
 		log.Fatal(cErr)
 	}
 
-	logger, lErr := zap.NewProduction()
+	l, lErr := zap.NewProduction()
 	if lErr != nil {
 		log.Fatal(lErr)
 	}
-	defer logger.Sync()
-
-	db, oErr := sql.Open(config.DBDriver, config.DBConnectionString)
-	if oErr != nil {
-		log.Fatal(lErr)
-	}
+	defer l.Sync()
 
 	cr := payment.NewCieloRepository(
 		payment.NewHTTPRequester(
-			logger,
-			config.CieloURI,
+			l,
+			cfg.CieloURI,
 			map[string]string{
-				"merchantid":  config.CieloMerchantID,
-				"merchantkey": config.CieloMerchantKey,
+				"merchantid":  cfg.CieloMerchantID,
+				"merchantkey": cfg.CieloMerchantKey,
 			},
-			config.GeneralReqTimeout,
+			cfg.GeneralReqTimeout,
 		),
 	)
+
 	cs := payment.NewCieloStrategy(cr)
 
 	rr := payment.NewRedeRepository(
 		payment.NewHTTPRequester(
-			logger,
-			config.RedeURI,
+			l,
+			cfg.RedeURI,
 			map[string]string{
-				"Authorization": config.RedeAuth,
+				"Authorization": cfg.RedeAuth,
 			},
-			config.GeneralReqTimeout,
+			cfg.GeneralReqTimeout,
 		),
 	)
-	re := payment.NewRedeStrategy(rr)
 
-	a := payment.NewAcquirerProvider(
+	rs := payment.NewRedeStrategy(rr)
+
+	ap := payment.NewAcquirerProvider(
 		payment.AcquirersStrategy{
 			payment.Cielo: cs,
-			payment.Rede:  re,
+			payment.Rede:  rs,
 		},
 	)
-	r := payment.NewSourcesRepository(&payment.LoggableDBWrapper{DB: db, Logger: logger})
-	s := payment.NewService(r, a)
 
-	handler := createServerHandler(s)
+	db, oErr := sql.Open(cfg.DBDriver, cfg.DBConnectionString)
+	if oErr != nil {
+		log.Fatal(lErr)
+	}
 
-	logger.Info(
-		fmt.Sprintf("starting application at port: %d", config.AppPort),
+	sr := payment.NewSourcesRepository(
+		payment.NewLoggableDBWrapper(db, l),
 	)
 
+	s := payment.NewService(sr, ap)
+
+	l.Info(fmt.Sprintf("starting application at port: %d", cfg.AppPort))
+
 	gracehttp.Serve(&http.Server{
-		Addr:         fmt.Sprintf(":%d", config.AppPort),
-		Handler:      handler,
-		ReadTimeout:  config.AppReadTimeout,
-		WriteTimeout: config.AppWriteTimeout,
+		Addr:         fmt.Sprintf(":%d", cfg.AppPort),
+		Handler:      createServerHandler(s),
+		ReadTimeout:  cfg.AppReadTimeout,
+		WriteTimeout: cfg.AppWriteTimeout,
 	})
 }

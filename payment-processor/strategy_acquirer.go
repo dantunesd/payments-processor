@@ -26,7 +26,7 @@ type IAcquirerProvider interface {
 
 // AcquirerProvider is a acquirer provider
 type AcquirerProvider struct {
-	Acquirers AcquirersStrategy
+	As AcquirersStrategy
 }
 
 // NewAcquirerProvider AcquirerProvider constructor
@@ -35,6 +35,6 @@ func NewAcquirerProvider(as AcquirersStrategy) *AcquirerProvider {
 }
 
 // GetAcquirerStrategy returns a acquirer strategy
-func (ap *AcquirerProvider) GetAcquirerStrategy(a Acquirer) IAcquirerStrategy {
-	return ap.Acquirers[a]
+func (a *AcquirerProvider) GetAcquirerStrategy(acquirer Acquirer) IAcquirerStrategy {
+	return a.As[acquirer]
 }

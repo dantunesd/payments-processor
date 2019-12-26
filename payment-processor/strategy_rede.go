@@ -7,13 +7,13 @@ import (
 
 // RedeStrategy .
 type RedeStrategy struct {
-	r IRedeRepository
+	rr IRedeRepository
 }
 
 // NewRedeStrategy .
-func NewRedeStrategy(r IRedeRepository) RedeStrategy {
+func NewRedeStrategy(rr IRedeRepository) RedeStrategy {
 	return RedeStrategy{
-		r: r,
+		rr: rr,
 	}
 }
 
@@ -31,10 +31,10 @@ func (r RedeStrategy) Process(ctx context.Context, p Payment, s Source) error {
 		SecurityCode:    fmt.Sprintf("%d", s.CVV),
 	}
 
-	transaction, err := r.r.Transaction(ctx, rrb)
+	t, err := r.rr.Transaction(ctx, rrb)
 	if err != nil {
 		return err
 	}
 
-	return transaction.PaymentSucceeded()
+	return t.PaymentSucceeded()
 }

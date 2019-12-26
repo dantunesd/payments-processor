@@ -20,7 +20,7 @@ type headers map[string]string
 
 // HTTPRequester wrapper for client http
 type HTTPRequester struct {
-	Logger  *zap.Logger
+	l       *zap.Logger
 	BaseURL string
 	Headers headers
 	Timeout time.Duration
@@ -29,7 +29,7 @@ type HTTPRequester struct {
 // NewHTTPRequester constructor.
 func NewHTTPRequester(l *zap.Logger, baseURL string, headers headers, timeout time.Duration) IHTTPRequester {
 	return &HTTPRequester{
-		Logger:  l,
+		l:       l,
 		BaseURL: baseURL,
 		Headers: headers,
 		Timeout: timeout,
@@ -58,12 +58,12 @@ func (r *HTTPRequester) do(method, path string, body interface{}) (IResponser, e
 		return nil, NewInternalServerError(rErr.Error())
 	}
 
-	for key, val := range r.Headers {
-		req.Header.Add(key, val)
-	}
 	req.Header.Add("content-type", "application/json")
+	for k, v := range r.Headers {
+		req.Header.Add(k, v)
+	}
 
-	r.Logger.Info(
+	r.l.Info(
 		"logging http request",
 		zap.String("baseUrl", r.BaseURL),
 		zap.String("path", path),
@@ -76,22 +76,22 @@ func (r *HTTPRequester) do(method, path string, body interface{}) (IResponser, e
 		return nil, NewInternalServerError(dErr.Error())
 	}
 
-	resByte, iErr := ioutil.ReadAll(res.Body)
+	bodyDecoded, iErr := ioutil.ReadAll(res.Body)
 	if iErr != nil {
 		return nil, NewInternalServerError(iErr.Error())
 	}
 
-	resBody := new(bytes.Buffer)
-	json.Compact(resBody, resByte)
+	bodyCompacted := new(bytes.Buffer)
+	json.Compact(bodyCompacted, bodyDecoded)
 
-	r.Logger.Info(
+	r.l.Info(
 		"logging http response",
 		zap.String("baseUrl", r.BaseURL),
 		zap.String("path", path),
 		zap.String("method", method),
-		zap.String("body", resBody.String()),
+		zap.String("body", bodyCompacted.String()),
 		zap.Int("statusCode", res.StatusCode),
 	)
 
-	return NewResponse(res.StatusCode, resByte), nil
+	return NewResponse(res.StatusCode, bodyDecoded), nil
 }

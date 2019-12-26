@@ -13,20 +13,20 @@ type ICieloRepository interface {
 
 // CieloRepository repository to comunicate with cielo
 type CieloRepository struct {
-	r IHTTPRequester
+	hr IHTTPRequester
 }
 
 // NewCieloRepository constructor
-func NewCieloRepository(r IHTTPRequester) ICieloRepository {
+func NewCieloRepository(hr IHTTPRequester) ICieloRepository {
 	return &CieloRepository{
-		r: r,
+		hr: hr,
 	}
 }
 
 // Transaction makes a cielo transaction
 func (c *CieloRepository) Transaction(ctx context.Context, crb CieloRequestBody) (ITransaction, error) {
 
-	r, err := c.r.Post(ctx, salePath, crb)
+	r, err := c.hr.Post(ctx, salePath, crb)
 
 	if err != nil {
 		return nil, err

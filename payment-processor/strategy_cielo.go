@@ -6,19 +6,20 @@ import (
 )
 
 // NewCieloStrategy strategy constructor
-func NewCieloStrategy(r ICieloRepository) CieloStrategy {
+func NewCieloStrategy(cr ICieloRepository) CieloStrategy {
 	return CieloStrategy{
-		r: r,
+		cr: cr,
 	}
 }
 
 // CieloStrategy .
 type CieloStrategy struct {
-	r ICieloRepository
+	cr ICieloRepository
 }
 
 // Process .
 func (c CieloStrategy) Process(ctx context.Context, p Payment, s Source) error {
+
 	crb := CieloRequestBody{
 		MerchantOrderID: p.OrderID,
 		Customer: Customer{
@@ -37,10 +38,11 @@ func (c CieloStrategy) Process(ctx context.Context, p Payment, s Source) error {
 			},
 		},
 	}
-	transaction, err := c.r.Transaction(ctx, crb)
+
+	t, err := c.cr.Transaction(ctx, crb)
 	if err != nil {
 		return err
 	}
 
-	return transaction.PaymentSucceeded()
+	return t.PaymentSucceeded()
 }

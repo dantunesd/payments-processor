@@ -27,9 +27,9 @@ func (r RedeTransaction) PaymentSucceeded() error {
 		return NewInternalServerError(string(r.r.GetBody()))
 	}
 
-	out := r.decode()
-	if !r.paymentSucceeded(out.ReturnCode) {
-		return NewTransactionError(fmt.Sprintf("ReturnCode: %s, ReturnMessage: %s", out.ReturnCode, out.ReturnMessage))
+	rrb := r.decode()
+	if !r.paymentSucceeded(rrb.ReturnCode) {
+		return NewTransactionError(fmt.Sprintf("ReturnCode: %s, ReturnMessage: %s", rrb.ReturnCode, rrb.ReturnMessage))
 	}
 
 	return nil
@@ -44,7 +44,7 @@ func (r RedeTransaction) paymentSucceeded(code string) bool {
 }
 
 func (r RedeTransaction) decode() *RedeResponseBody {
-	out := &RedeResponseBody{}
-	json.Unmarshal(r.r.GetBody(), out)
-	return out
+	rrb := &RedeResponseBody{}
+	json.Unmarshal(r.r.GetBody(), rrb)
+	return rrb
 }

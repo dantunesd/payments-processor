@@ -4,36 +4,36 @@ import "context"
 
 // IService interface for service
 type IService interface {
-	ProcessPayment(ctx context.Context, p Payment, a Acquirer) error
+	ProcessPayment(ctx context.Context, p Payment, acquirer Acquirer) error
 }
 
 // Service implements the payment process
 type Service struct {
-	r ISourceRepository
-	a IAcquirerProvider
+	sr ISourceRepository
+	ap IAcquirerProvider
 }
 
 // NewService constructor for Service
-func NewService(r ISourceRepository, a IAcquirerProvider) *Service {
+func NewService(sr ISourceRepository, ap IAcquirerProvider) *Service {
 	return &Service{
-		r: r,
-		a: a,
+		sr: sr,
+		ap: ap,
 	}
 }
 
 // ProcessPayment process a payment
-func (s Service) ProcessPayment(ctx context.Context, p Payment, ac Acquirer) error {
+func (s Service) ProcessPayment(ctx context.Context, p Payment, acquirer Acquirer) error {
 
 	if vErr := p.IsValid(); vErr != nil {
 		return vErr
 	}
 
-	src, gErr := s.r.GetByID(ctx, p.Details.Card.SourceID)
+	src, gErr := s.sr.GetByID(ctx, p.Details.Card.SourceID)
 	if gErr != nil {
 		return gErr
 	}
 
-	if pErr := s.a.GetAcquirerStrategy(ac).Process(ctx, p, src); pErr != nil {
+	if pErr := s.ap.GetAcquirerStrategy(acquirer).Process(ctx, p, src); pErr != nil {
 		return pErr
 	}
 

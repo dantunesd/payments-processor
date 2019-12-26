@@ -20,7 +20,7 @@ func createServerHandler(s payment.IService) http.Handler {
 	return r
 }
 
-func paymentHandler(s payment.IService, ac payment.Acquirer) http.HandlerFunc {
+func paymentHandler(s payment.IService, acquirer payment.Acquirer) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		p := &payment.Payment{}
@@ -30,7 +30,7 @@ func paymentHandler(s payment.IService, ac payment.Acquirer) http.HandlerFunc {
 			return
 		}
 
-		if pErr := s.ProcessPayment(r.Context(), *p, ac); pErr != nil {
+		if pErr := s.ProcessPayment(r.Context(), *p, acquirer); pErr != nil {
 			responseWriter(w, getHTTPCode(pErr), ErrorResponse{"Failed to proccess payment", pErr.Error()})
 			return
 		}

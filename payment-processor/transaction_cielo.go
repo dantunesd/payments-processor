@@ -8,8 +8,8 @@ import (
 
 // Payment succeeded
 const (
-	Authorized       = 1
-	PaymentConfirmed = 2
+	CieloPaymentAuthorized = 1
+	CieloPaymentConfirmed  = 2
 )
 
 // CieloTransaction represents a cielo transaction
@@ -31,13 +31,13 @@ func (c CieloTransaction) PaymentSucceeded() error {
 	}
 
 	if c.hasIntegrationError() {
-		c := c.decodeError()
-		return NewTransactionError(fmt.Sprintf("ReturnCode: %d, ReturnMessage: %s", c.Code, c.Message))
+		cir := c.decodeError()
+		return NewTransactionError(fmt.Sprintf("ReturnCode: %d, ReturnMessage: %s", cir.Code, cir.Message))
 	}
 
-	out := c.decode()
-	if c.hasEmissorError(out.Payment.Status) {
-		return NewTransactionError(fmt.Sprintf("ReturnCode: %s, ReturnMessage: %s", out.Payment.ReturnCode, out.Payment.ReturnMessage))
+	crb := c.decode()
+	if c.hasEmissorError(crb.Payment.Status) {
+		return NewTransactionError(fmt.Sprintf("ReturnCode: %s, ReturnMessage: %s", crb.Payment.ReturnCode, crb.Payment.ReturnMessage))
 	}
 
 	return nil
@@ -56,20 +56,20 @@ func (c CieloTransaction) hasEmissorError(status int) bool {
 }
 
 func (c CieloTransaction) paymentSucceeded(status int) bool {
-	return status == PaymentConfirmed || status == Authorized
+	return status == CieloPaymentConfirmed || status == CieloPaymentAuthorized
 }
 
 func (c CieloTransaction) decode() *CieloResponseBody {
-	out := &CieloResponseBody{}
-	json.Unmarshal(c.r.GetBody(), out)
-	return out
+	crb := &CieloResponseBody{}
+	json.Unmarshal(c.r.GetBody(), crb)
+	return crb
 }
 
 func (c CieloTransaction) decodeError() *CieloIntegrationError {
-	out := SCieloIntegrationError{}
-	json.Unmarshal(c.r.GetBody(), &out)
-	if len(out) > 0 {
-		return out[0]
+	cir := SCieloIntegrationError{}
+	json.Unmarshal(c.r.GetBody(), &cir)
+	if len(cir) > 0 {
+		return cir[0]
 	}
 	return &CieloIntegrationError{}
 }

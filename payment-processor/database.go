@@ -16,20 +16,28 @@ type IQuerier interface {
 	QueryRowContext(ctx context.Context, query string, args ...interface{}) IScanner
 }
 
+// NewLoggableDBWrapper constructor
+func NewLoggableDBWrapper(db *sql.DB, lg *zap.Logger) *LoggableDBWrapper {
+	return &LoggableDBWrapper{
+		db: db,
+		lg: lg,
+	}
+}
+
 // LoggableDBWrapper wrapper for DB
 type LoggableDBWrapper struct {
-	DB     *sql.DB
-	Logger *zap.Logger
+	db *sql.DB
+	lg *zap.Logger
 }
 
 // QueryRowContext wrapper for QueryRowContext
-func (q *LoggableDBWrapper) QueryRowContext(ctx context.Context, query string, args ...interface{}) IScanner {
+func (l *LoggableDBWrapper) QueryRowContext(ctx context.Context, query string, args ...interface{}) IScanner {
 
-	q.Logger.Info(
-		"logging queryrow",
+	l.lg.Info(
+		"logging query",
 		zap.String("query", query),
 		zap.Any("args", args),
 	)
 
-	return q.DB.QueryRowContext(ctx, query, args...)
+	return l.db.QueryRowContext(ctx, query, args...)
 }

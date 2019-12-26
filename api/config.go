@@ -26,6 +26,6 @@ type Config struct {
 
 // NewConfig Config constructor.
 func NewConfig() (*Config, error) {
-	config := &Config{}
-	return config, envconfig.Process("", config)
+	cfg := &Config{}
+	return cfg, envconfig.Process("", cfg)
 }
