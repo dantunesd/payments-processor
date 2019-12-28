@@ -1,4 +1,4 @@
-.PHONY: build start-app unit-test integration-test start-dep
+.PHONY: build start-app unit-test integration-test start-dep stop-dep
 
 APP=api
 BIN=./bin/$(APP)
@@ -17,3 +17,6 @@ integration-test:
 
 start-dep:
 	docker-compose up -d
+
+stop-dep:
+	docker-compose stop
