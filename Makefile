@@ -10,7 +10,7 @@ start-app:
 	$(BIN)
 
 unit-test:
-	go test ./payment-processor
+	go test ./payment-processor -count=1
 
 integration-test:
 	go test ./integration-tests -count=1

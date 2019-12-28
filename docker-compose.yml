@@ -11,14 +11,14 @@ services:
             - 3306:3306
             - 33060:33060
         volumes: 
-            - ./database-dump:/docker-entrypoint-initdb.d
+            - ./docker-data/database/:/docker-entrypoint-initdb.d
     
             
     mountebank:
         image: andyrbell/mountebank
-        volumes:
-            - ./imposters:/mb/
         ports:
             - 2525:2525
             - 8010:8010
+        volumes:
+            - ./docker-data/mountebank/imposters:/mb/
         command: mb --configfile /mb/imposters.ejs --allowInjection
