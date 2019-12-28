@@ -84,6 +84,8 @@ make integration-test
 
 ## API
 
+*NOTE* : You can donwload and import the [postman collection](https://github.com/dantunesd/payments-processor/blob/master/docs/payments-processor.postman_collection.json) to make easier to do the requests below.
+
 ### `POST` /payment/cielo
 
 Creates a new payment via Cielo. Eg.:
@@ -129,7 +131,8 @@ In development environment (running the application and dependencies locally), y
 | emissor-error | cielo/rede |
 | business-error | only on rede |
 
-*NOTE* : You can import the `postman collection` found at `docs/` folder to make easier to simulate all the errors.
+
+*NOTE* : You can donwload and import the [postman collection](https://github.com/dantunesd/payments-processor/blob/master/docs/payments-processor.postman_collection.json) to make easier to simulate all the errors.
 
 ---
 
