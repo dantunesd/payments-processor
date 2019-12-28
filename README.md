@@ -84,12 +84,10 @@ make integration-test
 
 ### `POST` /payment/cielo
 
-Creates a new payment via Cielo.
-
-Eg.:
+Creates a new payment via Cielo. Eg.:
 
 ```bash
-`curl -X POST http://localhost:3000/payment/cielo -H 'Content-Type: application/json'  -d '{"order_id":"1b2c3d4e5f6g7h8i9j","customer":{"name":"lorem ipson"},"details":{"amount":100,"installments":1,"payment_type":"credit","card":{"source_id":"authorized","brand":"Visa","expiration_month":12,"expiration_year":2020},"itens":["lorem","ipson"]},"establishment":{"address":"rua lorem ipson","identifier":"00.111.222-8","postal_code":12345678}}'`
+curl -v -X POST http://localhost:3000/payment/cielo -H 'Content-Type: application/json'  -d '{"order_id":"1b2c3d4e5f6g7h8i9j","customer":{"name":"lorem ipson"},"details":{"amount":100,"installments":1,"payment_type":"credit","card":{"source_id":"authorized","brand":"Visa","expiration_month":12,"expiration_year":2020},"itens":["lorem","ipson"]},"establishment":{"address":"rua lorem ipson","identifier":"00.111.222-8","postal_code":12345678}}'
 ```
 
 ### Responses
@@ -104,12 +102,10 @@ Eg.:
 
 ### `POST` /payment/rede
 
-Creates a new payment via Rede.
-
-Eg.:
+Creates a new payment via Rede. Eg.:
 
 ```bash
-`curl -X POST http://localhost:3000/payment/rede -H 'Content-Type: application/json'  -d '{"order_id":"1b2c3d4e5f6g7h8i9j","customer":{"name":"lorem ipson"},"details":{"amount":100,"installments":1,"payment_type":"credit","card":{"source_id":"authorized","brand":"Visa","expiration_month":12,"expiration_year":2020},"itens":["lorem","ipson"]},"establishment":{"address":"rua lorem ipson","identifier":"00.111.222-8","postal_code":12345678}}'`
+curl -v -X POST http://localhost:3000/payment/rede -H 'Content-Type: application/json'  -d '{"order_id":"1b2c3d4e5f6g7h8i9j","customer":{"name":"lorem ipson"},"details":{"amount":100,"installments":1,"payment_type":"credit","card":{"source_id":"authorized","brand":"Visa","expiration_month":12,"expiration_year":2020},"itens":["lorem","ipson"]},"establishment":{"address":"rua lorem ipson","identifier":"00.111.222-8","postal_code":12345678}}'
 ```
 
 ### Responses
