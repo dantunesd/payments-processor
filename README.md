@@ -6,11 +6,13 @@ This application is a simplified payments processor.
 
 ## Pre-requiriments
 
-`Docker Engine 19.03+`
+The application was developed with the dependencies and versions bellow:
 
-`Docker-compose version 1.24+`
+`Docker Engine - 18.06.0+`
 
-`Golang 1.13+`
+`Docker-compose - 1.24.1+`
+
+`Golang - 1.13+`
 
 --- 
 
