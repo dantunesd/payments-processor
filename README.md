@@ -53,7 +53,7 @@ Run the command bellow to start the application:
 *NOTE* : you must run `build` and start `dependencies` before.
 
 ```bash
-make start-app
+make start
 ```
 
 ---
@@ -128,5 +128,29 @@ In development environment (running the application and dependencies locally), y
 | business-error | only on rede |
 
 *NOTE* : You can import the `postman collection` found at `docs/` folder to make easier to simulate all the errors.
+
+---
+
+## Sandbox
+
+To test with acquirers sandbox, you must set the following environment variables with acquirer's sandbox values:
+
+```bash
+export REDE_URI="https://api.userede.com.br/desenvolvedores"
+export REDE_AUTH="Basic your-basic-auth"
+export CIELO_URI="https://apisandbox.cieloecommerce.cielo.com.br"
+export CIELO_MERCHANT_ID="your-merchant-id"
+export CIELO_MERCHANT_KEY="your-merchant-key"
+```
+
+After that you must use the inserteds cards (`source_id`) at database (see `docker-data/database/db.sql`) for cielo and rede on the request payload.
+
+You can try to change some values (like `amount`) on the payload to receive other reponses.
+
+See Rede/Cielo sandbox documentation to see how to get new responses:
+
+https://www.userede.com.br/desenvolvedores/pt/produto/e-Rede#tutorial-playground
+
+https://www.userede.com.br/desenvolvedores/pt/produto/e-Rede#tutorial-erros
 
 ---
