@@ -115,3 +115,19 @@ curl -v -X POST http://localhost:3000/payment/rede -H 'Content-Type: application
 | `200` | {"message": "payment succeeded"}|
 | `400` | {"message": "some friendly message", "error": "the root cause"}|
 | `500` | {"message": "some friendly message", "error": "the root cause"}|
+
+---
+
+## Development
+
+In development environment (running the application and dependencies locally), you can change `order_id` field value in the request body on `/payment/*acquirer*` to see the application behaviors. Eg.:
+
+| order_id value | with acquirer |
+| :---------- | :--------------- |
+| integration-error | cielo/rede |
+| emissor-error | cielo/rede |
+| business-error | only on rede |
+
+*NOTE* : You can import the `postman collection` found at `docs/` folder to make easier to simulate all the errors.
+
+---
