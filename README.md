@@ -149,6 +149,8 @@ You can try to change some values (like `amount`) on the payload to receive othe
 
 See Rede/Cielo sandbox documentation to see how to get new responses:
 
+https://developercielo.github.io/manual/cielo-ecommerce#cart%C3%A3o-de-cr%C3%A9dito-sandbox
+
 https://www.userede.com.br/desenvolvedores/pt/produto/e-Rede#tutorial-playground
 
 https://www.userede.com.br/desenvolvedores/pt/produto/e-Rede#tutorial-erros
