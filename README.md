@@ -50,7 +50,7 @@ export APP_NAME=payment-processor
 
 Run the command bellow to start the application:
 
-*NOTE* : you must run `build` and start `dependencies` before.
+*NOTE* : you must run `build` and start `dependencies` before. Wait until database service be ready. 
 
 ```bash
 make start
