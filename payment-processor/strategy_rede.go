@@ -26,6 +26,7 @@ func (r *RedeStrategy) Process(ctx context.Context, p Payment, s Source) error {
 		Amount:          p.Details.Amount,
 		HolderName:      p.Customer.Name,
 		CardNumber:      s.CardNumber,
+		Installments:    p.Details.Installments,
 		ExpirationMonth: p.Details.Card.ExpirationMonth,
 		ExpirationYear:  p.Details.Card.ExpirationYear,
 		SecurityCode:    fmt.Sprintf("%d", s.CVV),

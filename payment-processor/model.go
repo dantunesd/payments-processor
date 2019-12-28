@@ -112,6 +112,7 @@ type RedeRequestBody struct {
 	ExpirationMonth int    `json:"expirationMonth"`
 	ExpirationYear  int    `json:"expirationYear"`
 	SecurityCode    string `json:"securityCode"`
+	Installments    int    `json:"installments"`
 }
 
 // RedeResponseBody represents a Rede's response body.
