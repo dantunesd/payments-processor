@@ -98,7 +98,6 @@ curl -v -X POST http://localhost:3000/payment/cielo -H 'Content-Type: applicatio
 | `400` | {"message": "some friendly message", "error": "the root cause"}|
 | `500` | {"message": "some friendly message", "error": "the root cause"}|
 
---- 
 
 ### `POST` /payment/rede
 
