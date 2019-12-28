@@ -6,7 +6,7 @@ COPY . .
 
 RUN apk update && apk add --no-cache make
 
-RUN make run-build
+RUN make build
 
 FROM alpine:3.10 as runner
 
