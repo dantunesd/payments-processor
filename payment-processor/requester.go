@@ -96,5 +96,6 @@ func (r *HTTPRequester) log(message, baseURL, path, method, body string, statusC
 		zap.String("method", method),
 		zap.String("body", body),
 		zap.Any("statusCode", statusCode),
+		zap.Any("headers", r.headers),
 	)
 }
