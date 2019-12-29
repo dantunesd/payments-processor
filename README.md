@@ -89,7 +89,7 @@ make integration-test
 Creates a new payment via Cielo. Eg.:
 
 ```bash
-curl -v -X POST http://localhost:3000/payment/cielo -H 'Content-Type: application/json'  -d '{"order_id":"1b2c3d4e5f6g7h8i9j","customer":{"name":"lorem ipson"},"details":{"amount":100,"installments":1,"payment_type":"credit","card":{"source_id":"authorized","brand":"Visa","expiration_month":12,"expiration_year":2020},"itens":["lorem","ipson"]},"establishment":{"address":"rua lorem ipson","identifier":"00.111.222-8","postal_code":12345678}}'
+curl -v -X POST http://localhost:3000/payment/cielo -H 'Content-Type: application/json'  -d '{"order_id":"1b2c3d4e5f6g7h8i9j","customer":{"name":"lorem ipson"},"details":{"amount":100,"installments":1,"payment_type":"credit","card":{"source_id":"c674b5630d41cd9dbe08a28c3b11afc63ae4160be329404b42a2eaed0d527e05","brand":"Visa","expiration_month":12,"expiration_year":2020},"itens":["lorem","ipson"]},"establishment":{"address":"rua lorem ipson","identifier":"00.111.222-8","postal_code":12345678}}'
 ```
 
 ### Responses
@@ -106,7 +106,7 @@ curl -v -X POST http://localhost:3000/payment/cielo -H 'Content-Type: applicatio
 Creates a new payment via Rede. Eg.:
 
 ```bash
-curl -v -X POST http://localhost:3000/payment/rede -H 'Content-Type: application/json'  -d '{"order_id":"1b2c3d4e5f6g7h8i9j","customer":{"name":"lorem ipson"},"details":{"amount":100,"installments":1,"payment_type":"credit","card":{"source_id":"authorized","brand":"Visa","expiration_month":12,"expiration_year":2020},"itens":["lorem","ipson"]},"establishment":{"address":"rua lorem ipson","identifier":"00.111.222-8","postal_code":12345678}}'
+curl -v -X POST http://localhost:3000/payment/rede -H 'Content-Type: application/json'  -d '{"order_id":"1b2c3d4e5f6g7h8i9j","customer":{"name":"lorem ipson"},"details":{"amount":100,"installments":1,"payment_type":"credit","card":{"source_id":"c674b5630d41cd9dbe08a28c3b11afc63ae4160be329404b42a2eaed0d527e05","brand":"Visa","expiration_month":12,"expiration_year":2020},"itens":["lorem","ipson"]},"establishment":{"address":"rua lorem ipson","identifier":"00.111.222-8","postal_code":12345678}}'
 ```
 
 ### Responses
