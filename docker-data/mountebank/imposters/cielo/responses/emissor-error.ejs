@@ -1,0 +1,49 @@
+function() {
+  return {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: {
+      "MerchantOrderId": "2014111703",
+      "Customer": {
+        "Name": "Comprador crédito simples"
+      },
+      "Payment": {
+        "ServiceTaxAmount": 0,
+        "Installments": 1,
+        "Interest": 0,
+        "Capture": false,
+        "Authenticate": false,
+        "Recurrent": false,
+        "CreditCard": {
+          "CardNumber": "000000******0002",
+          "Holder": "Teste Holder",
+          "ExpirationDate": "12/2030",
+          "SaveCard": false,
+          "Brand": "Visa"
+        },
+        "Tid": "1224021130442",
+        "Provider": "Simulado",
+        "IsQrCode": false,
+        "Amount": 15700,
+        "ReceivedDate": "2019-12-24 14:11:30",
+        "Status": 3,
+        "IsSplitted": false,
+        "ReturnMessage": "Not Authorized",
+        "ReturnCode": "05",
+        "PaymentId": "aee659b3-5d40-4db7-a813-2ce41332c3aa",
+        "Type": "CreditCard",
+        "Currency": "BRL",
+        "Country": "BRA",
+        "Links": [
+          {
+            "Method": "GET",
+            "Rel": "self",
+            "Href": "https://apiquerysandbox.cieloecommerce.cielo.com.br/1/sales/aee659b3-5d40-4db7-a813-2ce41332c3aa"
+          }
+        ]
+      }
+    }
+  };
+}

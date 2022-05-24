@@ -1,0 +1,55 @@
+{
+  "responses": [
+    {
+      "inject": "<%- stringify(filename, 'cielo/responses/emissor-error.ejs') %>"
+    }
+  ],
+	"predicates": [
+		{
+			"matches": {
+				"body": "emissor-error"
+			}
+		},
+    {
+			"equals": {
+				"path": "/1/sales",
+				"method": "POST"
+      }
+    }
+  ]
+},
+{
+  "responses": [
+    {
+      "inject": "<%- stringify(filename, 'cielo/responses/integration-error.ejs') %>"
+    }
+  ],
+	"predicates": [
+		{
+			"matches": {
+				"body": "integration-error"
+			}
+		},
+    {
+			"equals": {
+				"path": "/1/sales",
+				"method": "POST"
+      }
+    }
+  ]
+},
+{
+  "responses": [
+    {
+      "inject": "<%- stringify(filename, 'cielo/responses/default.ejs') %>"
+    }
+  ],
+  "predicates": [
+    {
+      "equals": {
+				"path": "/1/sales",
+				"method": "POST"
+      }
+    }
+  ]
+}

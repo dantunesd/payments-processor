@@ -1,0 +1,61 @@
+function() {
+  return {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: {
+      "MerchantOrderId": "2014111703",
+      "Customer": {
+        "Name": "Comprador crédito simples"
+      },
+      "Payment": {
+        "ServiceTaxAmount": 0,
+        "Installments": 1,
+        "Interest": 0,
+        "Capture": false,
+        "Authenticate": false,
+        "Recurrent": false,
+        "CreditCard": {
+          "CardNumber": "000000******0001",
+          "Holder": "Teste Holder",
+          "ExpirationDate": "12/2030",
+          "SaveCard": false,
+          "Brand": "Visa"
+        },
+        "Tid": "1224014430497",
+        "ProofOfSale": "4430497",
+        "AuthorizationCode": "371624",
+        "Provider": "Simulado",
+        "IsQrCode": false,
+        "Amount": 15700,
+        "ReceivedDate": "2019-12-24 13:44:30",
+        "Status": 1,
+        "IsSplitted": false,
+        "ReturnMessage": "Operation Successful",
+        "ReturnCode": "4",
+        "PaymentId": "54c54088-5a8d-47a2-bd79-317363ab18ef",
+        "Type": "CreditCard",
+        "Currency": "BRL",
+        "Country": "BRA",
+        "Links": [
+          {
+            "Method": "GET",
+            "Rel": "self",
+            "Href": "https://apiquerysandbox.cieloecommerce.cielo.com.br/1/sales/54c54088-5a8d-47a2-bd79-317363ab18ef"
+          },
+          {
+            "Method": "PUT",
+            "Rel": "capture",
+            "Href": "https://apisandbox.cieloecommerce.cielo.com.br/1/sales/54c54088-5a8d-47a2-bd79-317363ab18ef/capture"
+          },
+          {
+            "Method": "PUT",
+            "Rel": "void",
+            "Href": "https://apisandbox.cieloecommerce.cielo.com.br/1/sales/54c54088-5a8d-47a2-bd79-317363ab18ef/void"
+          }
+        ]
+      }
+    }
+  };
+}

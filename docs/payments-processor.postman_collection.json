@@ -1,0 +1,562 @@
+{
+	"info": {
+		"_postman_id": "7a65e08a-9ef8-423c-b2e9-62a9aad84786",
+		"name": "payments-processor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "cielo",
+			"item": [
+				{
+					"name": "success",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"1b2c3d4\",\n    \"customer\": {\n        \"name\": \"lorem ipson\"\n    },\n    \"details\": {\n        \"amount\": 100,\n        \"installments\": 1,\n        \"payment_type\": \"credit\",\n        \"card\": {\n            \"source_id\": \"c674b5630d41cd9dbe08a28c3b11afc63ae4160be329404b42a2eaed0d527e05\",\n            \"brand\": \"Visa\",\n            \"expiration_month\": 12,\n            \"expiration_year\": 2020\n        },\n        \"itens\": [\n            \"lorem\",\n            \"ipson\"\n        ]\n    },\n    \"establishment\": {\n        \"address\": \"rua lorem ipson\",\n        \"identifier\": \"00.111.222-8\",\n        \"postal_code\": 12345678\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/cielo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"cielo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "missing required fields",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customer\": {\n        \"name\": \"lorem ipson\"\n    },\n    \"details\": {\n        \"amount\": 100,\n        \"installments\": 1,\n        \"payment_type\": \"credit\",\n        \"card\": {\n            \"source_id\": \"c674b5630d41cd9dbe08a28c3b11afc63ae4160be329404b42a2eaed0d527e05\",\n            \"brand\": \"Visa\",\n            \"expiration_month\": 12,\n            \"expiration_year\": 2020\n        },\n        \"itens\": [\n            \"lorem\",\n            \"ipson\"\n        ]\n    },\n    \"establishment\": {\n        \"address\": \"rua lorem ipson\",\n        \"identifier\": \"00.111.222-8\",\n        \"postal_code\": 12345678\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/cielo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"cielo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "missing all fields",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/cielo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"cielo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalid body content",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "a",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/cielo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"cielo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "source not found",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"1b2c3d4\",\n    \"customer\": {\n        \"name\": \"lorem ipson\"\n    },\n    \"details\": {\n        \"amount\": 100,\n        \"installments\": 1,\n        \"payment_type\": \"credit\",\n        \"card\": {\n            \"source_id\": \"inexistent\",\n            \"brand\": \"Visa\",\n            \"expiration_month\": 12,\n            \"expiration_year\": 2020\n        },\n        \"itens\": [\n            \"lorem\",\n            \"ipson\"\n        ]\n    },\n    \"establishment\": {\n        \"address\": \"rua lorem ipson\",\n        \"identifier\": \"00.111.222-8\",\n        \"postal_code\": 12345678\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/cielo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"cielo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "integration error",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"integration-error\",\n    \"customer\": {\n        \"name\": \"lorem ipson\"\n    },\n    \"details\": {\n        \"amount\": 100,\n        \"installments\": 1,\n        \"payment_type\": \"credit\",\n        \"card\": {\n            \"source_id\": \"c674b5630d41cd9dbe08a28c3b11afc63ae4160be329404b42a2eaed0d527e05\",\n            \"brand\": \"Visa\",\n            \"expiration_month\": 12,\n            \"expiration_year\": 2020\n        },\n        \"itens\": [\n            \"lorem\",\n            \"ipson\"\n        ]\n    },\n    \"establishment\": {\n        \"address\": \"rua lorem ipson\",\n        \"identifier\": \"00.111.222-8\",\n        \"postal_code\": 12345678\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/cielo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"cielo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "emissor error",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"emissor-error\",\n    \"customer\": {\n        \"name\": \"lorem ipson\"\n    },\n    \"details\": {\n        \"amount\": 100,\n        \"installments\": 1,\n        \"payment_type\": \"credit\",\n        \"card\": {\n            \"source_id\": \"c674b5630d41cd9dbe08a28c3b11afc63ae4160be329404b42a2eaed0d527e05\",\n            \"brand\": \"Visa\",\n            \"expiration_month\": 12,\n            \"expiration_year\": 2020\n        },\n        \"itens\": [\n            \"lorem\",\n            \"ipson\"\n        ]\n    },\n    \"establishment\": {\n        \"address\": \"rua lorem ipson\",\n        \"identifier\": \"00.111.222-8\",\n        \"postal_code\": 12345678\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/cielo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"cielo"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "rede",
+			"item": [
+				{
+					"name": "success",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"1b2c3d4\",\n    \"customer\": {\n        \"name\": \"lorem ipson\"\n    },\n    \"details\": {\n        \"amount\": 100,\n        \"installments\": 1,\n        \"payment_type\": \"credit\",\n        \"card\": {\n            \"source_id\": \"c674b5630d41cd9dbe08a28c3b11afc63ae4160be329404b42a2eaed0d527e05\",\n            \"brand\": \"Visa\",\n            \"expiration_month\": 12,\n            \"expiration_year\": 2020\n        },\n        \"itens\": [\n            \"lorem\",\n            \"ipson\"\n        ]\n    },\n    \"establishment\": {\n        \"address\": \"rua lorem ipson\",\n        \"identifier\": \"00.111.222-8\",\n        \"postal_code\": 12345678\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/rede",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"rede"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "missing required fields",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customer\": {\n        \"name\": \"lorem ipson\"\n    },\n    \"details\": {\n        \"amount\": 100,\n        \"installments\": 1,\n        \"payment_type\": \"credit\",\n        \"card\": {\n            \"source_id\": \"c674b5630d41cd9dbe08a28c3b11afc63ae4160be329404b42a2eaed0d527e05\",\n            \"brand\": \"Visa\",\n            \"expiration_month\": 12,\n            \"expiration_year\": 2020\n        },\n        \"itens\": [\n            \"lorem\",\n            \"ipson\"\n        ]\n    },\n    \"establishment\": {\n        \"address\": \"rua lorem ipson\",\n        \"identifier\": \"00.111.222-8\",\n        \"postal_code\": 12345678\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/rede",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"rede"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "missing all fields",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/rede",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"rede"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalid body content",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "a",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/rede",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"rede"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "source not found",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"1b2c3d4\",\n    \"customer\": {\n        \"name\": \"lorem ipson\"\n    },\n    \"details\": {\n        \"amount\": 100,\n        \"installments\": 1,\n        \"payment_type\": \"credit\",\n        \"card\": {\n            \"source_id\": \"inexistent\",\n            \"brand\": \"Visa\",\n            \"expiration_month\": 12,\n            \"expiration_year\": 2020\n        },\n        \"itens\": [\n            \"lorem\",\n            \"ipson\"\n        ]\n    },\n    \"establishment\": {\n        \"address\": \"rua lorem ipson\",\n        \"identifier\": \"00.111.222-8\",\n        \"postal_code\": 12345678\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/rede",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"rede"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "integration error",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"integration-error\",\n    \"customer\": {\n        \"name\": \"lorem ipson\"\n    },\n    \"details\": {\n        \"amount\": 100,\n        \"installments\": 1,\n        \"payment_type\": \"credit\",\n        \"card\": {\n            \"source_id\": \"c674b5630d41cd9dbe08a28c3b11afc63ae4160be329404b42a2eaed0d527e05\",\n            \"brand\": \"Visa\",\n            \"expiration_month\": 12,\n            \"expiration_year\": 2020\n        },\n        \"itens\": [\n            \"lorem\",\n            \"ipson\"\n        ]\n    },\n    \"establishment\": {\n        \"address\": \"rua lorem ipson\",\n        \"identifier\": \"00.111.222-8\",\n        \"postal_code\": 12345678\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/rede",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"rede"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "emissor error",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"emissor-error\",\n    \"customer\": {\n        \"name\": \"lorem ipson\"\n    },\n    \"details\": {\n        \"amount\": 100,\n        \"installments\": 1,\n        \"payment_type\": \"credit\",\n        \"card\": {\n            \"source_id\": \"c674b5630d41cd9dbe08a28c3b11afc63ae4160be329404b42a2eaed0d527e05\",\n            \"brand\": \"Visa\",\n            \"expiration_month\": 12,\n            \"expiration_year\": 2020\n        },\n        \"itens\": [\n            \"lorem\",\n            \"ipson\"\n        ]\n    },\n    \"establishment\": {\n        \"address\": \"rua lorem ipson\",\n        \"identifier\": \"00.111.222-8\",\n        \"postal_code\": 12345678\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/rede",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"rede"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "business error",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": \"business-error\",\n    \"customer\": {\n        \"name\": \"lorem ipson\"\n    },\n    \"details\": {\n        \"amount\": 100,\n        \"installments\": 1,\n        \"payment_type\": \"credit\",\n        \"card\": {\n            \"source_id\": \"c674b5630d41cd9dbe08a28c3b11afc63ae4160be329404b42a2eaed0d527e05\",\n            \"brand\": \"Visa\",\n            \"expiration_month\": 12,\n            \"expiration_year\": 2020\n        },\n        \"itens\": [\n            \"lorem\",\n            \"ipson\"\n        ]\n    },\n    \"establishment\": {\n        \"address\": \"rua lorem ipson\",\n        \"identifier\": \"00.111.222-8\",\n        \"postal_code\": 12345678\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/payment/rede",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payment",
+								"rede"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

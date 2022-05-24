@@ -1,0 +1,75 @@
+{
+  "responses": [
+    {
+      "inject": "<%- stringify(filename, 'rede/responses/integration-error.ejs') %>"
+    }
+  ],
+  "predicates": [
+    {
+      "matches": {
+        "body": "integration-error"
+      }
+    },
+    {
+      "equals": {
+        "path": "/v1/transactions",
+        "method": "POST"
+      }
+    }
+  ]
+},
+{
+  "responses": [
+    {
+      "inject": "<%- stringify(filename, 'rede/responses/emissor-error.ejs') %>"
+    }
+  ],
+  "predicates": [
+    {
+      "matches": {
+        "body": "emissor-error"
+      }
+    },
+    {
+      "equals": {
+        "path": "/v1/transactions",
+        "method": "POST"
+      }
+    }
+  ]
+},
+{
+  "responses": [
+    {
+      "inject": "<%- stringify(filename, 'rede/responses/business-error.ejs') %>"
+    }
+  ],
+  "predicates": [
+    {
+      "matches": {
+        "body": "business-error"
+      }
+    },
+    {
+      "equals": {
+        "path": "/v1/transactions",
+        "method": "POST"
+      }
+    }
+  ]
+},
+{
+  "responses": [
+    {
+      "inject": "<%- stringify(filename, 'rede/responses/default.ejs') %>"
+    }
+  ],
+  "predicates": [
+    {
+      "equals": {
+        "path": "/v1/transactions",
+        "method": "POST"
+      }
+    }
+  ]
+}

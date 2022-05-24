@@ -1,0 +1,12 @@
+function() {
+  return {
+    statusCode: 422,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: {
+      "returnCode": "42",
+      "returnMessage": "Reference: Order number already exists."
+    }
+  }
+}

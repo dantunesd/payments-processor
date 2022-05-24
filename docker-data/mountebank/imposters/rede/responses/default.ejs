@@ -1,0 +1,33 @@
+function() {
+	return {
+		statusCode: 200,
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: {
+			"reference": "pedidoX",
+			"tid": "10011912251134110007",
+			"nsu": "96674061",
+			"authorizationCode": "255663",
+			"brandTid": "255663",
+			"dateTime": "2019-12-25T13:23:22-03:00",
+			"amount": 100,
+			"cardBin": "544828",
+			"last4": "0007",
+			"returnCode": "00",
+			"returnMessage": "Success.",
+			"links": [
+				{
+						"method": "GET",
+						"rel": "transaction",
+						"href": "https://api.userede.com.br/desenvolvedores/v1/transactions/10011912251134110007"
+				},
+				{
+						"method": "POST",
+						"rel": "refund",
+						"href": "https://api.userede.com.br/desenvolvedores/v1/transactions/10011912251134110007/refunds"
+				}
+			]
+		}
+	}
+}

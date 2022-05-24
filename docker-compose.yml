@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+    database:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - 3306:3306
+            - 33060:33060
+        volumes: 
+            - ./docker-data/database/:/docker-entrypoint-initdb.d
+    
+            
+    mountebank:
+        image: andyrbell/mountebank
+        ports:
+            - 2525:2525
+            - 8010:8010
+        volumes:
+            - ./docker-data/mountebank/imposters:/mb/
+        command: mb --configfile /mb/imposters.ejs --allowInjection

@@ -1,0 +1,21 @@
+function() {
+  return {
+    statusCode: 400,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: {
+      "reference": "emissor-error",
+      "tid": "10021912251212420006",
+      "nsu": "5547025",
+      "authorizationCode": "799552",
+      "brandTid": "799552",
+      "dateTime": "2019-12-25T12:42:43-03:00",
+      "amount": 101,
+      "cardBin": "544828",
+      "last4": "0007",
+      "returnCode": "101",
+      "returnMessage": "Unauthorized. Problems on the card, contact the issuer."
+    }
+  }
+}
